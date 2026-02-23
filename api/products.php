@@ -14,6 +14,51 @@ header('Access-Control-Allow-Origin: *');
 
 require_once __DIR__ . '/../db/config.php';
 
+// CDN base URLs for product images (tried in order when local files are missing)
+define('IMAGE_CDN_BASES', [
+    'https://eddm.shop/wp-content/uploads/2026/01/',
+    'https://eddm.shop/wp-content/uploads/2025/09/',
+]);
+
+/**
+ * Resolve an image path to a working URL.
+ * If the local file exists, returns the local path.
+ * Otherwise, returns the external CDN URL.
+ */
+function resolveImageUrl($path) {
+    if (!$path || $path === '') return '';
+    // Already an absolute URL — return as-is
+    if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) {
+        return $path;
+    }
+    // Local path like /images/products/filename.jpg
+    if (strpos($path, '/images/products/') === 0) {
+        $filename = basename($path);
+        $localFile = __DIR__ . '/../images/products/' . $filename;
+        if (file_exists($localFile) && filesize($localFile) > 0) {
+            return $path;
+        }
+        // Use the first CDN base URL
+        return IMAGE_CDN_BASES[0] . $filename;
+    }
+    return $path;
+}
+
+/**
+ * Apply resolveImageUrl to all image fields in a product array.
+ */
+function resolveProductImages(&$product) {
+    if (isset($product['img1'])) {
+        $product['img1'] = resolveImageUrl($product['img1']);
+    }
+    if (isset($product['img2'])) {
+        $product['img2'] = resolveImageUrl($product['img2']);
+    }
+    if (isset($product['images']) && is_array($product['images'])) {
+        $product['images'] = array_map('resolveImageUrl', $product['images']);
+    }
+}
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 
 try {
@@ -65,6 +110,7 @@ function handleListProducts($pdo) {
         $product['images'] = getProductImages($pdo, $product['id']);
         $product['all_categories'] = getProductCategories($pdo, $product['id']);
         $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
+        resolveProductImages($product);
     }
 
     echo json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -95,6 +141,7 @@ function handleGetProduct($pdo) {
     $product['images'] = getProductImages($pdo, $product['id']);
     $product['all_categories'] = getProductCategories($pdo, $product['id']);
     $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
+    resolveProductImages($product);
 
     echo json_encode($product, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
@@ -118,6 +165,7 @@ function handleSearch($pdo) {
         $product['images'] = getProductImages($pdo, $product['id']);
         $product['all_categories'] = getProductCategories($pdo, $product['id']);
         $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
+        resolveProductImages($product);
     }
 
     echo json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

@@ -186,6 +186,26 @@
 <script src="../js/common.js"></script>
 <script>
 (function() {
+  var IMAGE_CDN_BASE = 'https://eddm.shop/wp-content/uploads/2026/01/';
+
+  function resolveImageUrl(path) {
+    if (!path) return '';
+    if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) return path;
+    if (path.indexOf('/images/products/') === 0) {
+      return IMAGE_CDN_BASE + path.split('/').pop();
+    }
+    return path;
+  }
+
+  function resolveProductImages(product) {
+    if (product.img1) product.img1 = resolveImageUrl(product.img1);
+    if (product.img2) product.img2 = resolveImageUrl(product.img2);
+    if (product.images && product.images.length) {
+      product.images = product.images.map(resolveImageUrl);
+    }
+    return product;
+  }
+
   var PER_PAGE = 12;
 
   var CATEGORY_MAP = {
@@ -345,6 +365,7 @@
         return res.json();
       })
       .then(function(data) {
+        data.forEach(resolveProductImages);
         allProducts = data;
         try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(e) {}
         render();
@@ -354,6 +375,7 @@
         fetch('../products_data.json')
           .then(function(res) { return res.json(); })
           .then(function(data) {
+            data.forEach(resolveProductImages);
             allProducts = data;
             try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(e) {}
             render();

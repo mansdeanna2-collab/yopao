@@ -235,6 +235,25 @@
 <button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
 
 <script src="js/common.js"></script>
+<script>
+(function() {
+  var CDN_BASE = 'https://eddm.shop/wp-content/uploads/2026/01/';
+  var LOCAL_PREFIX = '/images/products/';
+  function resolve(src) {
+    if (src && src.indexOf(LOCAL_PREFIX) === 0) return CDN_BASE + src.substring(LOCAL_PREFIX.length);
+    return src;
+  }
+  document.querySelectorAll('img[src^="' + LOCAL_PREFIX + '"]').forEach(function(img) {
+    img.src = resolve(img.getAttribute('src'));
+  });
+  document.querySelectorAll('[style*="' + LOCAL_PREFIX + '"]').forEach(function(el) {
+    el.style.backgroundImage = el.style.backgroundImage.replace(
+      /url\(['"]?(\/images\/products\/[^'")]+)['"]?\)/g,
+      function(m, p) { return "url('" + resolve(p) + "')"; }
+    );
+  });
+})();
+</script>
 <script src="js/home.js"></script>
 </body>
 </html>
