@@ -431,6 +431,9 @@ body { background: #fff; }
 .related-grid .product-card:hover {
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
+.related-grid .product-card a {
+  display: block;
+}
 .related-grid .product-image {
   position: relative;
   overflow: hidden;
