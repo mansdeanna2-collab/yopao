@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2017 – Buy Discount Postage Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Lato', sans-serif; color: #333; background: #fff; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ========== Top Bar ========== */
+    .top-bar {
+      background: #333366;
+      color: #fff;
+      text-align: center;
+      padding: 8px 15px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: relative;
+    }
+    .top-bar .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* ========== Header ========== */
+    .header-wrapper {
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .site-header {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+    }
+    .logo a {
+      font-size: 26px;
+      color: #333365;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .logo-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #333365;
+      border-radius: 3px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #333365;
+    }
+    .nav-main {
+      display: flex;
+      gap: 22px;
+      margin-left: 40px;
+      flex: 1;
+      align-items: center;
+    }
+    .nav-main a {
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
+      color: #555;
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+    .nav-main a:hover { color: #333365; }
+    .nav-item-dropdown {
+      position: relative;
+    }
+    .nav-item-dropdown > a::after {
+      content: ' ▾';
+      font-size: 10px;
+    }
+    .nav-item-dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #eee;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      min-width: 180px;
+      z-index: 100;
+      padding: 8px 0;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .dropdown-menu a:hover {
+      background: #f5f5f5;
+      color: #333365;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-left: auto;
+    }
+    .header-icon {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #333365;
+      color: #fff;
+      font-size: 16px;
+    }
+    .cart-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      color: #555;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .cart-link .cart-icon {
+      position: relative;
+      font-size: 20px;
+    }
+    .cart-link .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #333365;
+      color: #fff;
+      font-size: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* ========== Breadcrumb & Page Title ========== */
+    .page-title-section {
+      padding: 20px 0 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .page-title-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .breadcrumb {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 0.5px;
+    }
+    .breadcrumb a {
+      color: #999;
+    }
+    .breadcrumb a:hover { color: #333365; }
+    .breadcrumb .divider { margin: 0 6px; }
+    .breadcrumb .current {
+      color: #333;
+      font-weight: 700;
+    }
+    .page-title-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .result-count {
+      font-size: 14px;
+      color: #999;
+    }
+    .sort-select {
+      padding: 8px 35px 8px 12px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 0;
+      background: #fff;
+      color: #555;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23999'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      cursor: pointer;
+    }
+
+    /* ========== Main Layout ========== */
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 15px;
+      display: flex;
+      gap: 30px;
+    }
+
+    /* ========== Sidebar ========== */
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+    }
+    .sidebar-search {
+      display: flex;
+      margin-bottom: 30px;
+    }
+    .sidebar-search input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-right: none;
+      font-size: 14px;
+      font-family: 'Lato', sans-serif;
+      outline: none;
+    }
+    .sidebar-search input::placeholder {
+      color: #999;
+    }
+    .sidebar-search button {
+      width: 44px;
+      background: #333365;
+      color: #fff;
+      border: 1px solid #333365;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .filter-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #333;
+      letter-spacing: 0.5px;
+      margin-bottom: 15px;
+    }
+    .price-slider-container {
+      margin-bottom: 15px;
+    }
+    .price-slider {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: #ddd;
+      border-radius: 3px;
+      margin: 10px 0 20px;
+    }
+    .price-slider-fill {
+      position: absolute;
+      height: 100%;
+      background: #333365;
+      border-radius: 3px;
+      left: 0;
+      right: 0;
+    }
+    .price-slider-handle {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: #555;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .price-slider-handle.left { left: -2px; }
+    .price-slider-handle.right { right: -2px; }
+    .price-filter-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-btn {
+      background: #333365;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+    .filter-btn:hover {
+      background: #444488;
+    }
+    .price-label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* ========== Products Grid ========== */
+    .products-area {
+      flex: 1;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .product-card {
+      background: #fff;
+      transition: box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .product-image {
+      position: relative;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+    .product-image img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 247 / 296;
+      object-fit: cover;
+      transition: opacity 0.3s;
+    }
+    .product-image .hover-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .product-card:hover .hover-img {
+      opacity: 1;
+    }
+    .product-info {
+      padding: 12px 5px;
+    }
+    .product-category {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      font-weight: 400;
+    }
+    .product-name {
+      font-size: 14px;
+      color: #334862;
+      font-weight: 400;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .product-name:hover {
+      color: #333365;
+    }
+    .product-price {
+      font-size: 14px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    /* ========== Footer ========== */
+    .footer {
+      background: #333366;
+      color: #ccc;
+      padding: 50px 0 0;
+      margin-top: 40px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .footer-col h4 {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .footer-col .divider {
+      width: 30px;
+      height: 2px;
+      background: #555;
+      margin-bottom: 18px;
+    }
+    .footer-col ul li {
+      margin-bottom: 8px;
+    }
+    .footer-col ul li a {
+      font-size: 13px;
+      color: #bbb;
+      transition: color 0.3s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-col p {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #bbb;
+    }
+    .footer-bottom {
+      background: #333366;
+      border-top: 1px solid #444;
+      margin-top: 40px;
+      padding: 20px 0;
+    }
+    .footer-bottom-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copyright {
+      font-size: 13px;
+      color: #999;
+    }
+    .footer-copyright strong { color: #ccc; }
+    .payment-icons {
+      display: flex;
+      gap: 8px;
+    }
+    .payment-icons svg {
+      height: 24px;
+      width: auto;
+      fill: #999;
+      opacity: 0.7;
+    }
+
+    /* ========== Back to Top ========== */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 2px solid #999;
+      border-radius: 50%;
+      color: #999;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: all 0.3s;
+    }
+    .back-to-top:hover {
+      border-color: #333365;
+      color: #333365;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 991px) {
+      .sidebar { display: none; }
+      .products-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .nav-main { display: none; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: 1fr; }
+      .page-title-inner { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== Top Bar ========== -->
+<div class="top-bar">
+  FREE SHIPPING ALL OVER ORDERS. 3–8 BUSINESS DAYS DELIVERY
+  <span class="search-icon">🔍</span>
+</div>
+
+<!-- ========== Header ========== -->
+<div class="header-wrapper">
+  <header class="site-header">
+    <div class="logo">
+      <a href="index.html">
+        <span class="logo-icon">S</span>stampstores
+      </a>
+    </div>
+
+    <nav class="nav-main">
+      <a href="index.html">Home</a>
+      <a href="#">Flag Series</a>
+      <a href="#">Christmas &amp; Holiday</a>
+      <a href="#">Wedding &amp; Flowers</a>
+      <a href="#">Animal Series</a>
+      <div class="nav-item-dropdown">
+        <a href="#" style="font-weight:900; color:#333;">Other Years</a>
+        <div class="dropdown-menu">
+          <a href="#">Other Years</a>
+          <a href="#">2025</a>
+          <a href="#">2024</a>
+          <a href="#">2023</a>
+          <a href="#">2022</a>
+          <a href="#">2021</a>
+          <a href="#">2020</a>
+          <a href="#">2019</a>
+          <a href="#">2018</a>
+          <a href="2017.html" style="color:#333365;">2017</a>
+        </div>
+      </div>
+      <a href="#">Contact Us</a>
+    </nav>
+
+    <div class="header-right">
+      <div class="header-icon" title="Account">👤</div>
+      <div class="cart-link">
+        <span>$0.00</span>
+        <span class="cart-icon">
+          🛒
+          <span class="cart-count">0</span>
+        </span>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- ========== Breadcrumb & Page Title ========== -->
+<div class="page-title-section">
+  <div class="page-title-inner">
+    <div class="breadcrumb">
+      <a href="index.html">HOME</a>
+      <span class="divider">/</span>
+      <span class="current">2017</span>
+    </div>
+    <div class="page-title-right">
+      <span class="result-count">Showing all 12 results</span>
+      <select class="sort-select">
+        <option selected>Default sorting</option>
+        <option>Sort by popularity</option>
+        <option>Sort by latest</option>
+        <option>Sort by price: low to high</option>
+        <option>Sort by price: high to low</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Main Content ========== -->
+<div class="main-content">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search…">
+      <button type="button">🔍</button>
+    </div>
+
+    <div class="price-filter">
+      <h3 class="filter-title">Filter by price</h3>
+      <div class="price-slider-container">
+        <div class="price-slider">
+          <div class="price-slider-fill"></div>
+          <div class="price-slider-handle left"></div>
+          <div class="price-slider-handle right"></div>
+        </div>
+      </div>
+      <div class="price-filter-actions">
+        <button class="filter-btn">Filter</button>
+        <span class="price-label">Price: $20 — $30</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Products Grid -->
+  <div class="products-area">
+    <div class="products-grid">
+
+      <!-- Product 1: 2017 Celebrating African American History -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/1-2a6462e3-5cc5-4b25-84e0-18008e174740-247x296.jpg" alt="2017 Celebrating African American History">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/7ef5f8d5899976255718862fc591677-247x296.png" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Celebrating African American History</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 2: 2017 Celebration Corsage Two Ounce -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/12-2oz-ddc9e102-4c73-45af-bd19-dfe599a90803-247x296.jpg" alt="2017 Celebration Corsage Two Ounce">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/2ounces-1-735c6e1b-db64-42ba-ac4d-983733fd30ca-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2 OZ Letter</p>
+            <p class="product-name">2017 Celebration Corsage Two Ounce</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 3: 2017 Dedicate Christmas Carols -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/pr17-059-ae74b4a8-b703-4530-b58a-2b0e7c619d76-247x296.jpg" alt="2017 Dedicate Christmas Carols">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/50808BA8-D66D-A876-00FD-4734B0EBF8DF-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Dedicate Christmas Carols</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 4: 2017 Flowers From The Garden -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/9a61b9-5a955353740348efbcf8f0018c2ef7d7-mv2-38397-3c635ec7-6fe4-459c-b386-021a15103fee-247x296.jpg" alt="2017 Flowers From The Garden">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/9a61b9-c2bc3f0651da413a9df2bd332e28264d-mv2-31429-f61122ae-e460-4f87-a715-9ef397745acb-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Flowers From The Garden</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 5: 2017 Global Green Succulent -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/59F02CB2-83A0-AB6A-9EC5-55B359DDFC4F-247x296.jpg" alt="2017 Global Green Succulent">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/93AA8215-3C9A-16E2-3BBE-F8669B535C05-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Global Green Succulent</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 6: 2017 Have a Ball -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/49512230-63CC-99F4-D498-66AA77539D38-190febe4-e5ed-427e-be57-eba27f510c88-247x296.jpg" alt="2017 Have a Ball">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/8BE06988-4537-A8A1-8B33-FFF846DF44B2-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Have a Ball</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 7: 2017 Love Series: Airplane Skywriting Love -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/6-1-247x296.jpg" alt="2017 Love Series: Airplane Skywriting Love">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/5_4251a24f-701c-46b3-89f4-898fcc2fc1b0-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Love Series: Airplane Skywriting Love</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 8: 2017 Sharks -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/89266d1da8eaff1d-a9d8d702-2b60-4407-a63c-daaa6c830d42-247x296.jpg" alt="2017 Sharks">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/1d9a86c0fa47f1de-3e8cc73e-715c-48a4-9815-bd0c512e2209-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Sharks</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 9: 2017 Snowy Day -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/20c39f2bb325d7b4-5a6d2562-62cb-4569-aea5-cbde3211265e-247x296.jpg" alt="2017 Snowy Day">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/c116f8c4a08d3c98-bf6c3fa9-75f9-4330-960f-2f3bfce77ad0-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Snowy Day</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 10: 2017 U.S. Flag -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/4ac72f01d8c33e7c-0c086101-2a0d-4999-8898-7980d7b3a454-247x296.jpg" alt="2017 U.S. Flag">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/7928452495a15dfc3f2d5594fbfcf7a-555daf1e-cd27-40f4-9e7b-902215675ab1-247x246.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 U.S. Flag</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 11: 2017 Walt Disney Villains -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/75F970BE-4542-9515-D8EA-8EA0856F5BC7-247x296.jpg" alt="2017 Walt Disney Villains">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/7974EC92-6C34-8032-24B3-0547ADC61E0D-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Walt Disney Villains</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 12: 2017 Wedding Series Celebration Boutonniere -->
+      <div class="product-card">
+        <a href="#">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/images-3-5829dc39-701e-4895-aef3-34d2493a72e3-247x296.jpg" alt="2017 Wedding Series Celebration Boutonniere">
+            <img class="hover-img" src="https://eddm.shop/wp-content/uploads/2026/01/images-1-4bdf1bf4-f326-45ec-b567-b6dbd9ac1450-247x296.jpg" alt="">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2017</p>
+            <p class="product-name">2017 Wedding Series Celebration Boutonniere</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ========== Footer ========== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>Information</h4>
+      <div class="divider"></div>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Shipping Policy</a></li>
+        <li><a href="#">Refund and Return Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Billings Terms and Condition</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Need Help</h4>
+      <div class="divider"></div>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="divider"></div>
+      <p>
+        <strong>EDDM LLC</strong><br>
+        <strong>Email</strong>: support@eddm.shop<br>
+        <strong>Phone</strong>: (970) 329-9777<br>
+        <strong>Address</strong>: 3605 Avalon St, Philadelphia, PA 19114
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-copyright">
+        Copyright 2026 © <strong>eddm.shop</strong>
+      </div>
+      <div class="payment-icons">
+        <!-- PayPal -->
+        <svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M35.255 12.078h-2.396c-0.229 0-0.444 0.114-0.572 0.303l-3.306 4.868-1.4-4.678c-0.088-0.292-0.358-0.493-0.663-0.493h-2.355c-0.284 0-0.485 0.28-0.393 0.548l2.638 7.745-2.481 3.501c-0.195 0.275 0.002 0.655 0.339 0.655h2.394c0.227 0 0.439-0.111 0.569-0.297l7.968-11.501c0.191-0.275-0.006-0.652-0.341-0.652zM19.237 16.718c-0.23 1.362-1.311 2.276-2.691 2.276-0.691 0-1.245-0.223-1.601-0.644-0.353-0.417-0.485-1.012-0.374-1.674 0.214-1.35 1.313-2.294 2.671-2.294 0.677 0 1.227 0.225 1.589 0.65 0.365 0.428 0.509 1.027 0.404 1.686zM22.559 12.078h-2.384c-0.204 0-0.378 0.148-0.41 0.351l-0.104 0.666-0.166-0.241c-0.517-0.749-1.667-1-2.817-1-2.634 0-4.883 1.996-5.321 4.796-0.228 1.396 0.095 2.731 0.888 3.662 0.727 0.856 1.765 1.212 3.002 1.212 2.123 0 3.3-1.363 3.3-1.363l-0.106 0.662c-0.040 0.252 0.155 0.479 0.41 0.479h2.147c0.341 0 0.63-0.247 0.684-0.584l1.289-8.161c0.040-0.251-0.155-0.479-0.41-0.479zM8.254 12.135c-0.272 1.787-1.636 1.787-2.957 1.787h-0.751l0.527-3.336c0.031-0.202 0.205-0.35 0.41-0.35h0.345c0.899 0 1.747 0 2.185 0.511 0.262 0.307 0.341 0.761 0.242 1.388zM7.68 7.473h-4.979c-0.341 0-0.63 0.248-0.684 0.584l-2.013 12.765c-0.040 0.252 0.155 0.479 0.41 0.479h2.378c0.34 0 0.63-0.248 0.683-0.584l0.543-3.444c0.053-0.337 0.343-0.584 0.683-0.584h1.575c3.279 0 5.172-1.587 5.666-4.732 0.223-1.375 0.009-2.456-0.635-3.212-0.707-0.832-1.962-1.272-3.628-1.272z"></path></svg>
+        <!-- Stripe -->
+        <svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M7.114 14.656c-1.375-0.5-2.125-0.906-2.125-1.531 0-0.531 0.437-0.812 1.188-0.812 1.437 0 2.875 0.531 3.875 1.031l0.563-3.5c-0.781-0.375-2.406-1-4.656-1-1.594 0-2.906 0.406-3.844 1.188-1 0.812-1.5 2-1.5 3.406 0 2.563 1.563 3.688 4.125 4.594 1.625 0.594 2.188 1 2.188 1.656 0 0.625-0.531 0.969-1.5 0.969-1.188 0-3.156-0.594-4.437-1.343l-0.563 3.531c1.094 0.625 3.125 1.281 5.25 1.281 1.688 0 3.063-0.406 4.031-1.157 1.063-0.843 1.594-2.062 1.594-3.656-0.001-2.625-1.595-3.719-4.188-4.657z"></path></svg>
+        <!-- Visa -->
+        <svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M10.781 7.688c-0.46 0-0.873 0.138-1.24 0.413s-0.662 0.681-0.885 1.217c-0.223 0.536-0.334 1.112-0.334 1.727 0 0.568 0.119 0.99 0.358 1.265s0.619 0.413 1.141 0.413c0.508 0 1.096-0.131 1.765-0.393v1.327c-0.693 0.262-1.389 0.393-2.089 0.393-0.884 0-1.572-0.254-2.063-0.763s-0.736-1.229-0.736-2.161c0-0.892 0.181-1.712 0.543-2.462s0.846-1.32 1.452-1.709 1.302-0.584 2.089-0.584c0.435 0 0.822 0.038 1.159 0.115s0.7 0.217 1.086 0.421l-0.616 1.276c-0.369-0.201-0.673-0.333-0.914-0.398s-0.478-0.097-0.715-0.097z"></path></svg>
+        <!-- Mastercard -->
+        <svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M42.667-0c-4.099 0-7.836 1.543-10.667 4.077-2.831-2.534-6.568-4.077-10.667-4.077-8.836 0-16 7.163-16 16s7.164 16 16 16c4.099 0 7.835-1.543 10.667-4.077 2.831 2.534 6.568 4.077 10.667 4.077 8.837 0 16-7.163 16-16s-7.163-16-16-16z"></path></svg>
+        <!-- Discover -->
+        <svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M13.296 20.185c0 0.98-0.177 1.832-0.532 2.556s-0.868 1.274-1.539 1.652c-0.672 0.379-1.464 0.568-2.376 0.568h-2.449l1.678-7.68h2.15c0.977 0 1.733 0.25 2.267 0.751s0.801 1.219 0.801 2.154z"></path></svg>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Go to top">↑</button>
+
+</body>
+</html>
