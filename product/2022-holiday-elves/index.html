@@ -114,28 +114,28 @@
         <thead>
           <tr><th>QUANTITY</th><th>PRICE</th><th>DISCOUNT</th></tr>
         </thead>
-        <tbody>
-            <tr>
+                <tbody>
+            <tr data-qty-min="3" data-qty-max="5" data-price="26.10" data-discount="10">
               <td>3 - 5</td>
               <td>$26.10</td>
               <td class="discount-pct">10%</td>
             </tr>
-            <tr>
+            <tr data-qty-min="6" data-qty-max="10" data-price="24.65" data-discount="15">
               <td>6 - 10</td>
               <td>$24.65</td>
               <td class="discount-pct">15%</td>
             </tr>
-            <tr>
+            <tr data-qty-min="11" data-qty-max="30" data-price="23.20" data-discount="20">
               <td>11 - 30</td>
               <td>$23.20</td>
               <td class="discount-pct">20%</td>
             </tr>
-            <tr>
+            <tr data-qty-min="31" data-qty-max="100" data-price="21.75" data-discount="25">
               <td>31 - 100</td>
               <td>$21.75</td>
               <td class="discount-pct">25%</td>
             </tr>
-            <tr>
+            <tr data-qty-min="101" data-price="20.30" data-discount="30">
               <td>101+</td>
               <td>$20.30</td>
               <td class="discount-pct">30%</td>
@@ -378,16 +378,63 @@ thumbs.forEach(function(thumb) {
 if (prevBtn) prevBtn.addEventListener("click", function() { showSlide(currentIndex - 1); });
 if (nextBtn) nextBtn.addEventListener("click", function() { showSlide(currentIndex + 1); });
 
+// Discount Price Helpers
+var BASE_PRICE = 29.00;
+var discountRows = document.querySelectorAll('.discount-table tbody tr');
+
+function getDiscountPrice(qty) {
+  var price = BASE_PRICE;
+  discountRows.forEach(function(row) {
+    var min = parseInt(row.getAttribute('data-qty-min'));
+    var maxAttr = row.getAttribute('data-qty-max');
+    var max = maxAttr ? parseInt(maxAttr) : Infinity;
+    var rowPrice = parseFloat(row.getAttribute('data-price'));
+    if (qty >= min && qty <= max) {
+      price = rowPrice;
+    }
+  });
+  return price;
+}
+
+function updatePriceByQty() {
+  var qty = parseInt(document.getElementById('qty-input').value) || 1;
+  var price = getDiscountPrice(qty);
+  discountRows.forEach(function(row) {
+    row.classList.remove('active-row');
+    var min = parseInt(row.getAttribute('data-qty-min'));
+    var maxAttr = row.getAttribute('data-qty-max');
+    var max = maxAttr ? parseInt(maxAttr) : Infinity;
+    if (qty >= min && qty <= max) {
+      row.classList.add('active-row');
+    }
+  });
+  var priceEl = document.querySelector('.selected-price');
+  var mainPriceEl = document.querySelector('.product-price-main');
+  var priceHtml;
+  if (price < BASE_PRICE) {
+    priceHtml = '<del class="original-price">' + fmt(BASE_PRICE) + '</del> <span class="sale-price">' + fmt(price) + '</span>';
+  } else {
+    priceHtml = fmt(BASE_PRICE);
+  }
+  if (priceEl) priceEl.innerHTML = priceHtml;
+  if (mainPriceEl) mainPriceEl.innerHTML = priceHtml;
+}
+
 // Quantity Stepper
 document.getElementById("qty-minus").addEventListener("click", function() {
   var input = document.getElementById("qty-input");
   var val = parseInt(input.value) || 1;
-  if (val > 1) input.value = val - 1;
+  if (val > 1) { input.value = val - 1; }
+  updatePriceByQty();
 });
 document.getElementById("qty-plus").addEventListener("click", function() {
   var input = document.getElementById("qty-input");
   var val = parseInt(input.value) || 1;
   input.value = val + 1;
+  updatePriceByQty();
+});
+document.getElementById("qty-input").addEventListener("input", function() {
+  updatePriceByQty();
 });
 
 // Add to Cart (product detail page)
@@ -395,7 +442,7 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
   var qty = parseInt(document.getElementById("qty-input").value) || 1;
   var productId = "2022-holiday-elves";
   var productName = "2022 Holiday Elves";
-  var productPrice = 29.00;
+  var productPrice = getDiscountPrice(qty);
   var productImage = galleryImages.length > 0 ? galleryImages[0] : "";
   for (var i = 0; i < qty; i++) {
     addToCart(productId, productName, productPrice, productImage);
@@ -424,21 +471,20 @@ if (clearBtn) {
   });
 }
 
-// Discount table row click - set quantity
-var discountRows = document.querySelectorAll(".discount-table tbody tr");
+// Discount table row click - set quantity and update price
 discountRows.forEach(function(row) {
   row.addEventListener("click", function() {
-    var qtyText = this.cells[0].textContent.trim();
-    var match = qtyText.match(/(\d+)/);
-    if (match) {
-      var minQty = parseInt(match[1]);
+    var minQty = parseInt(this.getAttribute("data-qty-min"));
+    if (minQty) {
       var input = document.getElementById("qty-input");
       if (input) input.value = minQty;
-      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
-      this.classList.add("active-row");
+      updatePriceByQty();
     }
   });
 });
+
+// Initialize price display on page load
+updatePriceByQty();
 </script>
 
 </body>
