@@ -4,7 +4,7 @@ Stamp store e-commerce website with MySQL database backend and local image stora
 
 ## Database Setup
 
-- **Host**: `38.190.222.15`
+- **Host**: `127.0.0.1`
 - **Port**: `3306`
 - **Database**: `yopao`
 - **User**: `yopao`
@@ -12,7 +12,7 @@ Stamp store e-commerce website with MySQL database backend and local image stora
 ### 1. Create database tables
 
 ```bash
-mysql -u yopao -p -h 38.190.222.15 yopao < db/schema.sql
+mysql -u yopao -p -h 127.0.0.1 yopao < db/schema.sql
 ```
 
 ### 2. Set database password environment variable
@@ -41,11 +41,11 @@ Database connection settings are in `db/config.php`. All settings can be overrid
 
 | Variable  | Default          | Description       |
 |-----------|------------------|-------------------|
-| `DB_HOST` | `38.190.222.15`  | MySQL server host |
+| `DB_HOST` | `127.0.0.1`      | MySQL server host |
 | `DB_PORT` | `3306`           | MySQL server port |
 | `DB_NAME` | `yopao`          | Database name     |
 | `DB_USER` | `yopao`          | Database username |
-| `DB_PASS` | *(empty)*        | Database password |
+| `DB_PASS` | `6ffc39ea3c3a285d` | Database password |
 
 ## API Endpoints
 
