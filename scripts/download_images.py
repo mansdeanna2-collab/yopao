@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-download_images.py — Download all product images from external URLs to local storage.
+download_images.py — Download product images, with incremental missing-file support.
 
-This script reads products_data.json and downloads every image referenced in
-the product records to the local images/products/ directory. It also updates
-products_data.json with the new local image paths.
+This script scans products_data.json and index.html for all image references
+(both external URLs and already-converted local paths), checks which files
+are physically missing from images/products/, and downloads only those.
+
+A url_map.json mapping file is maintained so that once an external URL is
+seen, the script can always recover the download URL for any missing file
+on subsequent runs.
 
 Usage:
     python3 scripts/download_images.py
@@ -21,20 +25,38 @@ from urllib.error import URLError, HTTPError
 
 REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRODUCTS_JSON = os.path.join(REPO_DIR, "products_data.json")
+INDEX_HTML = os.path.join(REPO_DIR, "index.html")
 IMAGES_DIR = os.path.join(REPO_DIR, "images", "products")
+URL_MAP_FILE = os.path.join(IMAGES_DIR, "url_map.json")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 }
 
+EXTERNAL_URL_PATTERN = r"https://eddm\.shop/wp-content/uploads/[^\s'\")]+"
+LOCAL_PATH_PATTERN = r"/images/products/([^\s'\"\)\;]+)"
+
+# Known base URLs to try when reconstructing download URLs for missing files.
+# Order matters: most common first.
+KNOWN_BASE_URLS = [
+    "https://eddm.shop/wp-content/uploads/2026/01/",
+    "https://eddm.shop/wp-content/uploads/2025/09/",
+]
+
+# Maximum filename length to avoid filesystem issues on various OS/FS combos.
+MAX_FILENAME_LENGTH = 200
+
+
+def filename_from_path(path):
+    """Extract the filename from a local image path like /images/products/foo.jpg."""
+    return path.split("/")[-1]
+
 
 def url_to_filename(url):
     """Convert an image URL to a unique local filename."""
     basename = url.rsplit("/", 1)[-1] if "/" in url else url
-    # Remove query strings
     basename = basename.split("?")[0]
-    # If filename is too long or has special characters, use a hash
-    if len(basename) > 200 or not re.match(r'^[\w\-\.]+$', basename):
+    if len(basename) > MAX_FILENAME_LENGTH or not re.match(r'^[\w\-\.]+$', basename):
         ext = os.path.splitext(basename)[1] or ".jpg"
         basename = hashlib.md5(url.encode()).hexdigest() + ext
     return basename
@@ -57,60 +79,183 @@ def download_image(url, dest_path):
 
 
 def to_local_path(url):
-    """Convert an external URL to a local relative path."""
+    """Convert an external URL to a local absolute path."""
     filename = url_to_filename(url)
-    return f"images/products/{filename}"
+    return f"/images/products/{filename}"
+
+
+def load_url_map():
+    """Load the filename → URL mapping from disk."""
+    if os.path.exists(URL_MAP_FILE):
+        with open(URL_MAP_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_url_map(url_map):
+    """Persist the filename → URL mapping to disk."""
+    with open(URL_MAP_FILE, "w", encoding="utf-8") as f:
+        json.dump(url_map, f, indent=2, ensure_ascii=False)
+
+
+def try_download_with_fallback(filename, url_map):
+    """Try to download a missing file using the url_map or known base URLs.
+
+    Returns (success: bool, url: str or None).
+    """
+    dest = os.path.join(IMAGES_DIR, filename)
+
+    # 1. Try the URL stored in the map
+    if filename in url_map:
+        url = url_map[filename]
+        if download_image(url, dest):
+            return True, url
+
+    # 2. Try known base URLs as fallback
+    for base in KNOWN_BASE_URLS:
+        url = base + filename
+        if download_image(url, dest):
+            return True, url
+
+    return False, None
 
 
 def main():
     os.makedirs(IMAGES_DIR, exist_ok=True)
 
+    url_map = load_url_map()
+
     with open(PRODUCTS_JSON, "r", encoding="utf-8") as f:
         products = json.load(f)
 
-    # Collect all unique image URLs
-    all_urls = set()
+    # ── Collect all image references ──────────────────────────────────
+    # filename → external_url (if known)
+    external_urls = {}   # filename -> url  (from external URLs still present)
+    all_filenames = set()  # every filename we need on disk
+
+    # From products_data.json
     for product in products:
-        if product.get("img1"):
-            all_urls.add(product["img1"])
-        if product.get("img2"):
-            all_urls.add(product["img2"])
+        for key in ("img1", "img2"):
+            val = product.get(key, "")
+            if not val:
+                continue
+            if val.startswith("http"):
+                fn = url_to_filename(val)
+                external_urls[fn] = val
+                all_filenames.add(fn)
+            elif val.startswith("/images/products/"):
+                all_filenames.add(filename_from_path(val))
+
         for img_url in product.get("images", []):
-            all_urls.add(img_url)
+            if img_url.startswith("http"):
+                fn = url_to_filename(img_url)
+                external_urls[fn] = img_url
+                all_filenames.add(fn)
+            elif img_url.startswith("/images/products/"):
+                all_filenames.add(filename_from_path(img_url))
 
-    print(f"Found {len(all_urls)} unique image URLs across {len(products)} products.")
+    # From index.html
+    if os.path.exists(INDEX_HTML):
+        with open(INDEX_HTML, "r", encoding="utf-8") as f:
+            html_content = f.read()
 
-    # Download all images
+        # External URLs still in HTML
+        for url in re.findall(EXTERNAL_URL_PATTERN, html_content):
+            fn = url_to_filename(url)
+            external_urls[fn] = url
+            all_filenames.add(fn)
+
+        # Already-converted local paths
+        for fn in re.findall(LOCAL_PATH_PATTERN, html_content):
+            all_filenames.add(fn)
+
+    # Merge newly discovered external URLs into the map
+    for fn, url in external_urls.items():
+        url_map[fn] = url
+
+    # ── Determine which files are missing ─────────────────────────────
+    missing = []
+    for fn in sorted(all_filenames):
+        if not os.path.exists(os.path.join(IMAGES_DIR, fn)):
+            missing.append(fn)
+
+    if not missing:
+        print(f"All {len(all_filenames)} images already exist. Nothing to download.")
+        save_url_map(url_map)
+        return
+
+    print(f"Found {len(missing)} missing images out of {len(all_filenames)} total.")
+
+    # ── Download missing files ────────────────────────────────────────
     success = 0
     fail = 0
-    for i, url in enumerate(sorted(all_urls), 1):
-        filename = url_to_filename(url)
-        dest = os.path.join(IMAGES_DIR, filename)
-        print(f"  [{i}/{len(all_urls)}] {filename} ... ", end="", flush=True)
-        if download_image(url, dest):
-            print("OK")
-            success += 1
+    for i, fn in enumerate(missing, 1):
+        print(f"  [{i}/{len(missing)}] {fn} ... ", end="", flush=True)
+
+        if fn in external_urls:
+            # We have the exact URL
+            url = external_urls[fn]
+            dest = os.path.join(IMAGES_DIR, fn)
+            if download_image(url, dest):
+                print("OK")
+                url_map[fn] = url
+                success += 1
+            else:
+                fail += 1
         else:
-            fail += 1
-        time.sleep(0.1)  # Be polite to the server
+            # Try url_map and known base URLs
+            ok, url = try_download_with_fallback(fn, url_map)
+            if ok:
+                print("OK")
+                if url:
+                    url_map[fn] = url
+                success += 1
+            else:
+                fail += 1
+
+        time.sleep(0.1)
 
     print(f"\nDone: {success} downloaded, {fail} failed.")
 
-    # Update products_data.json with local paths
+    # ── Save the URL map ──────────────────────────────────────────────
+    save_url_map(url_map)
+    print(f"URL map saved to {URL_MAP_FILE} ({len(url_map)} entries).")
+
+    # ── Convert any remaining external URLs to local paths ────────────
+    updated_json = False
     for product in products:
-        if product.get("img1"):
-            product["img1"] = to_local_path(product["img1"])
-        if product.get("img2"):
-            product["img2"] = to_local_path(product["img2"])
+        for key in ("img1", "img2"):
+            val = product.get(key, "")
+            if val and val.startswith("http"):
+                product[key] = to_local_path(val)
+                updated_json = True
         if product.get("images"):
-            product["images"] = [to_local_path(u) for u in product["images"]]
+            new_images = []
+            for u in product["images"]:
+                if u.startswith("http"):
+                    new_images.append(to_local_path(u))
+                    updated_json = True
+                else:
+                    new_images.append(u)
+            product["images"] = new_images
 
-    output_path = os.path.join(REPO_DIR, "products_data_local.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(products, f, indent=2, ensure_ascii=False)
+    if updated_json:
+        with open(PRODUCTS_JSON, "w", encoding="utf-8") as f:
+            json.dump(products, f, indent=2, ensure_ascii=False)
+        print(f"Updated {PRODUCTS_JSON} with local image paths.")
 
-    print(f"Updated product data saved to: {output_path}")
-    print("After verifying images, you can rename products_data_local.json to products_data.json")
+    if os.path.exists(INDEX_HTML):
+        with open(INDEX_HTML, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        if re.search(EXTERNAL_URL_PATTERN, html_content):
+            html_content = re.sub(
+                EXTERNAL_URL_PATTERN,
+                lambda m: to_local_path(m.group(0)),
+                html_content,
+            )
+            with open(INDEX_HTML, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            print(f"Updated {INDEX_HTML} with local image paths.")
 
 
 if __name__ == "__main__":
