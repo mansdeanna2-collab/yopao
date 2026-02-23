@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading… – Buy Discount Postage Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/product.css">
+</head>
+<body>
+
+<!-- ========== Top Bar ========== -->
+<div class="top-bar">
+  <span class="top-bar-text">Free Shipping On All Orders. 3–8 Business Days Delivery</span>
+  <span class="top-bar-search">🔍</span>
+</div>
+
+<!-- ========== Header ========== -->
+<div class="header-wrapper" id="header">
+  <header class="site-header">
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
+    <div class="logo"><a href="../"><span class="logo-icon">S</span>stampstores</a></div>
+    <nav class="nav-main">
+      <a href="../">HOME</a>
+      <a href="/category/#flag-series">FLAG SERIES</a>
+      <a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a>
+      <a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a>
+      <a href="/category/#animal-series">ANIMAL SERIES</a>
+      <a href="/category/#other-years">OTHER YEARS ▾</a>
+      <a href="#">CONTACT US</a>
+    </nav>
+    <div class="header-right">
+      <a href="#" class="header-icon account-icon desktop-only" aria-label="Account">&#128100;</a>
+      <div class="cart-wrapper" id="cart-wrapper">
+        <button class="cart-link" id="cart-toggle" aria-label="Cart">
+          <span id="cart-total">$0.00</span>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+        <div class="cart-dropdown" id="cart-dropdown">
+          <div id="cart-items-list"></div>
+          <div class="cart-subtotal" id="cart-subtotal-row" style="display:none">
+            <span>Subtotal:</span>
+            <span class="subtotal-amount" id="cart-subtotal-amount">$0.00</span>
+          </div>
+          <div class="cart-actions" id="cart-action-btns" style="display:none">
+            <button class="cart-btn view-cart-btn">VIEW CART</button>
+            <button class="cart-btn checkout-btn">CHECKOUT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- ========== Mobile Nav ========== -->
+<div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+<div class="mobile-nav-panel" id="mobile-nav-panel">
+  <div class="close-btn" id="mobile-nav-close">&times;</div>
+  <ul>
+    <li><a href="../">HOME</a></li>
+    <li><a href="/category/#flag-series">FLAG SERIES</a></li>
+    <li><a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a></li>
+    <li><a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a></li>
+    <li><a href="/category/#animal-series">ANIMAL SERIES</a></li>
+    <li><a href="/category/#other-years">OTHER YEARS</a></li>
+    <li><a href="#">CONTACT US</a></li>
+  </ul>
+</div>
+
+<!-- ========== Page Content (dynamically rendered) ========== -->
+<div id="product-page-content"></div>
+
+<!-- ========== Footer ========== -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h3>INFORMATION</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Refund and Return Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Billings Terms and Condition</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>NEED HELP</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CONTACT</h3>
+        <div class="footer-divider"></div>
+        <div class="contact-info">
+          <p><strong>EDDM LLC</strong></p>
+          <p><strong>Email:</strong> support@eddm.shop</p>
+          <p><strong>Phone:</strong> (970) 329-9777</p>
+          <p><strong>Address:</strong> 3605 Avalon St, Philadelphia, PA 19114</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="payment-icons">
+      <span>PayPal</span>
+      <span>Stripe</span>
+      <span>VISA</span>
+      <span>MasterCard</span>
+      <span>Cash on Delivery</span>
+    </div>
+    <div class="copyright">Copyright 2026 &copy; <strong>eddm.shop</strong></div>
+  </div>
+</footer>
+
+<!-- ========== Back to Top ========== -->
+<button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
+
+<script src="../js/common.js"></script>
+<script>
+(function () {
+  var CATEGORY_TO_SLUG = {
+    'Flag Series': 'flag-series',
+    'Christmas & Holiday': 'christmas-holiday',
+    'Wedding & Flowers': 'wedding-flowers',
+    'Animal Series': 'animal-series',
+    'Other Years': 'other-years',
+    '2 oz Letter': '2-oz-letter',
+    'Global Series': 'global-series'
+  };
+
+  var DISCOUNT_TIERS = [
+    { min: 3, max: 5, pct: 10 },
+    { min: 6, max: 10, pct: 15 },
+    { min: 11, max: 30, pct: 20 },
+    { min: 31, max: 100, pct: 25 },
+    { min: 101, max: Infinity, pct: 30 }
+  ];
+
+  function categorySlug(cat) {
+    if (CATEGORY_TO_SLUG[cat]) return CATEGORY_TO_SLUG[cat];
+    return cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  function escapeHTML(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  function getBasePrice(priceStr) {
+    return parseFloat(priceStr.replace(/[$,]/g, ''));
+  }
+
+  function fmt(n) { return '$' + n.toFixed(2); }
+
+  function getDiscountPct(qty) {
+    for (var i = 0; i < DISCOUNT_TIERS.length; i++) {
+      if (qty >= DISCOUNT_TIERS[i].min && qty <= DISCOUNT_TIERS[i].max) return DISCOUNT_TIERS[i].pct;
+    }
+    return 0;
+  }
+
+  function buildDiscountTable(basePrice) {
+    var html = '<thead><tr><th>QUANTITY</th><th>PRICE</th><th>DISCOUNT</th></tr></thead><tbody>';
+    DISCOUNT_TIERS.forEach(function (t) {
+      var label = t.max === Infinity ? t.min + '+' : t.min + '-' + t.max;
+      var discounted = basePrice * (1 - t.pct / 100);
+      html += '<tr><td>' + label + '</td><td>' + fmt(discounted) + '</td><td class="discount-pct">' + t.pct + '%</td></tr>';
+    });
+    html += '</tbody>';
+    return html;
+  }
+
+  function buildBreadcrumb(product) {
+    var cat = product.all_categories && product.all_categories[0] ? product.all_categories[0] : product.category;
+    var slug = categorySlug(cat);
+    return '<div class="breadcrumb-section"><div class="breadcrumb-inner"><div class="breadcrumb">' +
+      '<a href="../">HOME</a><span class="divider">/</span>' +
+      '<a href="/category/#' + slug + '">' + escapeHTML(cat).toUpperCase() + '</a><span class="divider">/</span>' +
+      '<span class="current">' + escapeHTML(product.name) + '</span>' +
+      '</div></div></div>';
+  }
+
+  function buildGallery(product) {
+    var images = product.images && product.images.length ? product.images : [product.img1, product.img2].filter(Boolean);
+    var thumbsHTML = '';
+    images.forEach(function (url, i) {
+      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + url + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '">';
+    });
+    return '<div class="product-gallery">' +
+      '<div class="gallery-main" id="gallery-main">' +
+      '<img id="main-img" src="' + images[0] + '" alt="' + escapeHTML(product.name) + '">' +
+      '<button class="gallery-arrow prev" id="gallery-prev" aria-label="Previous image">&#8249;</button>' +
+      '<button class="gallery-arrow next" id="gallery-next" aria-label="Next image">&#8250;</button>' +
+      '<button class="gallery-zoom" aria-label="Zoom image">&#128269;</button>' +
+      '</div>' +
+      '<div class="gallery-thumbs">' + thumbsHTML + '</div>' +
+      '</div>';
+  }
+
+  function buildProductInfo(product) {
+    var basePrice = getBasePrice(product.price);
+    var stock = product.stock || 0;
+
+    var categoriesHTML = '';
+    var cats = product.all_categories && product.all_categories.length ? product.all_categories : [product.category];
+    cats.forEach(function (c, i) {
+      if (i > 0) categoriesHTML += ', ';
+      categoriesHTML += '<a href="/category/#' + categorySlug(c) + '">' + escapeHTML(c) + '</a>';
+    });
+
+    return '<div class="product-info-col">' +
+      '<h1 class="product-title">' + escapeHTML(product.name) + '</h1>' +
+      '<div class="product-divider"></div>' +
+      '<div class="product-price-main">' + escapeHTML(product.price) + '</div>' +
+      '<div class="discount-label">Buy More, Pay Less! (1 style = 100 Pcs)</div>' +
+      '<table class="discount-table">' + buildDiscountTable(basePrice) + '</table>' +
+      '<div class="variation-row">' +
+        '<div class="variation-label">Quantity : <span id="variation-selected">5 Sheets of 20 (100 Stamps)</span></div>' +
+        '<div class="variation-btns">' +
+          '<button class="variation-btn active" id="variation-btn-1">5 Sheets of 20 (100 Stamps)</button>' +
+          '<button class="variation-clear" id="variation-clear">CLEAR</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="selected-price-row">' +
+        '<span class="selected-price" id="selected-price">' + escapeHTML(product.price) + '</span>' +
+        '<span class="stock-status">' + stock + ' in stock</span>' +
+      '</div>' +
+      '<div class="qty-cart-row">' +
+        '<div class="qty-stepper">' +
+          '<button id="qty-minus" aria-label="Decrease quantity">&#8722;</button>' +
+          '<input type="number" id="qty-input" value="1" min="1" max="' + stock + '" aria-label="Quantity">' +
+          '<button id="qty-plus" aria-label="Increase quantity">+</button>' +
+        '</div>' +
+        '<button class="add-to-cart-main" id="add-to-cart-btn">ADD TO CART</button>' +
+      '</div>' +
+      '<div class="product-meta">' +
+        '<div>SKU: <span>' + escapeHTML(product.sku || '') + '</span></div>' +
+        '<div>Categories: ' + categoriesHTML + '</div>' +
+      '</div>' +
+      '<div class="social-share">' +
+        '<a href="#" class="social-btn" aria-label="Share on Facebook" title="Facebook">f</a>' +
+        '<a href="#" class="social-btn" aria-label="Share on Twitter" title="Twitter">𝕏</a>' +
+        '<a href="#" class="social-btn" aria-label="Share via Email" title="Email">✉</a>' +
+        '<a href="#" class="social-btn" aria-label="Share on Pinterest" title="Pinterest">𝐏</a>' +
+        '<a href="#" class="social-btn" aria-label="Share on LinkedIn" title="LinkedIn">in</a>' +
+      '</div>' +
+      '</div>';
+  }
+
+  function buildDescriptionTab(product) {
+    var desc = product.description || '';
+    var paragraphs = desc.split(/\n+/).filter(Boolean);
+    var html = '';
+    paragraphs.forEach(function (p, i) {
+      if (i > 0) html += '<br>';
+      html += '<p>' + escapeHTML(p) + '</p>';
+    });
+    return '<div class="product-tabs-section">' +
+      '<div class="tab-buttons"><button class="tab-btn active" data-tab="description">DESCRIPTION</button></div>' +
+      '<div class="tab-panel active" id="tab-description">' + html + '</div>' +
+      '</div>';
+  }
+
+  function buildRelatedProducts(product, allProducts) {
+    var cats = product.all_categories && product.all_categories.length ? product.all_categories : [product.category];
+    var related = allProducts.filter(function (p) {
+      if (p.slug === product.slug) return false;
+      var pCats = p.all_categories && p.all_categories.length ? p.all_categories : [p.category];
+      for (var i = 0; i < cats.length; i++) {
+        if (pCats.indexOf(cats[i]) !== -1) return true;
+      }
+      return false;
+    });
+
+    // Shuffle and pick 5
+    for (var i = related.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = related[i]; related[i] = related[j]; related[j] = tmp;
+    }
+    related = related.slice(0, 5);
+
+    if (related.length === 0) return '';
+
+    var cardsHTML = '';
+    related.forEach(function (p) {
+      var displayCat = p.all_categories && p.all_categories.length ? p.all_categories[0] : p.category;
+      cardsHTML += '<div class="product-card">' +
+        '<a href="/product/#' + p.slug + '">' +
+          '<div class="product-image"><img src="' + (p.img1 || (p.images && p.images[0]) || '') + '" alt="' + escapeHTML(p.name) + '" loading="lazy"></div>' +
+          '<div class="product-info">' +
+            '<p class="product-category">' + escapeHTML(displayCat) + '</p>' +
+            '<p class="product-name">' + escapeHTML(p.name) + '</p>' +
+            '<p class="product-price">' + escapeHTML(p.price) + '</p>' +
+          '</div>' +
+        '</a></div>';
+    });
+
+    return '<div class="related-section"><h2 class="related-title">Related Products</h2>' +
+      '<div class="related-grid">' + cardsHTML + '</div></div>';
+  }
+
+  function renderProduct(product, allProducts) {
+    document.title = product.name + ' – Buy Discount Postage Online';
+    var container = document.getElementById('product-page-content');
+
+    container.innerHTML =
+      buildBreadcrumb(product) +
+      '<div class="product-section"><div class="product-layout">' +
+        buildGallery(product) +
+        buildProductInfo(product) +
+      '</div></div>' +
+      buildDescriptionTab(product) +
+      buildRelatedProducts(product, allProducts);
+
+    initInteractions(product);
+  }
+
+  function initInteractions(product) {
+    var images = product.images && product.images.length ? product.images : [product.img1, product.img2].filter(Boolean);
+    var currentIdx = 0;
+    var mainImg = document.getElementById('main-img');
+    var thumbs = document.querySelectorAll('.gallery-thumb');
+    var basePrice = getBasePrice(product.price);
+
+    function showImage(idx) {
+      currentIdx = (idx + images.length) % images.length;
+      mainImg.src = images[currentIdx];
+      thumbs.forEach(function (t, i) {
+        t.classList.toggle('active', i === currentIdx);
+      });
+    }
+
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        showImage(parseInt(this.getAttribute('data-index'), 10));
+      });
+    });
+
+    document.getElementById('gallery-prev').addEventListener('click', function () { showImage(currentIdx - 1); });
+    document.getElementById('gallery-next').addEventListener('click', function () { showImage(currentIdx + 1); });
+
+    // Quantity stepper
+    var qtyInput = document.getElementById('qty-input');
+    var selectedPriceEl = document.getElementById('selected-price');
+
+    function updatePrice() {
+      var qty = parseInt(qtyInput.value, 10) || 1;
+      var pct = getDiscountPct(qty);
+      if (pct > 0) {
+        var discounted = basePrice * (1 - pct / 100);
+        selectedPriceEl.innerHTML = '<del class="original-price">' + fmt(basePrice) + '</del> <span class="sale-price">' + fmt(discounted) + '</span>';
+      } else {
+        selectedPriceEl.textContent = fmt(basePrice);
+      }
+    }
+
+    document.getElementById('qty-minus').addEventListener('click', function () {
+      var v = parseInt(qtyInput.value, 10) || 1;
+      if (v > 1) { qtyInput.value = v - 1; updatePrice(); }
+    });
+    document.getElementById('qty-plus').addEventListener('click', function () {
+      var v = parseInt(qtyInput.value, 10) || 1;
+      qtyInput.value = v + 1;
+      updatePrice();
+    });
+    qtyInput.addEventListener('change', updatePrice);
+
+    // Add to Cart
+    document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+      var qty = parseInt(qtyInput.value, 10) || 1;
+      var pct = getDiscountPct(qty);
+      var unitPrice = pct > 0 ? basePrice * (1 - pct / 100) : basePrice;
+      unitPrice = Math.round(unitPrice * 100) / 100;
+      for (var i = 0; i < qty; i++) {
+        addToCart(product.sku, product.name, unitPrice, images[currentIdx]);
+      }
+    });
+
+    // Variation toggle & clear
+    document.getElementById('variation-btn-1').addEventListener('click', function () {
+      this.classList.add('active');
+      document.getElementById('variation-selected').textContent = '5 Sheets of 20 (100 Stamps)';
+    });
+    document.getElementById('variation-clear').addEventListener('click', function () {
+      document.querySelectorAll('.variation-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.getElementById('variation-selected').textContent = '';
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var tab = this.getAttribute('data-tab');
+        document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+        this.classList.add('active');
+        var panel = document.getElementById('tab-' + tab);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    // Discount table row click
+    var discountRows = document.querySelectorAll('.discount-table tbody tr');
+    discountRows.forEach(function (row) {
+      row.addEventListener('click', function () {
+        var qtyText = this.cells[0].textContent.trim();
+        var match = qtyText.match(/(\d+)/);
+        if (match) {
+          var minQty = parseInt(match[1], 10);
+          qtyInput.value = minQty;
+          discountRows.forEach(function (r) { r.classList.remove('active-row'); });
+          this.classList.add('active-row');
+          updatePrice();
+        }
+      });
+    });
+  }
+
+  function showNotFound() {
+    document.title = 'Product Not Found – Buy Discount Postage Online';
+    var container = document.getElementById('product-page-content');
+    container.innerHTML = '<div style="max-width:1200px;margin:60px auto;padding:0 15px;text-align:center;">' +
+      '<h1 style="font-size:24px;color:#334862;margin-bottom:16px;">Product not found</h1>' +
+      '<p style="color:#555;margin-bottom:24px;">The product you are looking for does not exist or may have been removed.</p>' +
+      '<a href="../" style="color:#333365;font-weight:700;text-decoration:underline;">← Back to Home</a>' +
+      '</div>';
+  }
+
+  function loadProduct() {
+    var hash = window.location.hash.replace(/^#/, '');
+    if (!hash) { showNotFound(); return; }
+
+    fetch('../products_data.json')
+      .then(function (res) { return res.json(); })
+      .then(function (allProducts) {
+        var product = allProducts.find(function (p) { return p.slug === hash; });
+        if (!product) { showNotFound(); return; }
+        renderProduct(product, allProducts);
+      })
+      .catch(function () { showNotFound(); });
+  }
+
+  window.addEventListener('hashchange', function () { loadProduct(); });
+  loadProduct();
+}());
+</script>
+
+</body>
+</html>
