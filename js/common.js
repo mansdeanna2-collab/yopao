@@ -6,6 +6,17 @@ hamburger.addEventListener('click',openMobileNav);
 overlay.addEventListener('click',closeMobileNav);
 closeBtn.addEventListener('click',closeMobileNav);
 
+// ── Login Modal ──────────────────────────────────────────────────────────
+var accountBtn=document.getElementById('account-btn');
+var loginOverlay=document.getElementById('login-modal-overlay');
+var loginClose=document.getElementById('login-modal-close');
+function openLoginModal(){loginOverlay.classList.add('active');}
+function closeLoginModal(){loginOverlay.classList.remove('active');}
+if(accountBtn){accountBtn.addEventListener('click',function(e){e.preventDefault();openLoginModal();});}
+if(loginClose){loginClose.addEventListener('click',closeLoginModal);}
+if(loginOverlay){loginOverlay.addEventListener('click',function(e){if(e.target===loginOverlay){closeLoginModal();}});}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&loginOverlay&&loginOverlay.classList.contains('active')){closeLoginModal();}});
+
 // ── Back to Top ──────────────────────────────────────────────────────────
 var backToTop=document.getElementById('back-to-top');
 window.addEventListener('scroll',function(){backToTop.classList.toggle('visible',window.scrollY>400);});
