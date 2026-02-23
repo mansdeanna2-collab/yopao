@@ -76,7 +76,7 @@
     <div class="breadcrumb">
       <a href="../../index.html">Home</a>
       <span class="divider">/</span>
-      <a href="#">Flag Series</a>
+      <a href="#">2017</a>
       <span class="divider">/</span>
       <span class="current">2017 U.S. Flag</span>
     </div>
@@ -115,27 +115,27 @@
           <tr><th>QUANTITY</th><th>PRICE</th><th>DISCOUNT</th></tr>
         </thead>
         <tbody>
-            <tr data-qty-min="3" data-qty-max="5" data-price="26.10" data-discount="10">
+            <tr>
               <td>3 - 5</td>
               <td>$26.10</td>
               <td class="discount-pct">10%</td>
             </tr>
-            <tr data-qty-min="6" data-qty-max="10" data-price="24.65" data-discount="15">
+            <tr>
               <td>6 - 10</td>
               <td>$24.65</td>
               <td class="discount-pct">15%</td>
             </tr>
-            <tr data-qty-min="11" data-qty-max="30" data-price="23.20" data-discount="20">
+            <tr>
               <td>11 - 30</td>
               <td>$23.20</td>
               <td class="discount-pct">20%</td>
             </tr>
-            <tr data-qty-min="31" data-qty-max="100" data-price="21.75" data-discount="25">
+            <tr>
               <td>31 - 100</td>
               <td>$21.75</td>
               <td class="discount-pct">25%</td>
             </tr>
-            <tr data-qty-min="101" data-price="20.30" data-discount="30">
+            <tr>
               <td>101+</td>
               <td>$20.30</td>
               <td class="discount-pct">30%</td>
@@ -145,18 +145,17 @@
 
       <!-- Variation -->
       <div class="variation-row">
-        <div class="variation-label">Quantity: <span id="variation-label-text">1 Coil of 100 (100 Stamps)</span></div>
+        <div class="variation-label">Quantity: <span>5 Sheets of 20 (100 Stamps)</span></div>
         <div class="variation-btns">
-          <button class="variation-btn active" data-sku="EDDM30M04_001" data-stock="905">1 Coil of 100 (100 Stamps)</button>
-          <button class="variation-btn" data-sku="EDDM30M04_002" data-stock="998">5 Sheets of 20 (100 Stamps)</button>
+          <button class="variation-btn active">5 Sheets of 20 (100 Stamps)</button>
           <button class="variation-clear">Clear</button>
         </div>
       </div>
 
       <!-- Selected Price & Stock -->
       <div class="selected-price-row">
-        <span class="selected-price" id="selected-price">$29.00</span>
-        <span class="stock-status" id="stock-status">905 in stock</span>
+        <span class="selected-price">$29.00</span>
+        
       </div>
 
       <!-- Quantity & Add to Cart -->
@@ -171,7 +170,7 @@
 
       <!-- Product Meta -->
       <div class="product-meta">
-        <p>SKU: <span id="sku-display">EDDM30M04_001</span></p>
+        <p>SKU: N/A</p>
         <p>Categories: <a href="#">2017</a>, <a href="#">Flag Series</a></p>
       </div>
 
@@ -379,63 +378,16 @@ thumbs.forEach(function(thumb) {
 if (prevBtn) prevBtn.addEventListener("click", function() { showSlide(currentIndex - 1); });
 if (nextBtn) nextBtn.addEventListener("click", function() { showSlide(currentIndex + 1); });
 
-// Discount Price Helpers
-var BASE_PRICE = 29.00;
-var discountRows = document.querySelectorAll('.discount-table tbody tr');
-
-function getDiscountPrice(qty) {
-  var price = BASE_PRICE;
-  discountRows.forEach(function(row) {
-    var min = parseInt(row.getAttribute('data-qty-min'));
-    var maxAttr = row.getAttribute('data-qty-max');
-    var max = maxAttr ? parseInt(maxAttr) : Infinity;
-    var rowPrice = parseFloat(row.getAttribute('data-price'));
-    if (qty >= min && qty <= max) {
-      price = rowPrice;
-    }
-  });
-  return price;
-}
-
-function updatePriceByQty() {
-  var qty = parseInt(document.getElementById('qty-input').value) || 1;
-  var price = getDiscountPrice(qty);
-  discountRows.forEach(function(row) {
-    row.classList.remove('active-row');
-    var min = parseInt(row.getAttribute('data-qty-min'));
-    var maxAttr = row.getAttribute('data-qty-max');
-    var max = maxAttr ? parseInt(maxAttr) : Infinity;
-    if (qty >= min && qty <= max) {
-      row.classList.add('active-row');
-    }
-  });
-  var priceEl = document.getElementById('selected-price');
-  var mainPriceEl = document.querySelector('.product-price-main');
-  var priceHtml;
-  if (price < BASE_PRICE) {
-    priceHtml = '<del class="original-price">' + fmt(BASE_PRICE) + '</del> <span class="sale-price">' + fmt(price) + '</span>';
-  } else {
-    priceHtml = fmt(BASE_PRICE);
-  }
-  if (priceEl) priceEl.innerHTML = priceHtml;
-  if (mainPriceEl) mainPriceEl.innerHTML = priceHtml;
-}
-
 // Quantity Stepper
 document.getElementById("qty-minus").addEventListener("click", function() {
   var input = document.getElementById("qty-input");
   var val = parseInt(input.value) || 1;
-  if (val > 1) { input.value = val - 1; }
-  updatePriceByQty();
+  if (val > 1) input.value = val - 1;
 });
 document.getElementById("qty-plus").addEventListener("click", function() {
   var input = document.getElementById("qty-input");
   var val = parseInt(input.value) || 1;
   input.value = val + 1;
-  updatePriceByQty();
-});
-document.getElementById("qty-input").addEventListener("input", function() {
-  updatePriceByQty();
 });
 
 // Add to Cart (product detail page)
@@ -443,7 +395,7 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
   var qty = parseInt(document.getElementById("qty-input").value) || 1;
   var productId = "2017-u-s-flag";
   var productName = "2017 U.S. Flag";
-  var productPrice = getDiscountPrice(qty);
+  var productPrice = 29.00;
   var productImage = galleryImages.length > 0 ? galleryImages[0] : "";
   for (var i = 0; i < qty; i++) {
     addToCart(productId, productName, productPrice, productImage);
@@ -455,55 +407,38 @@ document.querySelectorAll(".variation-btn").forEach(function(btn) {
   btn.addEventListener("click", function() {
     document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
     this.classList.add("active");
-    var label = document.getElementById("variation-label-text");
+    var label = document.querySelector(".variation-label span");
     if (label) label.textContent = this.textContent;
-    var skuEl = document.getElementById("sku-display");
-    if (skuEl) skuEl.textContent = this.getAttribute("data-sku") || "N/A";
-    var stockEl = document.getElementById("stock-status");
-    if (stockEl) stockEl.textContent = (this.getAttribute("data-stock") || "0") + " in stock";
-    var priceEl = document.getElementById("selected-price");
+    var priceEl = document.querySelector(".selected-price");
     if (priceEl) priceEl.style.display = "";
-    updatePriceByQty();
   });
 });
 var clearBtn = document.querySelector(".variation-clear");
 if (clearBtn) {
   clearBtn.addEventListener("click", function() {
     document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
-    var label = document.getElementById("variation-label-text");
+    var label = document.querySelector(".variation-label span");
     if (label) label.textContent = "";
-    var priceEl = document.getElementById("selected-price");
+    var priceEl = document.querySelector(".selected-price");
     if (priceEl) priceEl.style.display = "none";
-    var skuEl = document.getElementById("sku-display");
-    if (skuEl) skuEl.textContent = "N/A";
-    var stockEl = document.getElementById("stock-status");
-    if (stockEl) stockEl.textContent = "";
   });
 }
 
-// Discount table row click - set quantity and update price
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
 discountRows.forEach(function(row) {
   row.addEventListener("click", function() {
-    var minQty = parseInt(this.getAttribute("data-qty-min"));
-    if (minQty) {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
       var input = document.getElementById("qty-input");
       if (input) input.value = minQty;
-      updatePriceByQty();
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
     }
   });
 });
-
-// Initialize price display and variation info on page load
-(function() {
-  var activeBtn = document.querySelector(".variation-btn.active");
-  if (activeBtn) {
-    var skuEl = document.getElementById("sku-display");
-    if (skuEl) skuEl.textContent = activeBtn.getAttribute("data-sku") || "N/A";
-    var stockEl = document.getElementById("stock-status");
-    if (stockEl) stockEl.textContent = (activeBtn.getAttribute("data-stock") || "0") + " in stock";
-  }
-  updatePriceByQty();
-}());
 </script>
 
 </body>
