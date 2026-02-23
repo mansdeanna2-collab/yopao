@@ -262,8 +262,7 @@
     var desc = product.description || '';
     var paragraphs = desc.split(/\n+/).filter(Boolean);
     var html = '';
-    paragraphs.forEach(function (p, i) {
-      if (i > 0) html += '<br>';
+    paragraphs.forEach(function (p) {
       html += '<p>' + escapeHTML(p) + '</p>';
     });
     return '<div class="product-tabs-section">' +
@@ -371,8 +370,8 @@
     });
     document.getElementById('qty-plus').addEventListener('click', function () {
       var v = parseInt(qtyInput.value, 10) || 1;
-      qtyInput.value = v + 1;
-      updatePrice();
+      var max = parseInt(qtyInput.getAttribute('max'), 10);
+      if (!max || v < max) { qtyInput.value = v + 1; updatePrice(); }
     });
     qtyInput.addEventListener('change', updatePrice);
 
