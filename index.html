@@ -6,7 +6,7 @@
   <title>Buy Postage Forever Stamps On Sale</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Lato', sans-serif; color: #333; background: #fff; }
@@ -22,8 +22,17 @@
       padding: 8px 15px;
       font-size: 13px;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
+      position: relative;
+    }
+    .top-bar .top-bar-text { text-decoration: underline; }
+    .top-bar .top-bar-search {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      cursor: pointer;
     }
 
     /* Header */
@@ -45,11 +54,17 @@
       z-index: 1000;
     }
     .logo a {
-      font-family: 'Dancing Script', cursive;
-      font-size: 28px;
+      font-family: 'Lato', sans-serif;
+      font-size: 22px;
       color: #333365;
       font-weight: 700;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .logo-icon {
+      font-size: 20px;
     }
     .nav-main {
       display: flex;
@@ -177,48 +192,55 @@
     .hero-banner {
       width: 100%;
       height: 80vh;
-      background: linear-gradient(135deg, #1a1a4e 0%, #333365 30%, #446084 60%, #5a7ea8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #2a3a4e url('https://images.unsplash.com/photo-1582845512747-e42001c95638?w=1600') center/cover no-repeat;
       position: relative;
       overflow: hidden;
     }
-    .hero-banner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.08) 0%, transparent 70%);
+
+    /* Stamp Categories */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      padding: 0 15px;
     }
-    .hero-content {
-      text-align: center;
-      color: #fff;
-      position: relative;
-      z-index: 1;
+    .categories-row-last {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      padding: 0 15px;
     }
-    .hero-content h1 {
-      font-size: 48px;
+    .categories-row-last .category-card {
+      width: calc((100% - 75px) / 6);
+      flex-shrink: 0;
+    }
+    .category-card { cursor: pointer; }
+    .category-card:hover .category-image { opacity: 0.85; }
+    .category-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      transition: opacity 0.3s;
+    }
+    .category-name {
+      font-size: 14px;
       font-weight: 700;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    }
-    .hero-content p {
-      font-size: 18px;
-      margin-bottom: 30px;
-      opacity: 0.9;
-    }
-    .hero-btn {
-      display: inline-block;
-      padding: 14px 36px;
-      background: #fff;
-      color: #333365;
-      font-weight: 700;
-      font-size: 15px;
-      border-radius: 4px;
       text-transform: uppercase;
-      transition: background 0.3s, transform 0.3s;
+      color: #333;
+      margin-top: 12px;
+      text-align: center;
     }
-    .hero-btn:hover { background: #e8e8f0; transform: translateY(-2px); }
+    .category-count {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #8B7355;
+      letter-spacing: 1px;
+      margin-top: 4px;
+      text-align: center;
+    }
 
     /* Section Title */
     .section-title {
@@ -332,9 +354,10 @@
       padding: 30px 15px;
     }
     .footer-logo-banner a {
-      font-family: 'Dancing Script', cursive;
-      font-size: 32px;
+      font-family: 'Lato', sans-serif;
+      font-size: 24px;
       color: #fff;
+      font-weight: 700;
     }
     .footer-content {
       background: #333365;
@@ -444,19 +467,22 @@
     /* Responsive */
     @media (max-width: 1024px) {
       .product-grid { grid-template-columns: repeat(3, 1fr); }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .categories-row-last { flex-wrap: wrap; }
+      .categories-row-last .category-card { width: calc((100% - 50px) / 3); }
     }
     @media (max-width: 849px) {
       .hero-banner { height: 60vh; }
-      .hero-content h1 { font-size: 32px; }
     }
     @media (max-width: 768px) {
       .nav-main, .header-right .header-icon.desktop-only { display: none; }
       .hamburger { display: block; }
       .site-header { justify-content: space-between; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+      .categories-row-last { gap: 15px; }
+      .categories-row-last .category-card { width: calc((100% - 15px) / 2); }
       .hero-banner { height: 50vh; }
-      .hero-content h1 { font-size: 26px; }
-      .hero-content p { font-size: 15px; }
       .section-title h2 { font-size: 20px; }
       .section-title h2::before, .section-title h2::after { width: 30px; }
       .footer-column { flex: 100%; }
@@ -467,26 +493,29 @@
 <body>
 
 <!-- Top Bar -->
-<div class="top-bar">Free Shipping On All Orders</div>
+<div class="top-bar">
+  <span class="top-bar-text">全订单免运费。3-8个工作日交付</span>
+  <span class="top-bar-search">🔍</span>
+</div>
 
 <!-- Header -->
 <div class="header-wrapper" id="header">
   <header class="site-header">
     <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
-    <div class="logo"><a href="#">StampStoreCo</a></div>
+    <div class="logo"><a href="#"><span class="logo-icon">📬</span>stampstores</a></div>
     <nav class="nav-main">
-      <a href="#">Home</a>
-      <a href="#">About Us</a>
-      <a href="#">FAQs</a>
-      <a href="#">Contact Us</a>
-      <a href="#">Flag Stamps</a>
-      <a href="#">Classic</a>
+      <a href="#">首页</a>
+      <a href="#">旗帜系列</a>
+      <a href="#">圣诞节与节日</a>
+      <a href="#">婚礼与鲜花</a>
+      <a href="#">动物系列</a>
+      <a href="#">其他年份 ▾</a>
+      <a href="#">联系我们</a>
     </nav>
     <div class="header-right">
-      <button class="header-icon desktop-only" id="search-toggle" aria-label="Search">&#128269;</button>
       <a href="#" class="header-icon desktop-only" aria-label="Account">&#128100;</a>
       <a href="#" class="cart-link" aria-label="Cart">
-        <span>$0.00</span>
+        <span>0.00美元</span>
         <span class="cart-badge">0</span>
       </a>
       <div class="search-overlay" id="search-overlay">
@@ -501,25 +530,109 @@
 <div class="mobile-nav-panel" id="mobile-nav-panel">
   <div class="close-btn" id="mobile-nav-close">&times;</div>
   <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">FAQs</a></li>
-    <li><a href="#">Contact Us</a></li>
-    <li><a href="#">Flag Stamps</a></li>
-    <li><a href="#">Classic</a></li>
+    <li><a href="#">首页</a></li>
+    <li><a href="#">旗帜系列</a></li>
+    <li><a href="#">圣诞节与节日</a></li>
+    <li><a href="#">婚礼与鲜花</a></li>
+    <li><a href="#">动物系列</a></li>
+    <li><a href="#">其他年份</a></li>
+    <li><a href="#">联系我们</a></li>
   </ul>
 </div>
 
 <main id="main">
 
   <!-- Hero Banner -->
-  <section class="hero-banner">
-    <div class="hero-content">
-      <h1>Postage Forever Stamps</h1>
-      <p>Premium quality stamps at unbeatable prices</p>
-      <a href="#" class="hero-btn">Shop Flag Stamps</a>
+  <section class="hero-banner"></section>
+
+  <!-- STAMPS CATEGORIES -->
+  <div class="section-title"><h2>STAMPS CATEGORIES</h2></div>
+  <div class="categories-grid">
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#3a5a8a,#6a8fc0);"></div>
+      <p class="category-name">2017</p>
+      <p class="category-count">12 PRODUCTS</p>
     </div>
-  </section>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#5a3a8a,#9a6ac0);"></div>
+      <p class="category-name">2018</p>
+      <p class="category-count">9 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#3a8a5a,#6ac09a);"></div>
+      <p class="category-name">2019</p>
+      <p class="category-count">20 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#8a5a3a,#c09a6a);"></div>
+      <p class="category-name">2020</p>
+      <p class="category-count">18 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#8a3a5a,#c06a8a);"></div>
+      <p class="category-name">2021</p>
+      <p class="category-count">26 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#5a8a3a,#9ac06a);"></div>
+      <p class="category-name">2022</p>
+      <p class="category-count">30 PRODUCTS</p>
+    </div>
+  </div>
+  <div class="categories-grid">
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#3a6a8a,#6aaac0);"></div>
+      <p class="category-name">2023</p>
+      <p class="category-count">29 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#6a3a8a,#aa6ac0);"></div>
+      <p class="category-name">2024</p>
+      <p class="category-count">31 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#3a8a6a,#6ac0aa);"></div>
+      <p class="category-name">2025</p>
+      <p class="category-count">18 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#8a6a3a,#c0aa6a);"></div>
+      <p class="category-name">OTHER YEARS</p>
+      <p class="category-count">47 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#8a3a6a,#c06aaa);"></div>
+      <p class="category-name">2 OZ LETTER</p>
+      <p class="category-count">7 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#6a8a3a,#aac06a);"></div>
+      <p class="category-name">GLOBAL SERIES</p>
+      <p class="category-count">4 PRODUCTS</p>
+    </div>
+  </div>
+  <div class="categories-row-last">
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#1a8a5c,#2ecc71);"></div>
+      <p class="category-name">ANIMAL SERIES</p>
+      <p class="category-count">23 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#1e5631,#c0392b);"></div>
+      <p class="category-name">CHRISTMAS &amp; HOLIDAY</p>
+      <p class="category-count">28 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#8e44ad,#e8a0bf);"></div>
+      <p class="category-name">WEDDING &amp; FLOWERS</p>
+      <p class="category-count">29 PRODUCTS</p>
+    </div>
+    <div class="category-card">
+      <div class="category-image" style="background:linear-gradient(135deg,#1a3a6b,#c0392b);"></div>
+      <p class="category-name">FLAG SERIES</p>
+      <p class="category-count">11 PRODUCTS</p>
+    </div>
+  </div>
 
   <!-- BEST SELLERS -->
   <div class="section-title"><h2>BEST SELLERS</h2></div>
@@ -800,7 +913,7 @@
 <!-- Footer -->
 <footer id="footer">
   <div class="footer-logo-banner">
-    <a href="#">StampStoreCo</a>
+    <a href="#">📬 stampstores</a>
   </div>
   <div class="footer-content">
     <div class="footer-columns">
@@ -878,18 +991,7 @@
   overlay.addEventListener('click', closeMobileNav);
   closeBtn.addEventListener('click', closeMobileNav);
 
-  // Search toggle
-  var searchToggle = document.getElementById('search-toggle');
-  var searchOverlay = document.getElementById('search-overlay');
-  searchToggle.addEventListener('click', function(e) {
-    e.stopPropagation();
-    searchOverlay.classList.toggle('active');
-  });
-  document.addEventListener('click', function(e) {
-    if (!searchOverlay.contains(e.target) && e.target !== searchToggle) {
-      searchOverlay.classList.remove('active');
-    }
-  });
+  // Search overlay functionality not needed (top bar search icon is decorative)
 
   // Back to top
   var backToTop = document.getElementById('back-to-top');
