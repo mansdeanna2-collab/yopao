@@ -379,3 +379,28 @@ body { background: #fff; }
     font-size: 16px;
   }
 }
+@media (max-width: 380px) {
+  .checkout-breadcrumb-inner {
+    font-size: 9px;
+    gap: 3px;
+  }
+  .checkout-breadcrumb-inner .step {
+    letter-spacing: 0;
+  }
+  .cart-row-img {
+    width: 50px;
+    height: 60px;
+  }
+  .cart-row-name {
+    font-size: 12px;
+  }
+  .cart-row-price {
+    font-size: 12px;
+  }
+  .cart-row-total {
+    font-size: 13px;
+  }
+  .totals-estimated-amount {
+    font-size: 16px;
+  }
+}
