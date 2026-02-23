@@ -195,7 +195,7 @@
     var images = product.images && product.images.length ? product.images : [product.img1, product.img2].filter(Boolean);
     var thumbsHTML = '';
     images.forEach(function (url, i) {
-      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + url + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '" loading="lazy">';
+      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + url + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '">';
     });
     return '<div class="product-gallery">' +
       '<div class="gallery-main" id="gallery-main">' +

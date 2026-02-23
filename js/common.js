@@ -13,7 +13,7 @@ backToTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'s
 
 // ── Cart ──────────────────────────────────────────────────────────────────
 var cart=[];
-try{var saved=localStorage.getItem('yopao_cart');if(saved){cart=JSON.parse(saved);}}catch(e){}
+try{var saved=localStorage.getItem('yopao_cart');if(saved){var parsed=JSON.parse(saved);if(Array.isArray(parsed)){cart=parsed.filter(function(i){return i&&typeof i.id==='string'&&typeof i.name==='string'&&typeof i.price==='number'&&typeof i.qty==='number'&&i.qty>0;});}}}catch(e){}
 function saveCart(){try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}}
 var cartWrapper=document.getElementById('cart-wrapper');
 var cartDropdown=document.getElementById('cart-dropdown');
