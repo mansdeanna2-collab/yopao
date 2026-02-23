@@ -32,8 +32,9 @@ try {
             break;
     }
 } catch (PDOException $e) {
+    error_log('Products API database error: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['error' => 'Database error']);
+    echo json_encode(['error' => 'Database connection failed. Please check db/config.php settings.']);
 }
 
 /**

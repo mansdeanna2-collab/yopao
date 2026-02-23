@@ -2,15 +2,15 @@
 /**
  * MySQL Database Configuration
  *
- * Modify the values below to match your MySQL server settings.
- * For production, consider using environment variables or a .env file.
+ * Configure your MySQL connection here, or set environment variables:
+ *   DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS
  */
 
-define('DB_HOST', 'localhost');
-define('DB_PORT', '3306');
-define('DB_NAME', 'stamp_store');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_NAME', getenv('DB_NAME') ?: 'stamp_store');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', 'utf8mb4');
 
 /**
