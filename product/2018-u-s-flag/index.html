@@ -99,7 +99,6 @@
           <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975-100x100.jpg" alt="2018 U.S. Flag" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/0440cb24244dd92fb8405df4a6061a2-677cae8e-9705-4708-a2e7-24980e3d9c72-100x100.jpg" alt="2018 U.S. Flag" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/0440cb24244dd92fb8405df4a6061a2-677cae8e-9705-4708-a2e7-24980e3d9c72.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/711f-yuGmmL-AC-SX425-689c3684-6766-442c-addd-0524eed7a165-100x100.jpg" alt="2018 U.S. Flag" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/711f-yuGmmL-AC-SX425-689c3684-6766-442c-addd-0524eed7a165.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2018-u-s-flag/&media=https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975.jpg&description=2018%20U.S.%20Flag" alt="2018 U.S. Flag" data-index="3" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2018-u-s-flag/&media=https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975.jpg&description=2018%20U.S.%20Flag">
       </div>
     </div>
 
@@ -355,7 +354,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/0440cb24244dd92fb8405df4a6061a2-677cae8e-9705-4708-a2e7-24980e3d9c72.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/711f-yuGmmL-AC-SX425-689c3684-6766-442c-addd-0524eed7a165.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2018-u-s-flag/&media=https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975.jpg&description=2018%20U.S.%20Flag'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/70f333b140ecb0f5-7a6b9b5b-1686-4320-84a8-dce8e848c975.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/0440cb24244dd92fb8405df4a6061a2-677cae8e-9705-4708-a2e7-24980e3d9c72.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/711f-yuGmmL-AC-SX425-689c3684-6766-442c-addd-0524eed7a165.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -402,6 +401,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

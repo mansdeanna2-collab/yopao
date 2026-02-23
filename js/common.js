@@ -87,7 +87,7 @@ function updateQty(id,delta){
   if(item.qty<=0){removeFromCart(id);}else{renderCart();}
 }
 
-// Inject data attributes and ADD TO CART buttons into each product card
+// Inject data attributes into each product card and make them clickable
 document.querySelectorAll('.product-card').forEach(function(card,idx){
   var img=card.querySelector('.product-image img');
   var nameEl=card.querySelector('.product-name a')||card.querySelector('.product-name');
@@ -100,17 +100,11 @@ document.querySelectorAll('.product-card').forEach(function(card,idx){
   card.setAttribute('data-name',name);
   card.setAttribute('data-price',price);
   card.setAttribute('data-image',image);
-  var btn=document.createElement('button');
-  btn.className='add-to-cart-btn';
-  btn.textContent='ADD TO CART';
-  btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();addToCart(id,name,price,image);});
-  card.querySelector('.product-info').appendChild(btn);
   // Make clicking on the product card navigate to the product detail page
   var link=card.querySelector('.product-name a');
   if(link&&link.getAttribute('href')&&link.getAttribute('href')!=='#'){
     card.style.cursor='pointer';
     card.addEventListener('click',function(e){
-      if(e.target.closest&&e.target.closest('.add-to-cart-btn'))return;
       window.location.href=link.getAttribute('href');
     });
   }

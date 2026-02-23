@@ -99,7 +99,6 @@
           <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840-100x100.jpg" alt="2023  Lunar New Year of the Rabbit" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/482804-L2-48629278-b614-45d0-9e67-0cb77f1ba679-100x100.jpg" alt="2023  Lunar New Year of the Rabbit" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/482804-L2-48629278-b614-45d0-9e67-0cb77f1ba679.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/482804-L1-c79b531c-578c-44ab-9f80-b65a364a818b-100x100.jpg" alt="2023  Lunar New Year of the Rabbit" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/482804-L1-c79b531c-578c-44ab-9f80-b65a364a818b.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2023-lunar-new-year-of-the-rabbit/&media=https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840.jpg&description=2023%20%20Lunar%20New%20Year%20of%20the%20Rabbit" alt="2023  Lunar New Year of the Rabbit" data-index="3" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2023-lunar-new-year-of-the-rabbit/&media=https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840.jpg&description=2023%20%20Lunar%20New%20Year%20of%20the%20Rabbit">
       </div>
     </div>
 
@@ -355,7 +354,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/482804-L2-48629278-b614-45d0-9e67-0cb77f1ba679.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/482804-L1-c79b531c-578c-44ab-9f80-b65a364a818b.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2023-lunar-new-year-of-the-rabbit/&media=https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840.jpg&description=2023%20%20Lunar%20New%20Year%20of%20the%20Rabbit'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/482804-L0-834378a7-6cf3-47e3-95f5-bf56a07ef840.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/482804-L2-48629278-b614-45d0-9e67-0cb77f1ba679.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/482804-L1-c79b531c-578c-44ab-9f80-b65a364a818b.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -402,6 +401,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

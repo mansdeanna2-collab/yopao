@@ -100,7 +100,6 @@
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/2-b22e4c9c-12e4-4687-8485-513d72b4dbf4_1b4849ed-000e-46c5-96a7-d20d7302e9d9-100x100.jpg" alt="2025 U.S. Flags" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/2-b22e4c9c-12e4-4687-8485-513d72b4dbf4_1b4849ed-000e-46c5-96a7-d20d7302e9d9.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/1-1-1-scaled-1-100x100.jpg" alt="2025 U.S. Flags" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/1-1-1-scaled-1.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/4-a9db8dcc-dc03-479c-9984-1d3653fb6eb8-100x100.png" alt="2025 U.S. Flags" data-index="3" data-full="https://eddm.shop/wp-content/uploads/2026/01/4-a9db8dcc-dc03-479c-9984-1d3653fb6eb8.png">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2025-u-s-flags-2/&media=https://eddm.shop/wp-content/uploads/2026/01/1-eea13734-7f76-43f3-bb87-999badb05d5e_d678dfaa-7c5e-4dc7-8cd0-253978a4897b.jpg&description=2025%20U.S.%20Flags" alt="2025 U.S. Flags" data-index="4" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2025-u-s-flags-2/&media=https://eddm.shop/wp-content/uploads/2026/01/1-eea13734-7f76-43f3-bb87-999badb05d5e_d678dfaa-7c5e-4dc7-8cd0-253978a4897b.jpg&description=2025%20U.S.%20Flags">
       </div>
     </div>
 
@@ -356,7 +355,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/1-eea13734-7f76-43f3-bb87-999badb05d5e_d678dfaa-7c5e-4dc7-8cd0-253978a4897b.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/2-b22e4c9c-12e4-4687-8485-513d72b4dbf4_1b4849ed-000e-46c5-96a7-d20d7302e9d9.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/1-1-1-scaled-1.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/4-a9db8dcc-dc03-479c-9984-1d3653fb6eb8.png', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2025-u-s-flags-2/&media=https://eddm.shop/wp-content/uploads/2026/01/1-eea13734-7f76-43f3-bb87-999badb05d5e_d678dfaa-7c5e-4dc7-8cd0-253978a4897b.jpg&description=2025%20U.S.%20Flags'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/1-eea13734-7f76-43f3-bb87-999badb05d5e_d678dfaa-7c5e-4dc7-8cd0-253978a4897b.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/2-b22e4c9c-12e4-4687-8485-513d72b4dbf4_1b4849ed-000e-46c5-96a7-d20d7302e9d9.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/1-1-1-scaled-1.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/4-a9db8dcc-dc03-479c-9984-1d3653fb6eb8.png'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -403,6 +402,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

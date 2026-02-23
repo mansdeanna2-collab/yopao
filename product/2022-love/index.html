@@ -99,7 +99,6 @@
           <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed-100x100.jpg" alt="2022 Love" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/B8916A97-E6CA-0698-231B-F293E2033D11-100x100.jpg" alt="2022 Love" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/B8916A97-E6CA-0698-231B-F293E2033D11.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/67B99A94-5F5B-1303-5232-CF186F9A0B10-100x100.jpg" alt="2022 Love" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/67B99A94-5F5B-1303-5232-CF186F9A0B10.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-love/&media=https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed.jpg&description=2022%20Love" alt="2022 Love" data-index="3" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-love/&media=https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed.jpg&description=2022%20Love">
       </div>
     </div>
 
@@ -355,7 +354,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/B8916A97-E6CA-0698-231B-F293E2033D11.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/67B99A94-5F5B-1303-5232-CF186F9A0B10.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-love/&media=https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed.jpg&description=2022%20Love'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/3-2022Love-5debf0d1-edf8-40cf-ac3f-f38bf40bf9ed.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/B8916A97-E6CA-0698-231B-F293E2033D11.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/67B99A94-5F5B-1303-5232-CF186F9A0B10.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -402,6 +401,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

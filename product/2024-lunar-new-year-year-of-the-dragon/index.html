@@ -99,7 +99,6 @@
           <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab-100x100.jpg" alt="2024 Lunar New Year Year of the Dragon" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/484304-L1-70619fa4-bca4-462b-b5fb-7c3baa3308f4-100x100.jpg" alt="2024 Lunar New Year Year of the Dragon" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/484304-L1-70619fa4-bca4-462b-b5fb-7c3baa3308f4.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/484304-L2-ed9f5b6c-2dad-4994-8f37-01e3df527934-100x100.jpg" alt="2024 Lunar New Year Year of the Dragon" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/484304-L2-ed9f5b6c-2dad-4994-8f37-01e3df527934.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2024-lunar-new-year-year-of-the-dragon/&media=https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab.jpg&description=2024%20Lunar%20New%20Year%20Year%20of%20the%20Dragon" alt="2024 Lunar New Year Year of the Dragon" data-index="3" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2024-lunar-new-year-year-of-the-dragon/&media=https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab.jpg&description=2024%20Lunar%20New%20Year%20Year%20of%20the%20Dragon">
       </div>
     </div>
 
@@ -355,7 +354,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/484304-L1-70619fa4-bca4-462b-b5fb-7c3baa3308f4.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/484304-L2-ed9f5b6c-2dad-4994-8f37-01e3df527934.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2024-lunar-new-year-year-of-the-dragon/&media=https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab.jpg&description=2024%20Lunar%20New%20Year%20Year%20of%20the%20Dragon'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/484304-L0-d45cc106-0786-44c8-b277-6fc4045e82ab.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/484304-L1-70619fa4-bca4-462b-b5fb-7c3baa3308f4.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/484304-L2-ed9f5b6c-2dad-4994-8f37-01e3df527934.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -402,6 +401,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

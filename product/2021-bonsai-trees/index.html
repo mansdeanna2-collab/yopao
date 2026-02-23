@@ -101,7 +101,6 @@
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/64c6e9ec31f19-100x100.jpg" alt="2021 Bonsai Trees" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/64c6e9ec31f19.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/64c6e9e6b6977-100x100.jpg" alt="2021 Bonsai Trees" data-index="3" data-full="https://eddm.shop/wp-content/uploads/2026/01/64c6e9e6b6977.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/64c6e9eee7162-100x100.jpg" alt="2021 Bonsai Trees" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/64c6e9eee7162.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2021-bonsai-trees/&media=https://eddm.shop/wp-content/uploads/2026/01/Bonsai-Stamps-2012-USPS-Forever-Stamps-001-7808bc32-27ac-460a-8460-54bb67330226-800x800.jpg&description=2021%20Bonsai%20Trees" alt="2021 Bonsai Trees" data-index="5" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2021-bonsai-trees/&media=https://eddm.shop/wp-content/uploads/2026/01/Bonsai-Stamps-2012-USPS-Forever-Stamps-001-7808bc32-27ac-460a-8460-54bb67330226-800x800.jpg&description=2021%20Bonsai%20Trees">
       </div>
     </div>
 
@@ -357,7 +356,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/Bonsai-Stamps-2012-USPS-Forever-Stamps-001-7808bc32-27ac-460a-8460-54bb67330226.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9e9b4c9d.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9ec31f19.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9e6b6977.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9eee7162.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2021-bonsai-trees/&media=https://eddm.shop/wp-content/uploads/2026/01/Bonsai-Stamps-2012-USPS-Forever-Stamps-001-7808bc32-27ac-460a-8460-54bb67330226-800x800.jpg&description=2021%20Bonsai%20Trees'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/Bonsai-Stamps-2012-USPS-Forever-Stamps-001-7808bc32-27ac-460a-8460-54bb67330226.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9e9b4c9d.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9ec31f19.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9e6b6977.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/64c6e9eee7162.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -404,6 +403,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>
