@@ -66,6 +66,8 @@
     <li><a href="../../wedding-flowers/">WEDDING &amp; FLOWERS</a></li>
     <li><a href="../../animal-series/">ANIMAL SERIES</a></li>
     <li><a href="../../other-years/">OTHER YEARS</a></li>
+    <li><a href="../../2-oz-letter/">2 OZ LETTER</a></li>
+    <li><a href="../../global-series/">GLOBAL SERIES</a></li>
     <li><a href="#">CONTACT US</a></li>
   </ul>
 </div>
@@ -76,7 +78,7 @@
     <div class="breadcrumb">
       <a href="../../index.html">Home</a>
       <span class="divider">/</span>
-      <a href="#">2024</a>
+      <a href="../../2024/">2024</a>
       <span class="divider">/</span>
       <span class="current">2024 Kwanzaa</span>
     </div>
@@ -91,13 +93,13 @@
     <div class="product-gallery">
       <div class="gallery-main" id="gallery-main">
         <img id="gallery-main-img" src="https://eddm.shop/wp-content/uploads/2026/01/581604-Z0.jpg" alt="2024 Kwanzaa">
-      <button class="gallery-arrow prev" id="gallery-prev">&#10094;</button>
-      <button class="gallery-arrow next" id="gallery-next">&#10095;</button>
+        <button class="gallery-arrow prev" id="gallery-prev">&#10094;</button>
+        <button class="gallery-arrow next" id="gallery-next">&#10095;</button>
         <button class="gallery-zoom" id="gallery-zoom-btn" aria-label="Zoom">&#128269;</button>
       </div>
       <div class="gallery-thumbs">
-          <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/581604-Z0-100x100.jpg" alt="2024 Kwanzaa" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/581604-Z0.jpg">
-          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/581604-Z1-100x100.jpg" alt="2024 Kwanzaa" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/581604-Z1.jpg">
+        <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/581604-Z0-100x100.jpg" alt="2024 Kwanzaa" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/581604-Z0.jpg">
+        <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/581604-Z1-100x100.jpg" alt="2024 Kwanzaa" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/581604-Z1.jpg">
       </div>
     </div>
 
@@ -107,98 +109,164 @@
       <div class="product-divider"></div>
       <div class="product-price-main">$29.00</div>
 
-      
       <p class="discount-label"><strong>Buy More, Pay Less! (1 style = 100 Pcs)</strong></p>
       <table class="discount-table">
         <thead>
           <tr><th>QUANTITY</th><th>PRICE</th><th>DISCOUNT</th></tr>
         </thead>
         <tbody>
-            <tr data-qty-min="3" data-qty-max="5" data-price="26.10" data-discount="10">
-              <td>3 - 5</td>
-              <td>$26.10</td>
-              <td class="discount-pct">10%</td>
-            </tr>
-            <tr data-qty-min="6" data-qty-max="10" data-price="24.65" data-discount="15">
-              <td>6 - 10</td>
-              <td>$24.65</td>
-              <td class="discount-pct">15%</td>
-            </tr>
-            <tr data-qty-min="11" data-qty-max="30" data-price="23.20" data-discount="20">
-              <td>11 - 30</td>
-              <td>$23.20</td>
-              <td class="discount-pct">20%</td>
-            </tr>
-            <tr data-qty-min="31" data-qty-max="100" data-price="21.75" data-discount="25">
-              <td>31 - 100</td>
-              <td>$21.75</td>
-              <td class="discount-pct">25%</td>
-            </tr>
-            <tr data-qty-min="101" data-price="20.30" data-discount="30">
-              <td>101+</td>
-              <td>$20.30</td>
-              <td class="discount-pct">30%</td>
-            </tr>
+          <tr data-qty-min="3" data-qty-max="5" data-price="26.10" data-discount="10">
+            <td>3 - 5</td>
+            <td>$26.10</td>
+            <td class="discount-pct">10%</td>
+          </tr>
+          <tr data-qty-min="6" data-qty-max="10" data-price="24.65" data-discount="15">
+            <td>6 - 10</td>
+            <td>$24.65</td>
+            <td class="discount-pct">15%</td>
+          </tr>
+          <tr data-qty-min="11" data-qty-max="30" data-price="23.20" data-discount="20">
+            <td>11 - 30</td>
+            <td>$23.20</td>
+            <td class="discount-pct">20%</td>
+          </tr>
+          <tr data-qty-min="31" data-qty-max="100" data-price="21.75" data-discount="25">
+            <td>31 - 100</td>
+            <td>$21.75</td>
+            <td class="discount-pct">25%</td>
+          </tr>
+          <tr data-qty-min="101" data-price="20.30" data-discount="30">
+            <td>101+</td>
+            <td>$20.30</td>
+            <td class="discount-pct">30%</td>
+          </tr>
         </tbody>
       </table>
 
       <!-- Variation -->
       <div class="variation-row">
-        <div class="variation-label">Quantity: <span>5 Sheets of 20 (100 Stamps)</span></div>
+        <div class="variation-label">Quantity: <span id="variation-selected">5 Sheets of 20 (100 Stamps)</span></div>
         <div class="variation-btns">
-          <button class="variation-btn active">5 Sheets of 20 (100 Stamps)</button>
-          <button class="variation-clear">Clear</button>
+          <button class="variation-btn active" id="variation-btn-1">5 Sheets of 20 (100 Stamps)</button>
+          <button class="variation-clear" id="variation-clear">Clear</button>
         </div>
       </div>
 
       <!-- Selected Price & Stock -->
       <div class="selected-price-row">
         <span class="selected-price">$29.00</span>
-        
+        <span class="stock-status">260 in stock</span>
       </div>
 
       <!-- Quantity & Add to Cart -->
       <div class="qty-cart-row">
         <div class="qty-stepper">
-          <button id="qty-minus">&#8722;</button>
-          <input type="number" id="qty-input" value="1" min="1">
-          <button id="qty-plus">+</button>
+          <button id="qty-minus" aria-label="Decrease quantity">&#8722;</button>
+          <input type="number" id="qty-input" value="1" min="1" max="260" aria-label="Quantity">
+          <button id="qty-plus" aria-label="Increase quantity">+</button>
         </div>
-        <button class="add-to-cart-main" id="add-to-cart-main">ADD TO CART</button>
+        <button class="add-to-cart-main" id="add-to-cart-btn">ADD TO CART</button>
       </div>
 
       <!-- Product Meta -->
       <div class="product-meta">
-        <p>SKU: N/A</p>
-        <p>Categories: <a href="#">2024</a></p>
+        <p>SKU: <span>EDDM90055</span></p>
+        <p>Categories: <a href="../../2024/">2024</a></p>
       </div>
 
       <!-- Social Share -->
       <div class="social-share">
-        <a href="#" class="social-btn" aria-label="Facebook" title="Facebook">f</a>
-        <a href="#" class="social-btn" aria-label="Twitter" title="Twitter">X</a>
-        <a href="#" class="social-btn" aria-label="Email" title="Email">&#9993;</a>
-        <a href="#" class="social-btn" aria-label="WhatsApp" title="WhatsApp">W</a>
-        <a href="#" class="social-btn" aria-label="Pinterest" title="Pinterest">P</a>
+        <a href="#" class="social-btn" aria-label="Share on Facebook" title="Facebook">f</a>
+        <a href="#" class="social-btn" aria-label="Share on Twitter" title="Twitter">X</a>
+        <a href="#" class="social-btn" aria-label="Share via Email" title="Email">&#9993;</a>
+        <a href="#" class="social-btn" aria-label="Share on WhatsApp" title="WhatsApp">W</a>
+        <a href="#" class="social-btn" aria-label="Share on Pinterest" title="Pinterest">P</a>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- Tabs -->
+<!-- Description Tab -->
 <div class="product-tabs-section">
   <div class="tab-buttons">
-    <button class="tab-btn active" data-tab="description">Description</button>
+    <button class="tab-btn active" data-tab="description">DESCRIPTION</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>2024 Kwanzaa - 100% authentic USPS Forever stamps. Self-adhesive, no licking required. Never expires and valid regardless of price increases.</p>
+    <p>The 2024 Kwanzaa Forever Stamp is a beautiful addition to any collection. Issued by the United States Postal Service (USPS), this stamp features a stunning design that captures the essence of Kwanzaa. A wonderful addition to any stamp collection, this design celebrates the rich cultural heritage and diverse themes of American postal history. Issued in 2024, these Forever Stamps are valid for first-class mail regardless of future price changes. Each set contains 5 sheets of 20 stamps (100 stamps total), making them a great value for all your mailing needs.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
       <li>Never expires &ndash; valid regardless of price increases</li>
       <li>Perfect for everyday mailing, invitations, greeting cards</li>
     </ul>
+  </div>
+</div>
+
+<!-- Related Products -->
+<div class="related-section">
+  <h2 class="related-title">Related Products</h2>
+  <div class="related-grid">
+      <div class="product-card">
+        <a href="../2024-hank-aaron/">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/484904-Z0-247x296.jpg" alt="2024 Hank Aaron" loading="lazy">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2024</p>
+            <p class="product-name">2024 Hank Aaron</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <a href="../2024-hanukkah/">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/581504-Z0-247x296.jpg" alt="2024 Hanukkah" loading="lazy">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2024</p>
+            <p class="product-name">2024 Hanukkah</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <a href="../2024-holiday-joy/">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/685004-Z0-247x296.jpg" alt="2024 Holiday Joy" loading="lazy">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2024</p>
+            <p class="product-name">2024 Holiday Joy</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <a href="../2024-horses/">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/485204-L0-247x296.jpg" alt="2024 Horses" loading="lazy">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2024</p>
+            <p class="product-name">2024 Horses</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <a href="../2024-john-wooden/">
+          <div class="product-image">
+            <img src="https://eddm.shop/wp-content/uploads/2026/01/484504-L0-d3cb3d5f-e20f-43c0-b079-9872a32ab462-247x296.jpg" alt="2024 John Wooden" loading="lazy">
+          </div>
+          <div class="product-info">
+            <p class="product-category">2024</p>
+            <p class="product-name">2024 John Wooden</p>
+            <p class="product-price">$29.00</p>
+          </div>
+        </a>
+      </div>
   </div>
 </div>
 
@@ -253,237 +321,148 @@
 
 <button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
 
+<script src="../../js/common.js"></script>
 <script>
-// Mobile Navigation
-var hamburger=document.getElementById("hamburger-btn"),
-    overlay=document.getElementById("mobile-nav-overlay"),
-    panel=document.getElementById("mobile-nav-panel"),
-    closeBtn=document.getElementById("mobile-nav-close");
-function openMobileNav(){overlay.classList.add("active");panel.classList.add("active");}
-function closeMobileNav(){overlay.classList.remove("active");panel.classList.remove("active");}
-hamburger.addEventListener("click",openMobileNav);
-overlay.addEventListener("click",closeMobileNav);
-closeBtn.addEventListener("click",closeMobileNav);
+(function () {
+  // Gallery Slider
+  var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/581604-Z0.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/581604-Z1.jpg'];
+  var currentIndex = 0;
+  var mainImg = document.getElementById("gallery-main-img");
+  var thumbs = document.querySelectorAll(".gallery-thumb");
+  var prevBtn = document.getElementById("gallery-prev");
+  var nextBtn = document.getElementById("gallery-next");
 
-// Back to Top
-var backToTop=document.getElementById("back-to-top");
-window.addEventListener("scroll",function(){backToTop.classList.toggle("visible",window.scrollY>400);});
-backToTop.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
-
-// Cart
-var cart=[];
-var cartWrapper=document.getElementById("cart-wrapper");
-var cartDropdown=document.getElementById("cart-dropdown");
-var cartBadge=document.getElementById("cart-badge");
-var cartTotalEl=document.getElementById("cart-total");
-var cartItemsList=document.getElementById("cart-items-list");
-var cartSubtotalRow=document.getElementById("cart-subtotal-row");
-var cartSubtotalAmount=document.getElementById("cart-subtotal-amount");
-var cartActionBtns=document.getElementById("cart-action-btns");
-
-function cartTotal(){return cart.reduce(function(s,i){return s+i.price*i.qty;},0);}
-function cartCount(){return cart.reduce(function(s,i){return s+i.qty;},0);}
-function fmt(n){return "$"+n.toFixed(2);}
-
-function renderCart(){
-  var count=cartCount(),tot=cartTotal();
-  cartTotalEl.textContent=fmt(tot);
-  cartBadge.textContent=count;
-  cartBadge.classList.remove("pop");
-  void cartBadge.offsetWidth;
-  cartBadge.classList.add("pop");
-  if(cart.length===0){
-    cartItemsList.innerHTML='<div class="cart-empty">Your cart is empty</div>';
-    cartSubtotalRow.style.display="none";
-    cartActionBtns.style.display="none";
-  } else {
-    var html="";
-    cart.forEach(function(item){
-      html+='<div class="cart-item">';
-      html+='<img class="cart-item-img" src="'+item.image+'" alt="'+item.name+'">';
-      html+='<div class="cart-item-info">';
-      html+='<div class="cart-item-name">'+item.name+'</div>';
-      html+='<div class="cart-item-qty-price">';
-      html+='<div class="cart-item-qty-btns">';
-      html+='<button class="qty-btn" data-id="'+item.id+'" data-delta="-1">&#8722;</button>';
-      html+='<span class="cart-item-qty-val">'+item.qty+'</span>';
-      html+='<button class="qty-btn" data-id="'+item.id+'" data-delta="1">+</button>';
-      html+='</div>';
-      html+='<span>&times; '+fmt(item.price)+'</span>';
-      html+='</div></div>';
-      html+='<button class="cart-item-remove" data-id="'+item.id+'">&times;</button>';
-      html+='</div>';
-    });
-    cartItemsList.innerHTML=html;
-    cartSubtotalRow.style.display="flex";
-    cartSubtotalAmount.textContent=fmt(tot);
-    cartActionBtns.style.display="flex";
-    cartItemsList.querySelectorAll(".cart-item-remove").forEach(function(btn){
-      btn.addEventListener("click",function(){removeFromCart(this.getAttribute("data-id"));});
-    });
-    cartItemsList.querySelectorAll(".qty-btn").forEach(function(btn){
-      btn.addEventListener("click",function(){updateQty(this.getAttribute("data-id"),parseInt(this.getAttribute("data-delta")));});
+  function showSlide(idx) {
+    if (galleryImages.length === 0) return;
+    currentIndex = (idx + galleryImages.length) % galleryImages.length;
+    mainImg.src = galleryImages[currentIndex];
+    thumbs.forEach(function(t, i) {
+      t.classList.toggle("active", i === currentIndex);
     });
   }
-}
 
-function addToCart(id,name,price,image){
-  var ex=cart.find(function(i){return i.id===id;});
-  if(ex){ex.qty++;}else{cart.push({id:id,name:name,price:price,qty:1,image:image});}
-  renderCart();
-  cartDropdown.classList.add("visible");
-}
-function removeFromCart(id){cart=cart.filter(function(i){return i.id!==id;});renderCart();}
-function updateQty(id,delta){
-  var item=cart.find(function(i){return i.id===id;});
-  if(!item)return;
-  item.qty+=delta;
-  if(item.qty<=0){removeFromCart(id);}else{renderCart();}
-}
-
-cartWrapper.addEventListener("mouseenter",function(){cartDropdown.classList.add("visible");});
-cartWrapper.addEventListener("mouseleave",function(){cartDropdown.classList.remove("visible");});
-document.getElementById("cart-toggle").addEventListener("click",function(e){
-  e.preventDefault();e.stopPropagation();
-  cartDropdown.classList.toggle("visible");
-});
-document.addEventListener("click",function(e){
-  if(!cartWrapper.contains(e.target)){cartDropdown.classList.remove("visible");}
-});
-renderCart();
-
-// Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/581604-Z0.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/581604-Z1.jpg'];
-var currentIndex = 0;
-var mainImg = document.getElementById("gallery-main-img");
-var thumbs = document.querySelectorAll(".gallery-thumb");
-var prevBtn = document.getElementById("gallery-prev");
-var nextBtn = document.getElementById("gallery-next");
-
-function showSlide(idx) {
-  if (galleryImages.length === 0) return;
-  currentIndex = (idx + galleryImages.length) % galleryImages.length;
-  mainImg.src = galleryImages[currentIndex];
-  thumbs.forEach(function(t, i) {
-    t.classList.toggle("active", i === currentIndex);
+  thumbs.forEach(function(thumb) {
+    thumb.addEventListener("click", function() {
+      showSlide(parseInt(this.getAttribute("data-index")));
+    });
   });
-}
+  if (prevBtn) prevBtn.addEventListener("click", function() { showSlide(currentIndex - 1); });
+  if (nextBtn) nextBtn.addEventListener("click", function() { showSlide(currentIndex + 1); });
 
-thumbs.forEach(function(thumb) {
-  thumb.addEventListener("click", function() {
-    showSlide(parseInt(this.getAttribute("data-index")));
+  // Discount Price Helpers
+  var BASE_PRICE = 29.00;
+  var discountRows = document.querySelectorAll('.discount-table tbody tr');
+
+  function getDiscountPrice(qty) {
+    var price = BASE_PRICE;
+    discountRows.forEach(function(row) {
+      var min = parseInt(row.getAttribute('data-qty-min'));
+      var maxAttr = row.getAttribute('data-qty-max');
+      var max = maxAttr ? parseInt(maxAttr) : Infinity;
+      var rowPrice = parseFloat(row.getAttribute('data-price'));
+      if (qty >= min && qty <= max) {
+        price = rowPrice;
+      }
+    });
+    return price;
+  }
+
+  function fmt(n) { return "$" + n.toFixed(2); }
+
+  function updatePriceByQty() {
+    var qty = parseInt(document.getElementById('qty-input').value) || 1;
+    var price = getDiscountPrice(qty);
+    discountRows.forEach(function(row) {
+      row.classList.remove('active-row');
+      var min = parseInt(row.getAttribute('data-qty-min'));
+      var maxAttr = row.getAttribute('data-qty-max');
+      var max = maxAttr ? parseInt(maxAttr) : Infinity;
+      if (qty >= min && qty <= max) {
+        row.classList.add('active-row');
+      }
+    });
+    var priceEl = document.querySelector('.selected-price');
+    var mainPriceEl = document.querySelector('.product-price-main');
+    var priceHtml;
+    if (price < BASE_PRICE) {
+      priceHtml = '<del class="original-price">' + fmt(BASE_PRICE) + '</del> <span class="sale-price">' + fmt(price) + '</span>';
+    } else {
+      priceHtml = fmt(BASE_PRICE);
+    }
+    if (priceEl) priceEl.innerHTML = priceHtml;
+    if (mainPriceEl) mainPriceEl.innerHTML = priceHtml;
+  }
+
+  // Quantity Stepper
+  document.getElementById("qty-minus").addEventListener("click", function() {
+    var input = document.getElementById("qty-input");
+    var val = parseInt(input.value) || 1;
+    if (val > 1) { input.value = val - 1; }
+    updatePriceByQty();
   });
-});
-if (prevBtn) prevBtn.addEventListener("click", function() { showSlide(currentIndex - 1); });
-if (nextBtn) nextBtn.addEventListener("click", function() { showSlide(currentIndex + 1); });
+  document.getElementById("qty-plus").addEventListener("click", function() {
+    var input = document.getElementById("qty-input");
+    var val = parseInt(input.value) || 1;
+    input.value = val + 1;
+    updatePriceByQty();
+  });
+  document.getElementById("qty-input").addEventListener("input", function() {
+    updatePriceByQty();
+  });
 
-// Discount Price Helpers
-var BASE_PRICE = 29.00;
-var discountRows = document.querySelectorAll('.discount-table tbody tr');
-
-function getDiscountPrice(qty) {
-  var price = BASE_PRICE;
-  discountRows.forEach(function(row) {
-    var min = parseInt(row.getAttribute('data-qty-min'));
-    var maxAttr = row.getAttribute('data-qty-max');
-    var max = maxAttr ? parseInt(maxAttr) : Infinity;
-    var rowPrice = parseFloat(row.getAttribute('data-price'));
-    if (qty >= min && qty <= max) {
-      price = rowPrice;
+  // Add to Cart
+  document.getElementById("add-to-cart-btn").addEventListener("click", function() {
+    var qty = parseInt(document.getElementById("qty-input").value) || 1;
+    var productId = "2024-kwanzaa";
+    var productName = "2024 Kwanzaa";
+    var productPrice = getDiscountPrice(qty);
+    var productImage = galleryImages[0];
+    for (var i = 0; i < qty; i++) {
+      addToCart(productId, productName, productPrice, productImage);
     }
   });
-  return price;
-}
 
-function updatePriceByQty() {
-  var qty = parseInt(document.getElementById('qty-input').value) || 1;
-  var price = getDiscountPrice(qty);
-  discountRows.forEach(function(row) {
-    row.classList.remove('active-row');
-    var min = parseInt(row.getAttribute('data-qty-min'));
-    var maxAttr = row.getAttribute('data-qty-max');
-    var max = maxAttr ? parseInt(maxAttr) : Infinity;
-    if (qty >= min && qty <= max) {
-      row.classList.add('active-row');
-    }
-  });
-  var priceEl = document.querySelector('.selected-price');
-  var mainPriceEl = document.querySelector('.product-price-main');
-  var priceHtml;
-  if (price < BASE_PRICE) {
-    priceHtml = '<del class="original-price">' + fmt(BASE_PRICE) + '</del> <span class="sale-price">' + fmt(price) + '</span>';
-  } else {
-    priceHtml = fmt(BASE_PRICE);
-  }
-  if (priceEl) priceEl.innerHTML = priceHtml;
-  if (mainPriceEl) mainPriceEl.innerHTML = priceHtml;
-}
-
-// Quantity Stepper
-document.getElementById("qty-minus").addEventListener("click", function() {
-  var input = document.getElementById("qty-input");
-  var val = parseInt(input.value) || 1;
-  if (val > 1) { input.value = val - 1; }
-  updatePriceByQty();
-});
-document.getElementById("qty-plus").addEventListener("click", function() {
-  var input = document.getElementById("qty-input");
-  var val = parseInt(input.value) || 1;
-  input.value = val + 1;
-  updatePriceByQty();
-});
-document.getElementById("qty-input").addEventListener("input", function() {
-  updatePriceByQty();
-});
-
-// Add to Cart (product detail page)
-document.getElementById("add-to-cart-main").addEventListener("click", function() {
-  var qty = parseInt(document.getElementById("qty-input").value) || 1;
-  var productId = "2024-kwanzaa";
-  var productName = "2024 Kwanzaa";
-  var productPrice = getDiscountPrice(qty);
-  var productImage = galleryImages.length > 0 ? galleryImages[0] : "";
-  for (var i = 0; i < qty; i++) {
-    addToCart(productId, productName, productPrice, productImage);
-  }
-});
-
-// Variation button click handlers
-document.querySelectorAll(".variation-btn").forEach(function(btn) {
-  btn.addEventListener("click", function() {
-    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+  // Variation toggle & clear
+  document.getElementById("variation-btn-1").addEventListener("click", function() {
     this.classList.add("active");
-    var label = document.querySelector(".variation-label span");
-    if (label) label.textContent = this.textContent;
+    document.getElementById("variation-selected").textContent = "5 Sheets of 20 (100 Stamps)";
     var priceEl = document.querySelector(".selected-price");
     if (priceEl) priceEl.style.display = "";
   });
-});
-var clearBtn = document.querySelector(".variation-clear");
-if (clearBtn) {
-  clearBtn.addEventListener("click", function() {
+  document.getElementById("variation-clear").addEventListener("click", function() {
     document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
-    var label = document.querySelector(".variation-label span");
-    if (label) label.textContent = "";
+    document.getElementById("variation-selected").textContent = "";
     var priceEl = document.querySelector(".selected-price");
     if (priceEl) priceEl.style.display = "none";
   });
-}
 
-// Discount table row click - set quantity and update price
-discountRows.forEach(function(row) {
-  row.addEventListener("click", function() {
-    var minQty = parseInt(this.getAttribute("data-qty-min"));
-    if (minQty) {
-      var input = document.getElementById("qty-input");
-      if (input) input.value = minQty;
-      updatePriceByQty();
-    }
+  // Tabs
+  document.querySelectorAll(".tab-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var tab = this.getAttribute("data-tab");
+      document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+      document.querySelectorAll(".tab-panel").forEach(function(p) { p.classList.remove("active"); });
+      this.classList.add("active");
+      var panel = document.getElementById("tab-" + tab);
+      if (panel) { panel.classList.add("active"); }
+    });
   });
-});
 
-// Initialize price display on page load
-updatePriceByQty();
+  // Discount table row click - set quantity and update price
+  discountRows.forEach(function(row) {
+    row.addEventListener("click", function() {
+      var minQty = parseInt(this.getAttribute("data-qty-min"));
+      if (minQty) {
+        var input = document.getElementById("qty-input");
+        if (input) input.value = minQty;
+        updatePriceByQty();
+      }
+    });
+  });
+
+  // Initialize price display on page load
+  updatePriceByQty();
+}());
 </script>
 
 </body>
