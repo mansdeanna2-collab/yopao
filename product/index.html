@@ -128,6 +128,22 @@
 <script src="../js/common.js"></script>
 <script>
 (function () {
+  function ensureLocalImagePath(url) {
+    if (!url) return '';
+    var m = url.match(/https?:\/\/eddm\.shop\/wp-content\/uploads\/\d{4}\/\d{2}\/(.+)$/);
+    if (m) return '/images/products/' + m[1];
+    return url;
+  }
+
+  function ensureLocalProductImages(product) {
+    if (product.img1) product.img1 = ensureLocalImagePath(product.img1);
+    if (product.img2) product.img2 = ensureLocalImagePath(product.img2);
+    if (product.images && product.images.length) {
+      product.images = product.images.map(ensureLocalImagePath);
+    }
+    return product;
+  }
+
   var CATEGORY_TO_SLUG = {
     'Flag Series': 'flag-series',
     'Christmas & Holiday': 'christmas-holiday',
@@ -472,10 +488,12 @@
       })
       .then(function (product) {
         if (product.error) { showNotFound(); return; }
+        ensureLocalProductImages(product);
         // Also fetch all products for related products section
         return fetch('/api/products.php?action=list')
           .then(function (res) { return res.json(); })
           .then(function (allProducts) {
+            allProducts.forEach(ensureLocalProductImages);
             try { sessionStorage.setItem(cacheKey, JSON.stringify(allProducts)); } catch(e) {}
             renderProduct(product, allProducts);
           });
@@ -485,6 +503,7 @@
         fetch('../products_data.json')
           .then(function (res) { return res.json(); })
           .then(function (allProducts) {
+            allProducts.forEach(ensureLocalProductImages);
             try { sessionStorage.setItem(cacheKey, JSON.stringify(allProducts)); } catch(e) {}
             var product = allProducts.find(function (p) { return p.slug === hash; });
             if (!product) { showNotFound(); return; }

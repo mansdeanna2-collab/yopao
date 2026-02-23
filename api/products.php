@@ -14,6 +14,34 @@ header('Access-Control-Allow-Origin: *');
 
 require_once __DIR__ . '/../db/config.php';
 
+/**
+ * Ensure an image URL uses a local path.
+ * Converts any external eddm.shop URLs stored in the database to local /images/products/ paths.
+ */
+function ensureLocalImagePath($url) {
+    if (!$url || $url === '') return '';
+    // Convert external eddm.shop URLs to local paths
+    if (preg_match('#https?://eddm\.shop/wp-content/uploads/\d{4}/\d{2}/(.+)$#', $url, $m)) {
+        return '/images/products/' . $m[1];
+    }
+    return $url;
+}
+
+/**
+ * Apply ensureLocalImagePath to all image fields in a product array.
+ */
+function ensureLocalProductImages(&$product) {
+    if (isset($product['img1'])) {
+        $product['img1'] = ensureLocalImagePath($product['img1']);
+    }
+    if (isset($product['img2'])) {
+        $product['img2'] = ensureLocalImagePath($product['img2']);
+    }
+    if (isset($product['images']) && is_array($product['images'])) {
+        $product['images'] = array_map('ensureLocalImagePath', $product['images']);
+    }
+}
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 
 try {
@@ -65,6 +93,7 @@ function handleListProducts($pdo) {
         $product['images'] = getProductImages($pdo, $product['id']);
         $product['all_categories'] = getProductCategories($pdo, $product['id']);
         $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
+        ensureLocalProductImages($product);
     }
 
     echo json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -95,6 +124,7 @@ function handleGetProduct($pdo) {
     $product['images'] = getProductImages($pdo, $product['id']);
     $product['all_categories'] = getProductCategories($pdo, $product['id']);
     $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
+    ensureLocalProductImages($product);
 
     echo json_encode($product, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
@@ -118,6 +148,7 @@ function handleSearch($pdo) {
         $product['images'] = getProductImages($pdo, $product['id']);
         $product['all_categories'] = getProductCategories($pdo, $product['id']);
         $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
+        ensureLocalProductImages($product);
     }
 
     echo json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
