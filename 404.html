@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting… – Buy Discount Postage Online</title>
+  <script>
+  (function () {
+    var path = window.location.pathname.replace(/\/+$/, '');
+    var segments = path.split('/').filter(Boolean);
+
+    // Handle /product/SLUG/ → /product/#SLUG
+    if (segments.length >= 2 && segments[0] === 'product') {
+      window.location.replace('/product/#' + segments[1]);
+      return;
+    }
+
+    // Handle old category paths like /2025/, /flag-series/, etc.
+    var categories = [
+      '2017','2018','2019','2020','2021','2022','2023','2024','2025',
+      'flag-series','christmas-holiday','wedding-flowers',
+      'animal-series','other-years','2-oz-letter','global-series'
+    ];
+    if (segments.length >= 1 && categories.indexOf(segments[0]) !== -1) {
+      window.location.replace('/category/#' + segments[0]);
+      return;
+    }
+
+    // Handle /privacy-policy.html
+    if (path === '/privacy-policy.html') {
+      window.location.replace('/privacy-policy/');
+      return;
+    }
+  })();
+  </script>
+  <link rel="stylesheet" href="/css/common.css">
+  <style>
+    .not-found { max-width: 600px; margin: 80px auto; text-align: center; padding: 0 15px; }
+    .not-found h1 { font-size: 48px; color: #333365; margin-bottom: 16px; }
+    .not-found p { color: #555; font-size: 16px; margin-bottom: 24px; }
+    .not-found a { color: #333365; font-weight: 700; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="not-found">
+    <h1>404</h1>
+    <p>The page you are looking for could not be found.</p>
+    <a href="/">← Back to Home</a>
+  </div>
+</body>
+</html>
