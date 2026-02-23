@@ -40,7 +40,8 @@ function renderCart(){
     cartSubtotalRow.style.display='none';
     cartActionBtns.style.display='none';
   } else {
-    var html='';
+    var html='<div class="cart-dropdown-title">Shopping Cart</div>';
+    html+='<div class="cart-dropdown-items">';
     cart.forEach(function(item){
       html+='<div class="cart-item">';
       html+='<img class="cart-item-img" src="'+item.image+'" alt="'+item.name+'">';
@@ -57,6 +58,7 @@ function renderCart(){
       html+='<button class="cart-item-remove" data-id="'+item.id+'">&times;</button>';
       html+='</div>';
     });
+    html+='</div>';
     cartItemsList.innerHTML=html;
     cartSubtotalRow.style.display='flex';
     cartSubtotalAmount.textContent=fmt(tot);

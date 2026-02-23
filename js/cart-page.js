@@ -38,7 +38,7 @@
       html += '<span class="qty-val">' + item.qty + '</span>';
       html += '<button class="cart-qty-plus" data-id="' + item.id + '" aria-label="Increase">+</button>';
       html += '</div>';
-      html += '<button class="cart-row-remove" data-id="' + item.id + '">Remove item</button>';
+      html += '<button class="cart-row-remove" data-id="' + item.id + '">&#128465; Remove</button>';
       html += '</div>';
       html += '<div class="cart-row-total">' + fmt(lineTotal) + '</div>';
       html += '</div>';
