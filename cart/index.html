@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart – Buy Discount Postage Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+
+<!-- ========== Top Bar ========== -->
+<div class="top-bar">
+  <span class="top-bar-text">Free Shipping On All Orders. 3–8 Business Days Delivery</span>
+  <span class="top-bar-search">🔍</span>
+</div>
+
+<!-- ========== Header ========== -->
+<div class="header-wrapper" id="header">
+  <header class="site-header">
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
+    <div class="logo"><a href="../"><span class="logo-icon">S</span>stampstores</a></div>
+    <nav class="nav-main">
+      <a href="../">HOME</a>
+      <a href="/category/#flag-series">FLAG SERIES</a>
+      <a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a>
+      <a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a>
+      <a href="/category/#animal-series">ANIMAL SERIES</a>
+      <a href="/category/#other-years">OTHER YEARS &#9662;</a>
+      <a href="#">CONTACT US</a>
+    </nav>
+    <div class="header-right">
+      <a href="#" class="header-icon account-icon desktop-only" aria-label="Account">&#128100;</a>
+      <div class="cart-wrapper" id="cart-wrapper">
+        <button class="cart-link" id="cart-toggle" aria-label="Cart">
+          <span id="cart-total">$0.00</span>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+        <div class="cart-dropdown" id="cart-dropdown">
+          <div id="cart-items-list"></div>
+          <div class="cart-subtotal" id="cart-subtotal-row" style="display:none">
+            <span>Subtotal:</span>
+            <span class="subtotal-amount" id="cart-subtotal-amount">$0.00</span>
+          </div>
+          <div class="cart-actions" id="cart-action-btns" style="display:none">
+            <button class="cart-btn view-cart-btn">VIEW CART</button>
+            <button class="cart-btn checkout-btn">CHECKOUT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- ========== Mobile Nav ========== -->
+<div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+<div class="mobile-nav-panel" id="mobile-nav-panel">
+  <div class="close-btn" id="mobile-nav-close">&times;</div>
+  <ul>
+    <li><a href="../">HOME</a></li>
+    <li><a href="/category/#flag-series">FLAG SERIES</a></li>
+    <li><a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a></li>
+    <li><a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a></li>
+    <li><a href="/category/#animal-series">ANIMAL SERIES</a></li>
+    <li><a href="/category/#other-years">OTHER YEARS</a></li>
+    <li><a href="#">CONTACT US</a></li>
+  </ul>
+</div>
+
+<!-- ========== Checkout Breadcrumb ========== -->
+<div class="checkout-breadcrumb">
+  <div class="checkout-breadcrumb-inner">
+    <span class="step active">SHOPPING CART</span>
+    <span class="chevron">&#62;</span>
+    <span class="step">CHECKOUT DETAILS</span>
+    <span class="chevron">&#62;</span>
+    <span class="step">ORDER COMPLETE</span>
+  </div>
+</div>
+
+<!-- ========== Cart Page Content ========== -->
+<div class="cart-page-section">
+
+  <!-- Empty State -->
+  <div id="cart-empty" class="cart-empty-state" style="display:none">
+    <p>Your cart is currently empty!</p>
+    <a href="../index.html" class="btn-continue-shopping">CONTINUE SHOPPING</a>
+  </div>
+
+  <!-- Filled State -->
+  <div id="cart-filled" class="cart-layout" style="display:none">
+
+    <!-- Left: Cart Items -->
+    <div class="cart-items-col">
+      <div class="cart-table-header">
+        <span>PRODUCT</span>
+        <span>TOTAL</span>
+      </div>
+      <div id="cart-body"></div>
+    </div>
+
+    <!-- Right: Cart Totals -->
+    <div class="cart-totals-col">
+      <div class="cart-totals-box">
+        <div class="cart-totals-title">CART TOTALS</div>
+        <div class="coupon-toggle" id="coupon-toggle">
+          <span>Add coupons</span>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="coupon-form" id="coupon-form">
+          <input class="coupon-input" type="text" placeholder="Enter code">
+          <button class="coupon-apply-btn">APPLY</button>
+        </div>
+        <div class="totals-divider"></div>
+        <div class="totals-shipping-row">
+          <span class="shipping-label">Free USPS First Class Shipping (3–7 business days)</span>
+          <span class="shipping-free">FREE</span>
+        </div>
+        <div class="totals-divider"></div>
+        <div class="totals-estimated-row">
+          <span class="totals-estimated-label">Estimated total</span>
+          <span class="totals-estimated-amount" id="estimated-amount">$0.00</span>
+        </div>
+        <button class="btn-checkout">Proceed to Checkout</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== Footer ========== -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h3>INFORMATION</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Refund and Return Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Billings Terms and Condition</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>NEED HELP</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CONTACT</h3>
+        <div class="footer-divider"></div>
+        <div class="contact-info">
+          <p><strong>EDDM LLC</strong></p>
+          <p><strong>Email:</strong> support@eddm.shop</p>
+          <p><strong>Phone:</strong> (970) 329-9777</p>
+          <p><strong>Address:</strong> 3605 Avalon St, Philadelphia, PA 19114</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="payment-icons">
+      <span>PayPal</span>
+      <span>Stripe</span>
+      <span>VISA</span>
+      <span>MasterCard</span>
+      <span>Cash on Delivery</span>
+    </div>
+    <div class="copyright">Copyright 2026 &copy; <strong>eddm.shop</strong></div>
+  </div>
+</footer>
+
+<!-- ========== Back to Top ========== -->
+<button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
+
+<script src="../js/common.js"></script>
+<script src="../js/cart-page.js"></script>
+
+</body>
+</html>
