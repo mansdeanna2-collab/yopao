@@ -78,7 +78,7 @@ body { background: #fff; }
   padding: 10px 12px;
   border: 1px solid #ddd;
   border-right: none;
-  font-size: 14px;
+  font-size: 16px;
   font-family: 'Lato', sans-serif;
   outline: none;
 }
@@ -295,9 +295,19 @@ body { background: #fff; }
   .products-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .page-title-inner { flex-direction: column; }
+  .page-title-right { width: 100%; justify-content: space-between; }
+  .sort-select { font-size: 13px; padding: 8px 30px 8px 10px; max-width: 200px; }
+  .main-content { padding: 20px 12px; }
+  .page-num, .page-arrow { min-width: 36px; height: 36px; font-size: 14px; }
 }
 @media (max-width: 480px) {
-  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .page-title-section { padding: 14px 0 10px; }
+  .page-title-right { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .sort-select { width: 100%; max-width: none; }
+  .result-count { font-size: 12px; }
+  .product-info { padding: 8px 4px; }
+  .product-name { font-size: 13px; }
 }

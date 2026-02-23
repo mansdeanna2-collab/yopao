@@ -107,15 +107,39 @@
 
   .policy-heading {
     font-size: 14px;
+    margin: 28px 0 12px;
+  }
+
+  .policy-subheading {
+    font-size: 13px;
+  }
+
+  .policy-container p {
+    font-size: 14px;
+  }
+
+  .breadcrumb-inner {
+    padding: 0 16px;
   }
 }
 
 @media (max-width: 480px) {
   .policy-intro {
-    padding: 16px;
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.7;
   }
 
   .policy-section {
-    padding: 20px 12px 36px;
+    padding: 16px 12px 32px;
+  }
+
+  .policy-container p {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .policy-list li {
+    font-size: 13px;
   }
 }

@@ -102,11 +102,26 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
   .nav-main, .header-right .header-icon.desktop-only { display: none; }
   .hamburger { display: block; }
-  .site-header { justify-content: space-between; }
+  .site-header { justify-content: space-between; height: 60px; }
+  .logo a { font-size: 20px; }
+  .logo-icon { width: 20px; height: 20px; font-size: 11px; }
+  .top-bar { font-size: 11px; padding: 6px 40px 6px 10px; }
+  .top-bar .top-bar-search { right: 10px; }
   .footer-column { flex: 100%; }
   .footer-columns { padding: 0 20px; }
-  .cart-dropdown { width: calc(100vw - 30px); right: -10px; }
+  .cart-dropdown { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 70vh; overflow-y: auto; border-radius: 12px 12px 0 0; }
   .account-icon { display: none; }
+  .cart-link svg { width: 18px; height: 18px; }
+  .cart-link { font-size: 12px; gap: 4px; }
+  .cart-badge { min-width: 18px; height: 18px; font-size: 11px; }
+  .back-to-top { bottom: 20px; left: 16px; width: 36px; height: 36px; font-size: 14px; }
+  .footer-content { padding: 30px 0 20px; }
+  .footer-bottom { padding: 15px 15px; font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  .top-bar .top-bar-text { font-size: 10px; }
+  .logo a { font-size: 18px; gap: 5px; }
 }
 
 /* ========== Login Modal ========== */
@@ -117,7 +132,7 @@ img { max-width: 100%; display: block; }
 #login-modal-close { position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; border-radius: 50%; border: none; background: none; font-size: 24px; line-height: 1; cursor: pointer; color: #555; display: flex; align-items: center; justify-content: center; }
 #login-modal-close:hover { color: #000; }
 #login-modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #333; }
-.login-modal-input { display: block; width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; font-size: 14px; font-family: inherit; }
+.login-modal-input { display: block; width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; font-size: 16px; font-family: inherit; }
 .login-modal-input:focus { outline: none; border-color: #333365; }
 .login-modal-remember { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 14px; color: #555; cursor: pointer; }
 .login-modal-submit { display: block; width: 100%; background: #333365; color: #fff; border: none; padding: 12px; border-radius: 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; font-family: inherit; }
