@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Lato', sans-serif; color: #333; background: #fff; }
+    body { font-family: 'Lato', sans-serif; color: #333; background: #f8f8f8; }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
     img { max-width: 100%; }
@@ -55,16 +55,28 @@
     }
     .logo a {
       font-family: 'Lato', sans-serif;
-      font-size: 22px;
+      font-size: 26px;
       color: #333365;
       font-weight: 700;
       white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      letter-spacing: 1px;
     }
     .logo-icon {
-      font-size: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #333365;
+      border-radius: 3px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #333365;
+      flex-shrink: 0;
+      letter-spacing: 0;
     }
     .nav-main {
       display: flex;
@@ -95,7 +107,18 @@
       border: none;
       position: relative;
     }
-    .header-icon:hover { color: #446084; }
+    .header-icon.account-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 17px;
+    }
+    .header-icon.account-icon:hover { background: #333; color: #fff; }
     .cart-link {
       display: flex;
       align-items: center;
@@ -105,10 +128,11 @@
       color: #555;
     }
     .cart-link .cart-badge {
-      background: #446084;
-      color: #fff;
-      border-radius: 50%;
-      width: 20px;
+      background: transparent;
+      color: #555;
+      border-radius: 3px;
+      border: 1px solid #bbb;
+      width: 22px;
       height: 20px;
       display: flex;
       align-items: center;
@@ -191,8 +215,8 @@
     /* Hero Banner */
     .hero-banner {
       width: 100%;
-      height: 80vh;
-      background: #2a3a4e url('https://images.unsplash.com/photo-1582845512747-e42001c95638?w=1600') center/cover no-repeat;
+      height: 550px;
+      background: #4a5568 url('https://images.unsplash.com/photo-1582845512747-e42001c95638?w=1600&q=80') center/cover no-repeat;
       position: relative;
       overflow: hidden;
     }
@@ -201,14 +225,14 @@
     .categories-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 25px;
+      gap: 30px 25px;
       max-width: 1200px;
       margin: 0 auto 40px;
       padding: 0 15px;
     }
     .categories-row-last {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 25px;
       max-width: 1200px;
       margin: 0 auto 40px;
@@ -260,9 +284,9 @@
       content: '';
       position: absolute;
       top: 50%;
-      width: 60px;
-      height: 2px;
-      background: #ddd;
+      width: 200px;
+      height: 1px;
+      background: #ccc;
     }
     .section-title h2::before { right: 100%; margin-right: 15px; }
     .section-title h2::after { left: 100%; margin-left: 15px; }
@@ -472,7 +496,7 @@
       .categories-row-last .category-card { width: calc((100% - 50px) / 3); }
     }
     @media (max-width: 849px) {
-      .hero-banner { height: 60vh; }
+      .hero-banner { height: 380px; }
     }
     @media (max-width: 768px) {
       .nav-main, .header-right .header-icon.desktop-only { display: none; }
@@ -482,9 +506,9 @@
       .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
       .categories-row-last { gap: 15px; }
       .categories-row-last .category-card { width: calc((100% - 15px) / 2); }
-      .hero-banner { height: 50vh; }
+      .hero-banner { height: 260px; }
       .section-title h2 { font-size: 20px; }
-      .section-title h2::before, .section-title h2::after { width: 30px; }
+      .section-title h2::before, .section-title h2::after { width: 50px; }
       .footer-column { flex: 100%; }
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
     }
@@ -494,7 +518,7 @@
 
 <!-- Top Bar -->
 <div class="top-bar">
-  <span class="top-bar-text">全订单免运费。3-8个工作日交付</span>
+  <span class="top-bar-text">Free Shipping On All Orders. 3-8 Business Days Delivery</span>
   <span class="top-bar-search">🔍</span>
 </div>
 
@@ -502,20 +526,20 @@
 <div class="header-wrapper" id="header">
   <header class="site-header">
     <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
-    <div class="logo"><a href="#"><span class="logo-icon">📬</span>stampstores</a></div>
+    <div class="logo"><a href="#"><span class="logo-icon">S</span>stampstores</a></div>
     <nav class="nav-main">
-      <a href="#">首页</a>
-      <a href="#">旗帜系列</a>
-      <a href="#">圣诞节与节日</a>
-      <a href="#">婚礼与鲜花</a>
-      <a href="#">动物系列</a>
-      <a href="#">其他年份 ▾</a>
-      <a href="#">联系我们</a>
+      <a href="#">HOME</a>
+      <a href="#">FLAG SERIES</a>
+      <a href="#">CHRISTMAS &amp; HOLIDAY</a>
+      <a href="#">WEDDING &amp; FLOWERS</a>
+      <a href="#">ANIMAL SERIES</a>
+      <a href="#">OTHER YEARS ▾</a>
+      <a href="#">CONTACT US</a>
     </nav>
     <div class="header-right">
-      <a href="#" class="header-icon desktop-only" aria-label="Account">&#128100;</a>
+      <a href="#" class="header-icon account-icon desktop-only" aria-label="Account">&#128100;</a>
       <a href="#" class="cart-link" aria-label="Cart">
-        <span>0.00美元</span>
+        <span>$0.00</span>
         <span class="cart-badge">0</span>
       </a>
       <div class="search-overlay" id="search-overlay">
@@ -530,13 +554,13 @@
 <div class="mobile-nav-panel" id="mobile-nav-panel">
   <div class="close-btn" id="mobile-nav-close">&times;</div>
   <ul>
-    <li><a href="#">首页</a></li>
-    <li><a href="#">旗帜系列</a></li>
-    <li><a href="#">圣诞节与节日</a></li>
-    <li><a href="#">婚礼与鲜花</a></li>
-    <li><a href="#">动物系列</a></li>
-    <li><a href="#">其他年份</a></li>
-    <li><a href="#">联系我们</a></li>
+    <li><a href="#">HOME</a></li>
+    <li><a href="#">FLAG SERIES</a></li>
+    <li><a href="#">CHRISTMAS &amp; HOLIDAY</a></li>
+    <li><a href="#">WEDDING &amp; FLOWERS</a></li>
+    <li><a href="#">ANIMAL SERIES</a></li>
+    <li><a href="#">OTHER YEARS</a></li>
+    <li><a href="#">CONTACT US</a></li>
   </ul>
 </div>
 
@@ -549,86 +573,86 @@
   <div class="section-title"><h2>STAMPS CATEGORIES</h2></div>
   <div class="categories-grid">
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#3a5a8a,#6a8fc0);"></div>
+      <div class="category-image" style="background:#e8d5e0;"></div>
       <p class="category-name">2017</p>
       <p class="category-count">12 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#5a3a8a,#9a6ac0);"></div>
+      <div class="category-image" style="background:#d4e0d4;"></div>
       <p class="category-name">2018</p>
       <p class="category-count">9 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#3a8a5a,#6ac09a);"></div>
+      <div class="category-image" style="background:#c8392b;"></div>
       <p class="category-name">2019</p>
       <p class="category-count">20 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#8a5a3a,#c09a6a);"></div>
+      <div class="category-image" style="background:#cc3333;"></div>
       <p class="category-name">2020</p>
       <p class="category-count">18 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#8a3a5a,#c06a8a);"></div>
+      <div class="category-image" style="background:#d4c5a0;"></div>
       <p class="category-name">2021</p>
       <p class="category-count">26 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#5a8a3a,#9ac06a);"></div>
+      <div class="category-image" style="background:#e0c8d0;"></div>
       <p class="category-name">2022</p>
       <p class="category-count">30 PRODUCTS</p>
     </div>
   </div>
   <div class="categories-grid">
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#3a6a8a,#6aaac0);"></div>
+      <div class="category-image" style="background:#d5e0c5;"></div>
       <p class="category-name">2023</p>
       <p class="category-count">29 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#6a3a8a,#aa6ac0);"></div>
+      <div class="category-image" style="background:#e04040;"></div>
       <p class="category-name">2024</p>
       <p class="category-count">31 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#3a8a6a,#6ac0aa);"></div>
+      <div class="category-image" style="background:#4477aa;"></div>
       <p class="category-name">2025</p>
       <p class="category-count">18 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#8a6a3a,#c0aa6a);"></div>
+      <div class="category-image" style="background:#c5b090;"></div>
       <p class="category-name">OTHER YEARS</p>
       <p class="category-count">47 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#8a3a6a,#c06aaa);"></div>
+      <div class="category-image" style="background:#e8e0d8;"></div>
       <p class="category-name">2 OZ LETTER</p>
       <p class="category-count">7 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#6a8a3a,#aac06a);"></div>
+      <div class="category-image" style="background:#6aaa40;"></div>
       <p class="category-name">GLOBAL SERIES</p>
       <p class="category-count">4 PRODUCTS</p>
     </div>
   </div>
   <div class="categories-row-last">
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#1a8a5c,#2ecc71);"></div>
+      <div class="category-image" style="background:#3366aa;"></div>
       <p class="category-name">ANIMAL SERIES</p>
       <p class="category-count">23 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#1e5631,#c0392b);"></div>
+      <div class="category-image" style="background:#cc3333;"></div>
       <p class="category-name">CHRISTMAS &amp; HOLIDAY</p>
       <p class="category-count">28 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#8e44ad,#e8a0bf);"></div>
+      <div class="category-image" style="background:#e8ddd0;"></div>
       <p class="category-name">WEDDING &amp; FLOWERS</p>
       <p class="category-count">29 PRODUCTS</p>
     </div>
     <div class="category-card">
-      <div class="category-image" style="background:linear-gradient(135deg,#1a3a6b,#c0392b);"></div>
+      <div class="category-image" style="background:#dddddd;"></div>
       <p class="category-name">FLAG SERIES</p>
       <p class="category-count">11 PRODUCTS</p>
     </div>
