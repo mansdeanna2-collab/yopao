@@ -14,7 +14,7 @@
 
 <div class="top-bar">
   <span class="top-bar-text">Free Shipping On All Orders. 3–8 Business Days Delivery</span>
-  <span class="top-bar-search">🔍</span>
+  <span class="top-bar-search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
 </div>
 
 <div class="header-wrapper" id="header">
@@ -31,12 +31,14 @@
       <a href="#">CONTACT US</a>
     </nav>
     <div class="header-right">
-      <a href="#" class="header-icon account-icon desktop-only" aria-label="Account">&#128100;</a>
+      <a href="#" id="account-btn" class="header-icon account-icon" aria-label="Account"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></a>
       <div class="cart-wrapper" id="cart-wrapper">
         <button class="cart-link" id="cart-toggle" aria-label="Cart">
-          <span id="cart-total">$0.00</span>
-          <span class="cart-badge" id="cart-badge">0</span>
-        </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span id="cart-total">$0.00</span>
+            <span class="cart-divider"></span>
+            <span class="cart-badge" id="cart-badge">0</span>
+          </button>
         <div class="cart-dropdown" id="cart-dropdown">
           <div id="cart-items-list"></div>
           <div class="cart-subtotal" id="cart-subtotal-row" style="display:none">
@@ -209,6 +211,23 @@
 </footer>
 
 <button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
+
+<!-- ========== Login Modal ========== -->
+<div id="login-modal-overlay">
+  <div id="login-modal">
+    <button id="login-modal-close" aria-label="Close">&times;</button>
+    <h2>Login</h2>
+    <form onsubmit="return false;">
+      <input class="login-modal-input" type="text" id="login-username" placeholder="Username or Email" aria-label="Username or Email" autocomplete="username">
+      <input class="login-modal-input" type="password" id="login-password" placeholder="Password" aria-label="Password" autocomplete="current-password">
+      <label class="login-modal-remember"><input type="checkbox"> Remember me</label>
+      <button class="login-modal-submit" type="submit">Log in</button>
+    </form>
+    <a href="#" class="login-modal-lost">Lost your password?</a>
+    <hr class="login-modal-divider">
+    <button class="login-modal-create" type="button">Create an account</button>
+  </div>
+</div>
 
 <script src="../js/common.js"></script>
 </body>
