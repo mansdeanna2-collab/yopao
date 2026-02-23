@@ -28,6 +28,8 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 }
 
+EXTERNAL_URL_PATTERN = r"https://eddm\.shop/wp-content/uploads/[^\s'\")]+"
+
 
 def url_to_filename(url):
     """Convert an image URL to a unique local filename."""
@@ -85,9 +87,7 @@ def main():
     if os.path.exists(INDEX_HTML):
         with open(INDEX_HTML, "r", encoding="utf-8") as f:
             html_content = f.read()
-        html_urls = set(re.findall(
-            r'https://eddm\.shop/wp-content/uploads/[^\s\'\")]+', html_content
-        ))
+        html_urls = set(re.findall(EXTERNAL_URL_PATTERN, html_content))
         all_urls |= html_urls
 
     print(f"Found {len(all_urls)} unique image URLs to download.")
@@ -130,7 +130,7 @@ def main():
         with open(INDEX_HTML, "r", encoding="utf-8") as f:
             html_content = f.read()
         html_content = re.sub(
-            r'https://eddm\.shop/wp-content/uploads/[^\s\'\")]+',
+            EXTERNAL_URL_PATTERN,
             lambda m: to_local_path(m.group(0)),
             html_content,
         )
