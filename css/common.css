@@ -8,7 +8,9 @@ img { max-width: 100%; display: block; }
 /* ========== Top Bar ========== */
 .top-bar { background: #333365; color: #fff; text-align: center; padding: 8px 15px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; position: relative; }
 .top-bar .top-bar-text { text-decoration: underline; }
-.top-bar .top-bar-search { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 16px; cursor: pointer; }
+.top-bar .top-bar-search { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; display: inline-flex; align-items: center; color: #fff; opacity: 0.9; }
+.top-bar .top-bar-search:hover { opacity: 0.65; }
+.top-bar .top-bar-search svg { width: 18px; height: 18px; display: block; }
 
 /* ========== Header ========== */
 .site-header { background: #fff; height: 90px; display: flex; align-items: center; padding: 0 15px; max-width: 1200px; margin: 0 auto; position: relative; }
@@ -20,8 +22,13 @@ img { max-width: 100%; display: block; }
 .nav-main a:hover { color: #446084; }
 .header-right { display: flex; align-items: center; gap: 15px; margin-left: auto; }
 .header-icon { cursor: pointer; font-size: 18px; color: #555; }
+.account-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #333365; border-radius: 50%; border: none; cursor: pointer; color: #fff; transition: background 0.2s; padding: 0; text-decoration: none; }
+.account-icon:hover { background: #22224f; }
+.account-icon svg { width: 16px; height: 16px; display: block; }
 .cart-link { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: #555; background: none; border: none; cursor: pointer; position: relative; }
-.cart-badge { background: #333365; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+.cart-link svg { width: 20px; height: 20px; display: block; flex-shrink: 0; }
+.cart-divider { display: inline-block; width: 1px; height: 16px; background: #ccc; margin: 0 4px; vertical-align: middle; }
+.cart-badge { background: #fff; color: #555; border: 1px solid #ccc; border-radius: 3px; min-width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; padding: 0 4px; }
 .hamburger { display: none; background: none; border: none; font-size: 26px; cursor: pointer; color: #333; padding: 5px; }
 
 /* ========== Mobile Nav ========== */
@@ -99,4 +106,24 @@ img { max-width: 100%; display: block; }
   .footer-column { flex: 100%; }
   .footer-columns { padding: 0 20px; }
   .cart-dropdown { width: calc(100vw - 30px); right: -10px; }
+  .account-icon { display: none; }
 }
+
+/* ========== Login Modal ========== */
+@keyframes loginFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+#login-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; }
+#login-modal-overlay.active { display: flex; }
+#login-modal { background: #fff; border-radius: 8px; padding: 30px; max-width: 400px; width: calc(100% - 30px); position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.2); animation: loginFadeIn 0.25s ease; }
+#login-modal-close { position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; border-radius: 50%; border: none; background: none; font-size: 24px; line-height: 1; cursor: pointer; color: #555; display: flex; align-items: center; justify-content: center; }
+#login-modal-close:hover { color: #000; }
+#login-modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #333; }
+.login-modal-input { display: block; width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; font-size: 14px; font-family: inherit; }
+.login-modal-input:focus { outline: none; border-color: #333365; }
+.login-modal-remember { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 14px; color: #555; cursor: pointer; }
+.login-modal-submit { display: block; width: 100%; background: #333365; color: #fff; border: none; padding: 12px; border-radius: 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; font-family: inherit; }
+.login-modal-submit:hover { background: #22224f; }
+.login-modal-lost { display: block; text-align: center; margin-top: 14px; font-size: 13px; color: #555; }
+.login-modal-lost:hover { color: #333365; }
+.login-modal-divider { border: none; border-top: 1px solid #eee; margin: 18px 0; }
+.login-modal-create { display: block; width: 100%; text-align: center; border: 1px solid #333365; color: #333365; padding: 11px; border-radius: 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; background: none; font-family: inherit; }
+.login-modal-create:hover { background: #333365; color: #fff; }
