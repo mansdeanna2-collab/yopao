@@ -328,15 +328,28 @@
   }
 
   function init() {
-    fetch('../products_data.json')
-      .then(function(res) { return res.json(); })
+    // Fetch products from PHP API (MySQL database) with fallback to static JSON
+    fetch('/api/products.php?action=list')
+      .then(function(res) {
+        if (!res.ok) throw new Error('API unavailable');
+        return res.json();
+      })
       .then(function(data) {
         allProducts = data;
         render();
       })
       .catch(function() {
-        document.getElementById('products-grid').innerHTML =
-          '<p style="grid-column:1/-1;text-align:center;padding:2rem;">Error loading products.</p>';
+        // Fallback: load from static JSON file if API is not available
+        fetch('../products_data.json')
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            allProducts = data;
+            render();
+          })
+          .catch(function() {
+            document.getElementById('products-grid').innerHTML =
+              '<p style="grid-column:1/-1;text-align:center;padding:2rem;">Error loading products.</p>';
+          });
       });
   }
 

@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+images/products/*
+images/categories/*
+!images/products/.gitkeep
+!images/categories/.gitkeep
+products_data_local.json
