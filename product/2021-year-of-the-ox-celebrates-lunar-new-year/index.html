@@ -100,9 +100,7 @@
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/C2D86E9E-D18C-6259-01E7-D96D1C3FAEE1-100x100.jpg" alt="2021 Year of the Ox Celebrates Lunar New Year" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/C2D86E9E-D18C-6259-01E7-D96D1C3FAEE1.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/1796D520-2D6F-1953-7788-AB7F08524DAA-100x100.jpg" alt="2021 Year of the Ox Celebrates Lunar New Year" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/1796D520-2D6F-1953-7788-AB7F08524DAA.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/7A033664-6D75-BB52-142C-99B6981F1D9E-100x100.jpg" alt="2021 Year of the Ox Celebrates Lunar New Year" data-index="3" data-full="https://eddm.shop/wp-content/uploads/2026/01/7A033664-6D75-BB52-142C-99B6981F1D9E.jpg">
-          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/D598BB55-C08B-A3E7-6DEC-9D9EAE788ED4-100x100.jpg" alt="2021 Year of the Ox Celebrates Lunar New Year" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/D598BB55-C08B-A3E7-6DEC-9D9EAE788ED4.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2021-year-of-the-ox-celebrates-lunar-new-year/&media=https://eddm.shop/wp-content/uploads/2026/01/18-HEAD-c49a59ff-4326-4660-b3ab-21e61380672d-800x800.jpg&description=2021%20Year%20of%20the%20Ox%20Celebrates%20Lunar%20New%20Year" alt="2021 Year of the Ox Celebrates Lunar New Year" data-index="5" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2021-year-of-the-ox-celebrates-lunar-new-year/&media=https://eddm.shop/wp-content/uploads/2026/01/18-HEAD-c49a59ff-4326-4660-b3ab-21e61380672d-800x800.jpg&description=2021%20Year%20of%20the%20Ox%20Celebrates%20Lunar%20New%20Year">
-      </div>
+          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/D598BB55-C08B-A3E7-6DEC-9D9EAE788ED4-100x100.jpg" alt="2021 Year of the Ox Celebrates Lunar New Year" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/D598BB55-C08B-A3E7-6DEC-9D9EAE788ED4.jpg">      </div>
     </div>
 
     <!-- Product Info -->
@@ -357,7 +355,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/18-HEAD-c49a59ff-4326-4660-b3ab-21e61380672d.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/C2D86E9E-D18C-6259-01E7-D96D1C3FAEE1.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/1796D520-2D6F-1953-7788-AB7F08524DAA.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/7A033664-6D75-BB52-142C-99B6981F1D9E.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/D598BB55-C08B-A3E7-6DEC-9D9EAE788ED4.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2021-year-of-the-ox-celebrates-lunar-new-year/&media=https://eddm.shop/wp-content/uploads/2026/01/18-HEAD-c49a59ff-4326-4660-b3ab-21e61380672d-800x800.jpg&description=2021%20Year%20of%20the%20Ox%20Celebrates%20Lunar%20New%20Year'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/18-HEAD-c49a59ff-4326-4660-b3ab-21e61380672d.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/C2D86E9E-D18C-6259-01E7-D96D1C3FAEE1.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/1796D520-2D6F-1953-7788-AB7F08524DAA.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/7A033664-6D75-BB52-142C-99B6981F1D9E.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/D598BB55-C08B-A3E7-6DEC-9D9EAE788ED4.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -404,6 +402,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

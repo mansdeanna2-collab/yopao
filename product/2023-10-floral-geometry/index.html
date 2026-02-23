@@ -98,9 +98,7 @@
       <div class="gallery-thumbs">
           <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7-100x100.jpg" alt="2023 $10 Floral Geometry" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/122604-L2-00511b97-aa7a-4c8d-995d-1d3d74b47a78-100x100.jpg" alt="2023 $10 Floral Geometry" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/122604-L2-00511b97-aa7a-4c8d-995d-1d3d74b47a78.jpg">
-          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/122604-L1-46f4a3f7-fc54-42d4-a422-c94fb8fb6334-100x100.jpg" alt="2023 $10 Floral Geometry" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/122604-L1-46f4a3f7-fc54-42d4-a422-c94fb8fb6334.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2023-10-floral-geometry/&media=https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7.jpg&description=2023%20%2410%20Floral%20Geometry" alt="2023 $10 Floral Geometry" data-index="3" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2023-10-floral-geometry/&media=https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7.jpg&description=2023%20%2410%20Floral%20Geometry">
-      </div>
+          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/122604-L1-46f4a3f7-fc54-42d4-a422-c94fb8fb6334-100x100.jpg" alt="2023 $10 Floral Geometry" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/122604-L1-46f4a3f7-fc54-42d4-a422-c94fb8fb6334.jpg">      </div>
     </div>
 
     <!-- Product Info -->
@@ -355,7 +353,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/122604-L2-00511b97-aa7a-4c8d-995d-1d3d74b47a78.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/122604-L1-46f4a3f7-fc54-42d4-a422-c94fb8fb6334.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2023-10-floral-geometry/&media=https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7.jpg&description=2023%20%2410%20Floral%20Geometry'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/122604-L0-a929c773-1bde-4528-a4c0-fa9193b144a7.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/122604-L2-00511b97-aa7a-4c8d-995d-1d3d74b47a78.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/122604-L1-46f4a3f7-fc54-42d4-a422-c94fb8fb6334.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -402,6 +400,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

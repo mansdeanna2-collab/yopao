@@ -100,9 +100,7 @@
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/stamps-c4e532fd-f840-490a-bc3e-9bb6eee8d3ac-100x100.jpg" alt="2025 Love Notecards" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/stamps-c4e532fd-f840-490a-bc3e-9bb6eee8d3ac.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/stamps-100x100.jpg" alt="2025 Love Notecards" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/stamps.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/stamps-19251991-7b34-4ff1-949f-32426464fa28-100x100.jpg" alt="2025 Love Notecards" data-index="3" data-full="https://eddm.shop/wp-content/uploads/2026/01/stamps-19251991-7b34-4ff1-949f-32426464fa28.jpg">
-          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/stamps-0eeb9803-8f2b-4340-8932-928d5a53237d-100x100.jpg" alt="2025 Love Notecards" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/stamps-0eeb9803-8f2b-4340-8932-928d5a53237d.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2025-love-notecards/&media=https://eddm.shop/wp-content/uploads/2026/01/stamps.png&description=2025%20Love%20Notecards" alt="2025 Love Notecards" data-index="5" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2025-love-notecards/&media=https://eddm.shop/wp-content/uploads/2026/01/stamps.png&description=2025%20Love%20Notecards">
-      </div>
+          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/stamps-0eeb9803-8f2b-4340-8932-928d5a53237d-100x100.jpg" alt="2025 Love Notecards" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/stamps-0eeb9803-8f2b-4340-8932-928d5a53237d.jpg">      </div>
     </div>
 
     <!-- Product Info -->
@@ -357,7 +355,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/stamps.png', 'https://eddm.shop/wp-content/uploads/2026/01/stamps-c4e532fd-f840-490a-bc3e-9bb6eee8d3ac.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/stamps.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/stamps-19251991-7b34-4ff1-949f-32426464fa28.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/stamps-0eeb9803-8f2b-4340-8932-928d5a53237d.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2025-love-notecards/&media=https://eddm.shop/wp-content/uploads/2026/01/stamps.png&description=2025%20Love%20Notecards'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/stamps.png', 'https://eddm.shop/wp-content/uploads/2026/01/stamps-c4e532fd-f840-490a-bc3e-9bb6eee8d3ac.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/stamps.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/stamps-19251991-7b34-4ff1-949f-32426464fa28.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/stamps-0eeb9803-8f2b-4340-8932-928d5a53237d.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -404,6 +402,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

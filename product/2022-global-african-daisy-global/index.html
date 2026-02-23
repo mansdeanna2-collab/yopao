@@ -98,9 +98,7 @@
       <div class="gallery-thumbs">
           <img class="gallery-thumb active" src="https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4-100x100.jpg" alt="2022 Global African Daisy Global" data-index="0" data-full="https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/580104-Z2-3ecaa8df-c77d-432f-9376-487e71608be7-100x100.jpg" alt="2022 Global African Daisy Global" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/580104-Z2-3ecaa8df-c77d-432f-9376-487e71608be7.jpg">
-          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/580104-L0-c2270bed-466b-437a-b385-49196b39cbe4-100x100.jpg" alt="2022 Global African Daisy Global" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/580104-L0-c2270bed-466b-437a-b385-49196b39cbe4.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-global-african-daisy-global/&media=https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4.jpg&description=2022%20Global%20African%20Daisy%20Global" alt="2022 Global African Daisy Global" data-index="3" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-global-african-daisy-global/&media=https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4.jpg&description=2022%20Global%20African%20Daisy%20Global">
-      </div>
+          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/580104-L0-c2270bed-466b-437a-b385-49196b39cbe4-100x100.jpg" alt="2022 Global African Daisy Global" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/580104-L0-c2270bed-466b-437a-b385-49196b39cbe4.jpg">      </div>
     </div>
 
     <!-- Product Info -->
@@ -355,7 +353,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/580104-Z2-3ecaa8df-c77d-432f-9376-487e71608be7.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/580104-L0-c2270bed-466b-437a-b385-49196b39cbe4.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-global-african-daisy-global/&media=https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4.jpg&description=2022%20Global%20African%20Daisy%20Global'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/580104-Z1-32f6048c-0061-4021-9f1b-d3142b4dafd4.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/580104-Z2-3ecaa8df-c77d-432f-9376-487e71608be7.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/580104-L0-c2270bed-466b-437a-b385-49196b39cbe4.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -402,6 +400,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>

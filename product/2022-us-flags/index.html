@@ -100,9 +100,7 @@
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/15-2022-flag-in-rolls-1-b975d1ad-ea8d-4155-adc9-77222a69fcff-100x100.jpg" alt="2022 US Flags" data-index="1" data-full="https://eddm.shop/wp-content/uploads/2026/01/15-2022-flag-in-rolls-1-b975d1ad-ea8d-4155-adc9-77222a69fcff.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/EAC00009-9761-D6CF-2D80-DD27A0C31E4B-1-100x100.jpg" alt="2022 US Flags" data-index="2" data-full="https://eddm.shop/wp-content/uploads/2026/01/EAC00009-9761-D6CF-2D80-DD27A0C31E4B-1.jpg">
           <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/a-25-100x100.jpg" alt="2022 US Flags" data-index="3" data-full="https://eddm.shop/wp-content/uploads/2026/01/a-25.jpg">
-          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/d-42-100x100.jpg" alt="2022 US Flags" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/d-42.jpg">
-          <img class="gallery-thumb" src="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-us-flags/&media=https://eddm.shop/wp-content/uploads/2026/01/C8D983CC-7BEA-CC9E-6A0E-059D512FE00B.jpg&description=2022%20US%20Flags" alt="2022 US Flags" data-index="5" data-full="https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-us-flags/&media=https://eddm.shop/wp-content/uploads/2026/01/C8D983CC-7BEA-CC9E-6A0E-059D512FE00B.jpg&description=2022%20US%20Flags">
-      </div>
+          <img class="gallery-thumb" src="https://eddm.shop/wp-content/uploads/2026/01/d-42-100x100.jpg" alt="2022 US Flags" data-index="4" data-full="https://eddm.shop/wp-content/uploads/2026/01/d-42.jpg">      </div>
     </div>
 
     <!-- Product Info -->
@@ -357,7 +355,7 @@ document.addEventListener("click",function(e){
 renderCart();
 
 // Gallery Slider
-var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/C8D983CC-7BEA-CC9E-6A0E-059D512FE00B.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/15-2022-flag-in-rolls-1-b975d1ad-ea8d-4155-adc9-77222a69fcff.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/EAC00009-9761-D6CF-2D80-DD27A0C31E4B-1.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/a-25.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/d-42.jpg', 'https://pinterest.com/pin/create/button?url=https://eddm.shop/product/2022-us-flags/&media=https://eddm.shop/wp-content/uploads/2026/01/C8D983CC-7BEA-CC9E-6A0E-059D512FE00B.jpg&description=2022%20US%20Flags'];
+var galleryImages = ['https://eddm.shop/wp-content/uploads/2026/01/C8D983CC-7BEA-CC9E-6A0E-059D512FE00B.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/15-2022-flag-in-rolls-1-b975d1ad-ea8d-4155-adc9-77222a69fcff.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/EAC00009-9761-D6CF-2D80-DD27A0C31E4B-1.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/a-25.jpg', 'https://eddm.shop/wp-content/uploads/2026/01/d-42.jpg'];
 var currentIndex = 0;
 var mainImg = document.getElementById("gallery-main-img");
 var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -404,6 +402,28 @@ document.getElementById("add-to-cart-main").addEventListener("click", function()
     addToCart(productId, productName, productPrice, productImage);
   }
 });
+
+// Variation button click handlers
+document.querySelectorAll(".variation-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    this.classList.add("active");
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = this.textContent;
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "";
+  });
+});
+var clearBtn = document.querySelector(".variation-clear");
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    document.querySelectorAll(".variation-btn").forEach(function(b) { b.classList.remove("active"); });
+    var label = document.querySelector(".variation-label span");
+    if (label) label.textContent = "";
+    var priceEl = document.querySelector(".selected-price");
+    if (priceEl) priceEl.style.display = "none";
+  });
+}
 </script>
 
 </body>
