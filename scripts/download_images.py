@@ -2,9 +2,9 @@
 """
 download_images.py — Download all product images from external URLs to local storage.
 
-This script reads products_data.json and downloads every image referenced in
-the product records to the local images/products/ directory. It also updates
-products_data.json with the new local image paths.
+This script reads products_data.json and index.html, downloads every image
+referenced to the local images/products/ directory, and updates both files
+to use local absolute paths (/images/products/filename).
 
 Usage:
     python3 scripts/download_images.py
@@ -21,6 +21,7 @@ from urllib.error import URLError, HTTPError
 
 REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRODUCTS_JSON = os.path.join(REPO_DIR, "products_data.json")
+INDEX_HTML = os.path.join(REPO_DIR, "index.html")
 IMAGES_DIR = os.path.join(REPO_DIR, "images", "products")
 
 HEADERS = {
@@ -57,9 +58,9 @@ def download_image(url, dest_path):
 
 
 def to_local_path(url):
-    """Convert an external URL to a local relative path."""
+    """Convert an external URL to a local absolute path."""
     filename = url_to_filename(url)
-    return f"images/products/{filename}"
+    return f"/images/products/{filename}"
 
 
 def main():
@@ -68,17 +69,28 @@ def main():
     with open(PRODUCTS_JSON, "r", encoding="utf-8") as f:
         products = json.load(f)
 
-    # Collect all unique image URLs
+    # Collect all unique image URLs from products_data.json
     all_urls = set()
     for product in products:
-        if product.get("img1"):
-            all_urls.add(product["img1"])
-        if product.get("img2"):
-            all_urls.add(product["img2"])
+        for key in ("img1", "img2"):
+            val = product.get(key, "")
+            if val and val.startswith("http"):
+                all_urls.add(val)
         for img_url in product.get("images", []):
-            all_urls.add(img_url)
+            if img_url.startswith("http"):
+                all_urls.add(img_url)
 
-    print(f"Found {len(all_urls)} unique image URLs across {len(products)} products.")
+    # Also collect image URLs from index.html (category cards & best sellers)
+    html_urls = set()
+    if os.path.exists(INDEX_HTML):
+        with open(INDEX_HTML, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        html_urls = set(re.findall(
+            r'https://eddm\.shop/wp-content/uploads/[^\s\'\")]+', html_content
+        ))
+        all_urls |= html_urls
+
+    print(f"Found {len(all_urls)} unique image URLs to download.")
 
     # Download all images
     success = 0
@@ -98,19 +110,33 @@ def main():
 
     # Update products_data.json with local paths
     for product in products:
-        if product.get("img1"):
-            product["img1"] = to_local_path(product["img1"])
-        if product.get("img2"):
-            product["img2"] = to_local_path(product["img2"])
+        for key in ("img1", "img2"):
+            val = product.get(key, "")
+            if val and val.startswith("http"):
+                product[key] = to_local_path(val)
         if product.get("images"):
-            product["images"] = [to_local_path(u) for u in product["images"]]
+            product["images"] = [
+                to_local_path(u) if u.startswith("http") else u
+                for u in product["images"]
+            ]
 
-    output_path = os.path.join(REPO_DIR, "products_data_local.json")
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(PRODUCTS_JSON, "w", encoding="utf-8") as f:
         json.dump(products, f, indent=2, ensure_ascii=False)
 
-    print(f"Updated product data saved to: {output_path}")
-    print("After verifying images, you can rename products_data_local.json to products_data.json")
+    print(f"Updated {PRODUCTS_JSON} with local image paths.")
+
+    # Update index.html with local paths
+    if html_urls and os.path.exists(INDEX_HTML):
+        with open(INDEX_HTML, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        html_content = re.sub(
+            r'https://eddm\.shop/wp-content/uploads/[^\s\'\")]+',
+            lambda m: to_local_path(m.group(0)),
+            html_content,
+        )
+        with open(INDEX_HTML, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        print(f"Updated {INDEX_HTML} with local image paths.")
 
 
 if __name__ == "__main__":
