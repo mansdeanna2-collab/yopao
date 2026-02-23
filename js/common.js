@@ -122,4 +122,10 @@ document.addEventListener('click',function(e){
   if(!cartWrapper.contains(e.target)){cartDropdown.classList.remove('visible');}
 });
 
+// Navigate to cart page when clicking VIEW CART or CHECKOUT
+var viewCartBtn=document.querySelector('.view-cart-btn');
+var checkoutBtn=document.querySelector('.checkout-btn');
+if(viewCartBtn){viewCartBtn.addEventListener('click',function(){window.location.href='/cart/';});}
+if(checkoutBtn){checkoutBtn.addEventListener('click',function(){window.location.href='/cart/';});}
+
 renderCart();
