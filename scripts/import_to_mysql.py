@@ -7,7 +7,7 @@ created by db/schema.sql.
 
 Prerequisites:
     1. MySQL server running with the database created:
-       mysql -u yopao -p -h 38.190.222.15 yopao < db/schema.sql
+       mysql -u yopao -p -h 127.0.0.1 yopao < db/schema.sql
     2. Install mysql-connector-python:
        pip install mysql-connector-python
     3. Set DB_PASS environment variable:
@@ -34,10 +34,10 @@ PRODUCTS_JSON = os.path.join(REPO_DIR, "products_data.json")
 # ── Database connection settings (must match db/config.php) ────────────
 # Set DB_PASS environment variable before running: export DB_PASS="your_password"
 DB_CONFIG = {
-    "host": os.environ.get("DB_HOST", "38.190.222.15"),
+    "host": os.environ.get("DB_HOST", "127.0.0.1"),
     "port": int(os.environ.get("DB_PORT", "3306")),
     "user": os.environ.get("DB_USER", "yopao"),
-    "password": os.environ.get("DB_PASS", ""),
+    "password": os.environ.get("DB_PASS", "6ffc39ea3c3a285d"),
     "database": os.environ.get("DB_NAME", "yopao"),
     "charset": "utf8mb4",
 }
