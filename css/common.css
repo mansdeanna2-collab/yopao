@@ -24,11 +24,11 @@ img { max-width: 100%; display: block; }
 .header-icon { cursor: pointer; font-size: 18px; color: #555; }
 .account-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #333365; border-radius: 50%; border: none; cursor: pointer; color: #fff; transition: background 0.2s; padding: 0; text-decoration: none; }
 .account-icon:hover { background: #22224f; }
-.account-icon svg { width: 16px; height: 16px; display: block; }
+.account-icon svg { width: 18px; height: 18px; display: block; fill: #fff; }
 .cart-link { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: #555; background: none; border: none; cursor: pointer; position: relative; }
-.cart-link svg { width: 20px; height: 20px; display: block; flex-shrink: 0; }
+.cart-link svg { width: 20px; height: 20px; display: block; flex-shrink: 0; color: #555; }
 .cart-divider { display: inline-block; width: 1px; height: 16px; background: #ccc; margin: 0 4px; vertical-align: middle; }
-.cart-badge { background: #fff; color: #555; border: 1px solid #ccc; border-radius: 3px; min-width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; padding: 0 4px; }
+.cart-badge { background: #fff; color: #555; border: 1px solid #ccc; border-radius: 3px; min-width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; padding: 0 5px; line-height: 1; }
 .hamburger { display: none; background: none; border: none; font-size: 26px; cursor: pointer; color: #333; padding: 5px; }
 
 /* ========== Mobile Nav ========== */
