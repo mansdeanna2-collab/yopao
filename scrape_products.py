@@ -474,6 +474,17 @@ def get_thumb_100_url(full_url):
     return re.sub(r"(\.\w+)$", r"-100x100\1", full_url)
 
 
+def deduplicate_urls(urls):
+    """去重URL列表，保持顺序"""
+    seen = set()
+    result = []
+    for url in urls:
+        if url not in seen:
+            seen.add(url)
+            result.append(url)
+    return result
+
+
 def determine_categories_for_product(slug, name, all_products_by_slug):
     """根据slug和所有分类页面中的出现情况，确定商品所属的所有分类"""
     categories = set()
@@ -604,13 +615,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
     # 确保gallery_images中的URL都是全尺寸的
     gallery_images = [get_full_size_url(url) for url in gallery_images]
     # 去重
-    seen = set()
-    unique_gallery = []
-    for url in gallery_images:
-        if url not in seen:
-            seen.add(url)
-            unique_gallery.append(url)
-    gallery_images = unique_gallery
+    gallery_images = deduplicate_urls(gallery_images)
 
     # 为向后兼容保留 img1_full, img2_full
     img1_full = gallery_images[0] if gallery_images else get_full_size_url(img1_thumb)
@@ -1278,19 +1283,10 @@ def main():
             if img2_f != img1_f:
                 all_images.append(img2_f)
         # 去重
-        seen_imgs = set()
-        unique_imgs = []
-        for url in all_images:
-            if url not in seen_imgs:
-                seen_imgs.add(url)
-                unique_imgs.append(url)
-        all_images = unique_imgs
+        all_images = deduplicate_urls(all_images)
 
         # 生成描述（优先使用远程数据）
-        if p.get("remote_description"):
-            desc = p["remote_description"]
-        else:
-            desc = generate_description(p["name"], p["category"])
+        desc = p.get("remote_description") or generate_description(p["name"], p["category"])
 
         products_json.append(
             {
