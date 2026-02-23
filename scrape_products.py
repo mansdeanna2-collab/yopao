@@ -118,64 +118,195 @@ def fetch_product_page(slug):
 def parse_remote_product_page(page_html, slug):
     """从 eddm.shop 商品页面HTML中提取商品详细信息
 
-    返回字典: {price, img1, img2, description, sku, images}
+    基于 WooCommerce + Flatsome 主题的实际HTML结构解析。
+    参考: 2.html.txt (1998 22c Uncle Sam 商品页面)
+
+    返回字典: {price, img1, img2, description, sku, stock, images, remote_category, ...}
     """
     info = {}
 
-    # 提取价格 - WooCommerce price format
+    # ── 提取价格 ──
+    # WooCommerce 价格格式: <span class="woocommerce-Price-currencySymbol">&#036;</span>29.00
+    # 匹配 product-page-price 区域的价格 (避免匹配购物车的 $0.00)
     price_m = re.search(
-        r'<span class="woocommerce-Price-amount[^"]*"[^>]*>'
-        r'<bdi>\s*<span[^>]*>\$</span>([\d.]+)\s*</bdi></span>',
+        r'class="price\s+product-page-price[^"]*"[^>]*>\s*'
+        r'.*?(?:&#36;|&#036;|\$)(?:</span>)?([\d.]+)',
         page_html,
+        re.DOTALL,
     )
     if not price_m:
-        price_m = re.search(r'class="product-price[^"]*"[^>]*>\s*\$?([\d.]+)', page_html)
+        # 备选: 从 price-wrapper 区域提取
+        price_m = re.search(
+            r'<div class="price-wrapper">\s*'
+            r'.*?class="price[^"]*"[^>]*>\s*'
+            r'.*?(?:&#36;|&#036;|\$)(?:</span>)?([\d.]+)',
+            page_html,
+            re.DOTALL,
+        )
     if price_m:
-        info["price"] = f"${price_m.group(1)}"
+        price_val = price_m.group(1)
+        if float(price_val) > 0:
+            info["price"] = f"${price_val}"
 
-    # 提取所有商品图片
+    # ── 提取商品变体数据 (data-product_variations JSON) ──
+    # 变体数据包含 SKU、库存、价格等详细信息
+    variations_m = re.search(
+        r'data-product_variations="([^"]*)"',
+        page_html,
+    )
+    if variations_m:
+        try:
+            variations_json = html.unescape(variations_m.group(1))
+            variations = json.loads(variations_json)
+            if variations and isinstance(variations, list):
+                var = variations[0]  # 取第一个变体
+
+                # 从变体数据提取 SKU
+                var_sku = var.get("sku", "")
+                if var_sku and var_sku != "N/A":
+                    info["sku"] = var_sku
+
+                # 从变体数据提取库存
+                avail_html = var.get("availability_html", "")
+                stock_m = re.search(r"(\d+)\s+in stock", avail_html)
+                if stock_m:
+                    info["stock"] = int(stock_m.group(1))
+
+                # 从变体数据提取价格（如果前面没提取到）
+                if "price" not in info:
+                    dp = var.get("display_price")
+                    if dp is not None:
+                        price_num = float(dp)
+                        info["price"] = f"${price_num:.2f}"
+
+                # 从变体数据提取图片
+                img_data = var.get("image", {})
+                if img_data:
+                    full_src = img_data.get("full_src", "")
+                    thumb_src = img_data.get("thumb_src", "")
+                    if full_src:
+                        info["var_img_full"] = full_src
+                    if thumb_src:
+                        info["var_img_thumb"] = thumb_src
+
+                # 从变体数据提取重量和尺寸
+                weight = var.get("weight", "")
+                if weight:
+                    info["weight"] = weight
+                dims = var.get("dimensions", {})
+                if dims:
+                    info["dimensions"] = dims
+        except (json.JSONDecodeError, ValueError, KeyError):
+            pass
+
+    # ── 提取SKU (备选: 从页面HTML直接提取) ──
+    if "sku" not in info:
+        sku_m = re.search(r'<span\s+class="sku"[^>]*>([^<]+)</span>', page_html)
+        if sku_m:
+            sku_val = sku_m.group(1).strip()
+            if sku_val and sku_val != "N/A":
+                info["sku"] = sku_val
+
+    # ── 提取商品图片 (画廊图片) ──
     images = []
-    # WooCommerce gallery images
+    # 方法1: 从 gallery data-src 属性提取全尺寸图片URL
     for img_m in re.finditer(
-        r'<img[^>]*class="[^"]*(?:wp-post-image|attachment-woocommerce)[^"]*"[^>]*src="([^"]*)"',
+        r'class="woocommerce-product-gallery__image[^"]*"[^>]*>'
+        r'\s*<a\s+href="([^"]*)"',
         page_html,
     ):
         img_url = img_m.group(1)
-        if img_url not in images:
+        if img_url and img_url not in images:
             images.append(img_url)
-    # data-src attributes (lazy loaded)
-    for img_m in re.finditer(r'data-src="(https://eddm\.shop/wp-content/uploads/[^"]*)"', page_html):
-        img_url = img_m.group(1)
-        if img_url not in images:
-            images.append(img_url)
-    # og:image meta tag
-    og_m = re.search(r'<meta\s+property="og:image"\s+content="([^"]*)"', page_html)
-    if og_m and og_m.group(1) not in images:
-        images.insert(0, og_m.group(1))
+
+    # 方法2: 从 data-src 属性提取 (Flatsome 主题 lazy load)
+    if not images:
+        for img_m in re.finditer(
+            r'data-src="(https://eddm\.shop/wp-content/uploads/[^"]*)"',
+            page_html,
+        ):
+            img_url = img_m.group(1)
+            if img_url not in images:
+                images.append(img_url)
+
+    # 方法3: 从 wp-post-image / attachment-woocommerce_thumbnail 提取
+    if not images:
+        for img_m in re.finditer(
+            r'<img[^>]*class="[^"]*(?:wp-post-image|attachment-woocommerce_thumbnail)[^"]*"'
+            r'[^>]*src="([^"]*)"',
+            page_html,
+        ):
+            img_url = img_m.group(1)
+            if img_url not in images:
+                images.append(img_url)
+
+    # 提取缩略图 URL (247x296 尺寸, 用于分类页面展示)
+    thumbs = []
+    for thumb_m in re.finditer(
+        r'class="attachment-woocommerce_thumbnail[^"]*"[^>]*src="([^"]*-247x296\.[^"]*)"',
+        page_html,
+    ):
+        thumb_url = thumb_m.group(1)
+        if thumb_url not in thumbs:
+            thumbs.append(thumb_url)
 
     if images:
         info["images"] = images
         info["img1"] = images[0]
         if len(images) > 1:
             info["img2"] = images[1]
+    if thumbs:
+        info["thumbs"] = thumbs
 
-    # 提取SKU
-    sku_m = re.search(r'<span\s+class="sku"[^>]*>([^<]+)</span>', page_html)
-    if sku_m:
-        info["sku"] = sku_m.group(1).strip()
-
-    # 提取描述
+    # ── 提取商品描述 (Description tab) ──
+    # WooCommerce 描述在 <div id="tab-description"> 面板中
     desc_m = re.search(
-        r'<div[^>]*class="[^"]*woocommerce-product-details__short-description[^"]*"[^>]*>\s*(.*?)\s*</div>',
+        r'<div[^>]*id="tab-description"[^>]*>\s*(.*?)\s*</div>\s*'
+        r'(?:<div[^>]*id="tab-additional_information"|</div>\s*</div>\s*</div>)',
         page_html,
         re.DOTALL,
     )
     if desc_m:
-        desc_text = re.sub(r"<[^>]+>", "", desc_m.group(1)).strip()
+        desc_html = desc_m.group(1)
+        # 清理HTML标签，保留纯文本
+        desc_text = re.sub(r"<[^>]+>", "", desc_html)
+        # 清理多余空白
+        desc_text = re.sub(r"\s+", " ", desc_text).strip()
         if desc_text:
             info["description"] = desc_text
 
-    # 提取分类
+    # ── 提取折扣表信息 ──
+    discount_rows = []
+    # 逐行提取: 先找每个 ywdpd_row, 再从中解析字段
+    for row_m in re.finditer(
+        r'<tr class="ywdpd_row">(.*?)</tr>',
+        page_html,
+        re.DOTALL,
+    ):
+        row_html = row_m.group(1)
+        qty_m = re.search(r'data-qtyMin="(\d+)"\s+data-qtyMax="([^"]*)"', row_html)
+        # 价格格式: &#036;</span>26.10 或 $26.10
+        price_m_row = re.search(r'(?:&#036;|&#36;|\$)(?:</span>)?([\d.]+)', row_html)
+        disc_m = re.search(r'(\d+)%', row_html)
+        label_m = re.search(r'class="qty-info"[^>]*>\s*([^<]*?)\s*</td>', row_html, re.DOTALL)
+        if qty_m and price_m_row and disc_m:
+            qty_min = int(qty_m.group(1))
+            qty_max_str = qty_m.group(2).strip()
+            qty_max = None if qty_max_str == "*" else int(qty_max_str)
+            qty_label = label_m.group(1).strip() if label_m else f"{qty_min}+"
+            price_val = float(price_m_row.group(1))
+            discount_pct = int(disc_m.group(1))
+            discount_rows.append({
+                "qty_min": qty_min,
+                "qty_max": qty_max,
+                "qty_label": qty_label,
+                "price": price_val,
+                "discount": discount_pct,
+            })
+    if discount_rows:
+        info["discount_table"] = discount_rows
+
+    # ── 提取分类 ──
     cat_m = re.search(
         r'<span\s+class="posted_in"[^>]*>.*?<a[^>]*>([^<]+)</a>',
         page_html,
@@ -183,6 +314,14 @@ def parse_remote_product_page(page_html, slug):
     )
     if cat_m:
         info["remote_category"] = cat_m.group(1).strip()
+
+    # ── 提取商品标题 ──
+    title_m = re.search(
+        r'<h1[^>]*class="[^"]*product.title[^"]*"[^>]*>\s*([^<]+?)\s*</h1>',
+        page_html,
+    )
+    if title_m:
+        info["title"] = html.unescape(title_m.group(1).strip())
 
     return info
 
@@ -406,16 +545,24 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
     price_match = re.search(r"[\d.]+", price_str)
     base_price = float(price_match.group()) if price_match else 29.00
 
-    # 计算折扣价
-    d10 = round(base_price * 0.9, 2)
-    d15 = round(base_price * 0.85, 2)
-    d20 = round(base_price * 0.8, 2)
-    d25 = round(base_price * 0.75, 2)
-    d30 = round(base_price * 0.7, 2)
+    # 使用远程折扣表数据（如果有），否则按默认比例计算
+    remote_discounts = product_data.get("remote_discount_table")
+    if remote_discounts and len(remote_discounts) >= 5:
+        d10 = remote_discounts[0]["price"]
+        d15 = remote_discounts[1]["price"]
+        d20 = remote_discounts[2]["price"]
+        d25 = remote_discounts[3]["price"]
+        d30 = remote_discounts[4]["price"]
+    else:
+        d10 = round(base_price * 0.9, 2)
+        d15 = round(base_price * 0.85, 2)
+        d20 = round(base_price * 0.8, 2)
+        d25 = round(base_price * 0.75, 2)
+        d30 = round(base_price * 0.7, 2)
 
     # 生成SKU和库存（优先使用远程数据）
     sku = product_data.get("remote_sku", generate_sku(slug))
-    stock = generate_stock(slug)
+    stock = product_data.get("remote_stock", generate_stock(slug))
 
     # 确定所有分类
     categories = determine_categories_for_product(slug, name, all_products_by_slug)
@@ -992,6 +1139,10 @@ def main():
                 p["remote_description"] = info["description"]
             if "sku" in info:
                 p["remote_sku"] = info["sku"]
+            if "stock" in info:
+                p["remote_stock"] = info["stock"]
+            if "discount_table" in info:
+                p["remote_discount_table"] = info["discount_table"]
 
     # Step 4: 生成商品详情页
     print("\n[4/5] 生成商品详情页...")
@@ -1025,6 +1176,7 @@ def main():
         )
         # 使用远程SKU（如果有），否则生成
         sku = p.get("remote_sku", generate_sku(slug))
+        stock = p.get("remote_stock", generate_stock(slug))
         products_json.append(
             {
                 "slug": slug,
@@ -1035,7 +1187,7 @@ def main():
                 "img1": p["img1"],
                 "img2": p["img2"],
                 "sku": sku,
-                "stock": generate_stock(slug),
+                "stock": stock,
             }
         )
 
