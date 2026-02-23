@@ -318,7 +318,7 @@ body { background: #fff; }
   .product-name { font-size: 13px; }
   .product-category { font-size: 9px; }
   .product-price { font-size: 13px; }
-  .page-num, .page-arrow { min-width: 36px; height: 36px; }
+  .page-num, .page-arrow { min-width: 40px; height: 40px; }
   .pagination { gap: 3px; flex-wrap: wrap; }
 }
 @media (max-width: 380px) {
