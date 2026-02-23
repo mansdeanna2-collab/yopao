@@ -115,12 +115,20 @@ def extract_products_from_html(filepath):
         name = m.group(6).strip()
         price = m.group(7).strip()
 
+        # 跳过 href="#" 的链接（无效的产品链接）
+        if href.strip() == "#":
+            continue
+
         # 从 href 中提取 slug
         slug_match = re.search(r"/product/([^/]+)/?", href)
         if slug_match:
             slug = slug_match.group(1)
         else:
             slug = href.strip("/").split("/")[-1]
+
+        # 跳过无效的 slug
+        if not slug or slug == "#":
+            continue
 
         products.append(
             {
