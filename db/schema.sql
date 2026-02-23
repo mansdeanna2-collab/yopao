@@ -1,11 +1,11 @@
 -- ============================================================
 -- MySQL Database Schema for Stamp Store
 -- ============================================================
--- Usage: mysql -u root -p < db/schema.sql
+-- Usage: mysql -u yopao -p -h 38.190.222.15 yopao < db/schema.sql
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS stamp_store DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE stamp_store;
+CREATE DATABASE IF NOT EXISTS yopao DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE yopao;
 
 -- ── Categories Table ──────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS categories (
