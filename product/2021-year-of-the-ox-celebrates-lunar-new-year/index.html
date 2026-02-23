@@ -425,6 +425,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>

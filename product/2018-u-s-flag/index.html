@@ -193,7 +193,7 @@
     <button class="tab-btn active" data-tab="description">Description</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>Description: The Battle of Fort Sumter was a 34-hour stand-off that marked the opening of the Civil War.? The flag that flew over the fort during that battle?would go on to inspire thousands of Americans as they fought their way through the long war. During the April 1861 battle. the flag????s pole was shot down and a lone soldier braved heavy enemy fire to raise it again.? After the battle ended. the fort????s commander insisted the flag be lowered to a 100-gun salute.? During the ceremony. the guns accidentally set off a pile of rifle cartridges. killing two men and injuring five others.? The first casualties of the war were suffered while paying honor to the flag. That battle-worn flag was taken to New York City for a Union rally attended by over 100.000 people.? The Fort Sumter flag then went on a multi-city tour through the North.? In each town. it was auctioned off to raise money for the war effort.? Whoever won the flag then donated it back to be auctioned in the next city.? The flag served as an important patriotic symbol and rallying point throughout the war.? It was returned to Fort Sumter exactly four years after the surrender as part of the celebrations of the Union????s victory. ? It was there at the start and it was there at the end ???C the Fort Sumter flag was a beacon of hope in battle and at home. helping the Union persevere.?</p>
+    <p>Description: The Battle of Fort Sumter was a 34-hour stand-off that marked the opening of the Civil War. The flag that flew over the fort during that battle would go on to inspire thousands of Americans as they fought their way through the long war. During the April 1861 battle. the flag's pole was shot down and a lone soldier braved heavy enemy fire to raise it again. After the battle ended. the fort's commander insisted the flag be lowered to a 100-gun salute. During the ceremony. the guns accidentally set off a pile of rifle cartridges. killing two men and injuring five others. The first casualties of the war were suffered while paying honor to the flag. That battle-worn flag was taken to New York City for a Union rally attended by over 100.000 people. The Fort Sumter flag then went on a multi-city tour through the North. In each town. it was auctioned off to raise money for the war effort. Whoever won the flag then donated it back to be auctioned in the next city. The flag served as an important patriotic symbol and rallying point throughout the war. It was returned to Fort Sumter exactly four years after the surrender as part of the celebrations of the Union's victory.  It was there at the start and it was there at the end — the Fort Sumter flag was a beacon of hope in battle and at home. helping the Union persevere.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
@@ -423,6 +423,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>

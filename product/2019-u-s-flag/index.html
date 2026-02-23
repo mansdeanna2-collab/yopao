@@ -193,7 +193,7 @@
     <button class="tab-btn active" data-tab="description">Description</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>Description: To some. the flag of the United States is a symbol of freedom. ?To others. it represents justice.? For prisoner of war (POW) Lieutenant Michael Christian. the flag was a very important symbol and not to be forgotten. Lieutenant Michael Christian was a bombardier/navigator in the Vietnam War. ?On April 24. 1967. his plane was shot down and he was captured.? Christian was imprisoned with the late Senator John McCain. who recalled the events of the POW camp while at the 1988 Republican National Convention. According to Senator McCain. over the course of several months. Mike Christian acquired a bamboo needle and scraps of material. ?With them he sewed a crude American flag on the inside of his shirt.? “Every afternoon. before we had a bowl of soup. we would hang Mike’s shirt on the wall of the cell and say the Pledge of Allegiance.” said McCain. One day. the Vietnamese found the flag and took Mike to be beaten and tortured.? After hours of abuse. he was returned to his cell. ?He could barely see out of his swollen eyes. but he immediately started sewing another American flag. There may be different opinions about what the US flag represents. ?However. to many Americans. the flag serves as a reminder of the price of freedom.</p>
+    <p>Description: To some. the flag of the United States is a symbol of freedom. To others. it represents justice. For prisoner of war (POW) Lieutenant Michael Christian. the flag was a very important symbol and not to be forgotten. Lieutenant Michael Christian was a bombardier/navigator in the Vietnam War. On April 24. 1967. his plane was shot down and he was captured. Christian was imprisoned with the late Senator John McCain. who recalled the events of the POW camp while at the 1988 Republican National Convention. According to Senator McCain. over the course of several months. Mike Christian acquired a bamboo needle and scraps of material. With them he sewed a crude American flag on the inside of his shirt. “Every afternoon. before we had a bowl of soup. we would hang Mike’s shirt on the wall of the cell and say the Pledge of Allegiance.” said McCain. One day. the Vietnamese found the flag and took Mike to be beaten and tortured. After hours of abuse. he was returned to his cell. He could barely see out of his swollen eyes. but he immediately started sewing another American flag. There may be different opinions about what the US flag represents. However. to many Americans. the flag serves as a reminder of the price of freedom.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
@@ -423,6 +423,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>

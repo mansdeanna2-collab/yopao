@@ -193,7 +193,7 @@
     <button class="tab-btn active" data-tab="description">Description</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>Description: The stamp features a colorful. three-dimensional mask depicting a dragon. Created out of paper. then cut. scored. and folded into shape. the mask is a contemporary take on the long tradition of paper-cut folk-art crafts created during this time of year. The dragon is embellished with acrylic paint and other paper elements. like flowers and tassels. Gold and red are the predominant colors ?a gold signifying prosperity in the coming year. and red representing good fortune. People born in the Year of the Dragon. the most auspicious sign in the Chinese zodiac. are said to be successful. wise. and powerful. Many Asian communities experience a baby boom because of the allure of the dragon. as many consider the sign to be favorable. In 2024. the Lunar New Year will mark the beginning of the Year of the Wood Dragon. Wood Dragons are said to be quieter and more introverted. but also successful. strong leaders who dedicate themselves fully to their work. Beginning in 2020. in observance of the Lunar New Year holiday. the U.S. Postal Service introduced its third ? Lunar New Year ? series. This is the fifth Forever? stamp in that series. which will continue through 2031 with stamps for the Year of the Snake. Horse. Ram. Monkey. Rooster. Dog. and Boar. Art director Antonio Alcal?????? designed the stamp with original art by Camille Chew.</p>
+    <p>Description: The stamp features a colorful. three-dimensional mask depicting a dragon. Created out of paper. then cut. scored. and folded into shape. the mask is a contemporary take on the long tradition of paper-cut folk-art crafts created during this time of year. The dragon is embellished with acrylic paint and other paper elements. like flowers and tassels. Gold and red are the predominant colors a gold signifying prosperity in the coming year. and red representing good fortune. People born in the Year of the Dragon. the most auspicious sign in the Chinese zodiac. are said to be successful. wise. and powerful. Many Asian communities experience a baby boom because of the allure of the dragon. as many consider the sign to be favorable. In 2024. the Lunar New Year will mark the beginning of the Year of the Wood Dragon. Wood Dragons are said to be quieter and more introverted. but also successful. strong leaders who dedicate themselves fully to their work. Beginning in 2020. in observance of the Lunar New Year holiday. the U.S. Postal Service introduced its third  Lunar New Year  series. This is the fifth Forever stamp in that series. which will continue through 2031 with stamps for the Year of the Snake. Horse. Ram. Monkey. Rooster. Dog. and Boar. Art director Antonio Alcal designed the stamp with original art by Camille Chew.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
@@ -423,6 +423,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>

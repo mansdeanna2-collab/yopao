@@ -169,6 +169,16 @@ body { background: #fff; }
   color: #7a9c59;
   font-weight: 700;
 }
+.discount-table tbody tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.discount-table tbody tr:hover {
+  background: #f0f0f0;
+}
+.discount-table tbody tr.active-row {
+  background: #e8e8f0;
+}
 
 /* ========== Variation ========== */
 .variation-row {
