@@ -231,6 +231,64 @@ body { background: #fff; }
   font-weight: 700;
 }
 
+/* ========== Emoji Placeholder Images ========== */
+.product-emoji-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 247 / 296;
+  font-size: 60px;
+}
+.bg-general  { background: linear-gradient(135deg, #c8d6e5 0%, #a8bbc8 100%); }
+.bg-animal   { background: linear-gradient(135deg, #d4e8c2 0%, #a8cc84 100%); }
+.bg-christmas{ background: linear-gradient(135deg, #f5c6cb 0%, #c0392b 100%); }
+.bg-flower   { background: linear-gradient(135deg, #f9d9e8 0%, #e08fb0 100%); }
+.bg-flag     { background: linear-gradient(135deg, #aac4e8 0%, #3a6ea8 100%); }
+
+/* ========== Pagination ========== */
+.pagination-area {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.result-count-bottom {
+  font-size: 14px;
+  color: #999;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.page-num,
+.page-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 14px;
+  color: #555;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.page-num:hover,
+.page-arrow:hover {
+  background: #333365;
+  color: #fff;
+  border-color: #333365;
+}
+.page-num.current-page {
+  background: #333365;
+  color: #fff;
+  border-color: #333365;
+  font-weight: 700;
+}
+
 /* ========== Category Responsive ========== */
 @media (max-width: 991px) {
   .sidebar { display: none; }
