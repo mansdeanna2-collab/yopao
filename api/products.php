@@ -14,44 +14,31 @@ header('Access-Control-Allow-Origin: *');
 
 require_once __DIR__ . '/../db/config.php';
 
-// CDN base URL for product images (used when local files are missing)
-define('IMAGE_CDN_BASE', 'https://eddm.shop/wp-content/uploads/2026/01/');
-
 /**
- * Resolve an image path to a working URL.
- * If the local file exists, returns the local path.
- * Otherwise, returns the external CDN URL.
+ * Ensure an image URL uses a local path.
+ * Converts any external eddm.shop URLs stored in the database to local /images/products/ paths.
  */
-function resolveImageUrl($path) {
-    if (!$path || $path === '') return '';
-    // Already an absolute URL — return as-is
-    if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) {
-        return $path;
+function ensureLocalImagePath($url) {
+    if (!$url || $url === '') return '';
+    // Convert external eddm.shop URLs to local paths
+    if (preg_match('#https?://eddm\.shop/wp-content/uploads/\d{4}/\d{2}/(.+)$#', $url, $m)) {
+        return '/images/products/' . $m[1];
     }
-    // Local path like /images/products/filename.jpg
-    if (strpos($path, '/images/products/') === 0) {
-        $filename = basename($path);
-        $localFile = __DIR__ . '/../images/products/' . $filename;
-        if (file_exists($localFile) && filesize($localFile) > 0) {
-            return $path;
-        }
-        return IMAGE_CDN_BASE . $filename;
-    }
-    return $path;
+    return $url;
 }
 
 /**
- * Apply resolveImageUrl to all image fields in a product array.
+ * Apply ensureLocalImagePath to all image fields in a product array.
  */
-function resolveProductImages(&$product) {
+function ensureLocalProductImages(&$product) {
     if (isset($product['img1'])) {
-        $product['img1'] = resolveImageUrl($product['img1']);
+        $product['img1'] = ensureLocalImagePath($product['img1']);
     }
     if (isset($product['img2'])) {
-        $product['img2'] = resolveImageUrl($product['img2']);
+        $product['img2'] = ensureLocalImagePath($product['img2']);
     }
     if (isset($product['images']) && is_array($product['images'])) {
-        $product['images'] = array_map('resolveImageUrl', $product['images']);
+        $product['images'] = array_map('ensureLocalImagePath', $product['images']);
     }
 }
 
@@ -106,7 +93,7 @@ function handleListProducts($pdo) {
         $product['images'] = getProductImages($pdo, $product['id']);
         $product['all_categories'] = getProductCategories($pdo, $product['id']);
         $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
-        resolveProductImages($product);
+        ensureLocalProductImages($product);
     }
 
     echo json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -137,7 +124,7 @@ function handleGetProduct($pdo) {
     $product['images'] = getProductImages($pdo, $product['id']);
     $product['all_categories'] = getProductCategories($pdo, $product['id']);
     $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
-    resolveProductImages($product);
+    ensureLocalProductImages($product);
 
     echo json_encode($product, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
@@ -161,7 +148,7 @@ function handleSearch($pdo) {
         $product['images'] = getProductImages($pdo, $product['id']);
         $product['all_categories'] = getProductCategories($pdo, $product['id']);
         $product['category'] = !empty($product['all_categories']) ? $product['all_categories'][0] : '';
-        resolveProductImages($product);
+        ensureLocalProductImages($product);
     }
 
     echo json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

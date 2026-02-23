@@ -128,22 +128,18 @@
 <script src="../js/common.js"></script>
 <script>
 (function () {
-  var IMAGE_CDN_BASE = 'https://eddm.shop/wp-content/uploads/2026/01/';
-
-  function resolveImageUrl(path) {
-    if (!path) return '';
-    if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) return path;
-    if (path.indexOf('/images/products/') === 0) {
-      return IMAGE_CDN_BASE + path.split('/').pop();
-    }
-    return path;
+  function ensureLocalImagePath(url) {
+    if (!url) return '';
+    var m = url.match(/https?:\/\/eddm\.shop\/wp-content\/uploads\/\d{4}\/\d{2}\/(.+)$/);
+    if (m) return '/images/products/' + m[1];
+    return url;
   }
 
-  function resolveProductImages(product) {
-    if (product.img1) product.img1 = resolveImageUrl(product.img1);
-    if (product.img2) product.img2 = resolveImageUrl(product.img2);
+  function ensureLocalProductImages(product) {
+    if (product.img1) product.img1 = ensureLocalImagePath(product.img1);
+    if (product.img2) product.img2 = ensureLocalImagePath(product.img2);
     if (product.images && product.images.length) {
-      product.images = product.images.map(resolveImageUrl);
+      product.images = product.images.map(ensureLocalImagePath);
     }
     return product;
   }
@@ -492,12 +488,12 @@
       })
       .then(function (product) {
         if (product.error) { showNotFound(); return; }
-        resolveProductImages(product);
+        ensureLocalProductImages(product);
         // Also fetch all products for related products section
         return fetch('/api/products.php?action=list')
           .then(function (res) { return res.json(); })
           .then(function (allProducts) {
-            allProducts.forEach(resolveProductImages);
+            allProducts.forEach(ensureLocalProductImages);
             try { sessionStorage.setItem(cacheKey, JSON.stringify(allProducts)); } catch(e) {}
             renderProduct(product, allProducts);
           });
@@ -507,7 +503,7 @@
         fetch('../products_data.json')
           .then(function (res) { return res.json(); })
           .then(function (allProducts) {
-            allProducts.forEach(resolveProductImages);
+            allProducts.forEach(ensureLocalProductImages);
             try { sessionStorage.setItem(cacheKey, JSON.stringify(allProducts)); } catch(e) {}
             var product = allProducts.find(function (p) { return p.slug === hash; });
             if (!product) { showNotFound(); return; }
