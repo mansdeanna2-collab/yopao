@@ -94,6 +94,59 @@ def name_to_slug(name):
     return slug
 
 
+def clean_description_text(text):
+    """清理从eddm.shop抓取的商品描述中的乱码字符
+
+    eddm.shop的商品描述因编码转换问题，包含用 ? 替代的Unicode字符:
+    - ?C (不含 ??C) = 破折号 —
+    - ???? = 右双引号 + 左双引号
+    - ??? = 右双引号
+    - ?? 在大写字母前 = 空格(原非换行空格)
+    - ?? 在单词前 = 左双引号 "
+    - 句尾孤立的 ? = 删除(原非换行空格)
+    """
+    if not text:
+        return text
+
+    # 先处理HTML实体
+    text = html.unescape(text)
+
+    # 移除开头的 "Description:" 标签
+    text = re.sub(r"^Description:\s*", "", text)
+
+    # 处理 ???? (4个问号) → 右引号 + 空格
+    text = re.sub(r"\?\?\?\?", '" ', text)
+
+    # 处理 ??? (3个问号) → 右引号 + 空格
+    text = re.sub(r"\?\?\?", '" ', text)
+
+    # 处理 ?? (2个问号) - 在 ?C 之前处理，避免 ??C 被误拆为 ? + ?C
+    # .?? 在大写字母前 = 句尾空格
+    text = re.sub(r"\.\?\?(?=[A-Z])", ". ", text)
+    # 空格 + ?? 在单词前 = 开引号
+    text = re.sub(r"(\s)\?\?(?=\w)", r'\1"', text)
+    # ?? 在文末 = 闭引号
+    text = re.sub(r"\?\?$", '"', text)
+    # ?? 在空格前 = 闭引号
+    text = re.sub(r"\?\?(?=\s)", '"', text)
+    # 剩余 ?? = 引号 + 空格
+    text = re.sub(r"\?\?", '" ', text)
+
+    # 处理单独的 ?C → — (em-dash)
+    text = text.replace("?C ", "— ")
+    text = text.replace("?C", "—")
+
+    # 处理句尾单独的 ? (在空格+大写字母前) = 删除
+    text = re.sub(r"\?(?=\s+[A-Z])", "", text)
+    # 文末的单独 ? = 删除
+    text = re.sub(r"\?$", "", text)
+
+    # 清理多余空格
+    text = re.sub(r"  +", " ", text)
+
+    return text.strip()
+
+
 def fetch_product_page(slug):
     """从 eddm.shop 抓取商品页面HTML
 
@@ -272,6 +325,8 @@ def parse_remote_product_page(page_html, slug):
         desc_text = re.sub(r"<[^>]+>", "", desc_html)
         # 清理多余空白
         desc_text = re.sub(r"\s+", " ", desc_text).strip()
+        # 清理乱码字符(? 替代的Unicode字符)
+        desc_text = clean_description_text(desc_text)
         if desc_text:
             info["description"] = desc_text
 
