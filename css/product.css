@@ -459,4 +459,33 @@ body { background: #fff; }
     flex-direction: column;
     align-items: stretch;
   }
+  .product-price-main {
+    font-size: 20px;
+  }
+  .discount-table {
+    font-size: 12px;
+  }
+  .discount-table th,
+  .discount-table td {
+    padding: 6px 6px;
+  }
+  .variation-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .gallery-thumbs {
+    flex-wrap: wrap;
+  }
+  .social-share {
+    justify-content: flex-start;
+  }
+  .product-section {
+    padding: 20px 10px;
+  }
+  .product-tabs-section {
+    padding: 0 10px 30px;
+  }
+  .related-section {
+    padding: 0 10px 30px;
+  }
 }

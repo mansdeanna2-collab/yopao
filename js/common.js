@@ -13,6 +13,8 @@ backToTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'s
 
 // ── Cart ──────────────────────────────────────────────────────────────────
 var cart=[];
+try{var saved=localStorage.getItem('yopao_cart');if(saved){var parsed=JSON.parse(saved);if(Array.isArray(parsed)){cart=parsed.filter(function(i){return i&&typeof i.id==='string'&&typeof i.name==='string'&&typeof i.price==='number'&&typeof i.qty==='number'&&i.qty>0;});}}}catch(e){}
+function saveCart(){try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}}
 var cartWrapper=document.getElementById('cart-wrapper');
 var cartDropdown=document.getElementById('cart-dropdown');
 var cartBadge=document.getElementById('cart-badge');
@@ -38,7 +40,8 @@ function renderCart(){
     cartSubtotalRow.style.display='none';
     cartActionBtns.style.display='none';
   } else {
-    var html='';
+    var html='<div class="cart-dropdown-title">Shopping Cart</div>';
+    html+='<div class="cart-dropdown-items">';
     cart.forEach(function(item){
       html+='<div class="cart-item">';
       html+='<img class="cart-item-img" src="'+item.image+'" alt="'+item.name+'">';
@@ -55,6 +58,7 @@ function renderCart(){
       html+='<button class="cart-item-remove" data-id="'+item.id+'">&times;</button>';
       html+='</div>';
     });
+    html+='</div>';
     cartItemsList.innerHTML=html;
     cartSubtotalRow.style.display='flex';
     cartSubtotalAmount.textContent=fmt(tot);
@@ -71,12 +75,14 @@ function renderCart(){
 function addToCart(id,name,price,image){
   var ex=cart.find(function(i){return i.id===id;});
   if(ex){ex.qty++;}else{cart.push({id:id,name:name,price:price,qty:1,image:image});}
+  saveCart();
   renderCart();
   cartDropdown.classList.add('visible');
 }
 
 function removeFromCart(id){
   cart=cart.filter(function(i){return i.id!==id;});
+  saveCart();
   renderCart();
 }
 
@@ -84,7 +90,7 @@ function updateQty(id,delta){
   var item=cart.find(function(i){return i.id===id;});
   if(!item)return;
   item.qty+=delta;
-  if(item.qty<=0){removeFromCart(id);}else{renderCart();}
+  if(item.qty<=0){removeFromCart(id);}else{saveCart();renderCart();}
 }
 
 // Inject data attributes into each product card and make them clickable

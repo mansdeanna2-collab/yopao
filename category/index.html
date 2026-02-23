@@ -260,8 +260,8 @@
       html += '<div class="product-card">' +
         '<a href="/product/#' + encodeURIComponent(p.slug) + '">' +
           '<div class="product-image">' +
-            '<img src="' + escapeHtml(p.img1) + '" alt="' + escapeHtml(p.name) + '">' +
-            '<img class="hover-img" src="' + escapeHtml(p.img2) + '" alt="">' +
+            '<img src="' + escapeHtml(p.img1) + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
+            '<img class="hover-img" src="' + escapeHtml(p.img2) + '" alt="" loading="lazy">' +
           '</div>' +
           '<div class="product-info">' +
             '<p class="product-category">' + escapeHtml(p.category) + '</p>' +
@@ -328,6 +328,16 @@
   }
 
   function init() {
+    // Try sessionStorage cache first for faster loads
+    var cacheKey = 'yopao_products_cache';
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(cacheKey)); } catch(e) {}
+    if (cached) {
+      allProducts = cached;
+      render();
+      return;
+    }
+
     // Fetch products from PHP API (MySQL database) with fallback to static JSON
     fetch('/api/products.php?action=list')
       .then(function(res) {
@@ -336,6 +346,7 @@
       })
       .then(function(data) {
         allProducts = data;
+        try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(e) {}
         render();
       })
       .catch(function() {
@@ -344,6 +355,7 @@
           .then(function(res) { return res.json(); })
           .then(function(data) {
             allProducts = data;
+            try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(e) {}
             render();
           })
           .catch(function() {
