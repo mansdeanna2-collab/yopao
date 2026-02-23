@@ -14,11 +14,8 @@ header('Access-Control-Allow-Origin: *');
 
 require_once __DIR__ . '/../db/config.php';
 
-// CDN base URLs for product images (tried in order when local files are missing)
-define('IMAGE_CDN_BASES', [
-    'https://eddm.shop/wp-content/uploads/2026/01/',
-    'https://eddm.shop/wp-content/uploads/2025/09/',
-]);
+// CDN base URL for product images (used when local files are missing)
+define('IMAGE_CDN_BASE', 'https://eddm.shop/wp-content/uploads/2026/01/');
 
 /**
  * Resolve an image path to a working URL.
@@ -38,8 +35,7 @@ function resolveImageUrl($path) {
         if (file_exists($localFile) && filesize($localFile) > 0) {
             return $path;
         }
-        // Use the first CDN base URL
-        return IMAGE_CDN_BASES[0] . $filename;
+        return IMAGE_CDN_BASE . $filename;
     }
     return $path;
 }
