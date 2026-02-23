@@ -122,6 +122,9 @@ img { max-width: 100%; display: block; }
 @media (max-width: 380px) {
   .top-bar .top-bar-text { font-size: 10px; }
   .logo a { font-size: 18px; gap: 5px; }
+  .cart-link { gap: 3px; }
+  .cart-link #cart-total { display: none; }
+  .cart-divider { display: none; }
 }
 
 /* ========== Login Modal ========== */
