@@ -439,14 +439,32 @@
     var hash = window.location.hash.replace(/^#/, '');
     if (!hash) { showNotFound(); return; }
 
-    fetch('../products_data.json')
-      .then(function (res) { return res.json(); })
-      .then(function (allProducts) {
-        var product = allProducts.find(function (p) { return p.slug === hash; });
-        if (!product) { showNotFound(); return; }
-        renderProduct(product, allProducts);
+    // Fetch from PHP API (MySQL database) with fallback to static JSON
+    fetch('/api/products.php?action=get&slug=' + encodeURIComponent(hash))
+      .then(function (res) {
+        if (!res.ok) throw new Error('API unavailable');
+        return res.json();
       })
-      .catch(function () { showNotFound(); });
+      .then(function (product) {
+        if (product.error) { showNotFound(); return; }
+        // Also fetch all products for related products section
+        return fetch('/api/products.php?action=list')
+          .then(function (res) { return res.json(); })
+          .then(function (allProducts) {
+            renderProduct(product, allProducts);
+          });
+      })
+      .catch(function () {
+        // Fallback: load from static JSON file if API is not available
+        fetch('../products_data.json')
+          .then(function (res) { return res.json(); })
+          .then(function (allProducts) {
+            var product = allProducts.find(function (p) { return p.slug === hash; });
+            if (!product) { showNotFound(); return; }
+            renderProduct(product, allProducts);
+          })
+          .catch(function () { showNotFound(); });
+      });
   }
 
   window.addEventListener('hashchange', function () { loadProduct(); });
