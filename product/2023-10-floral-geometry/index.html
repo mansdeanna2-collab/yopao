@@ -193,7 +193,7 @@
     <button class="tab-btn active" data-tab="description">Description</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>Description: SAN DIEGO ?a The U.S. Postal Service has issued a high-denomination stamp celebrating the mathematical symmetry of flowers. A dedication for the stamp was held today at the San Diego Stamp Show. The new $10 Floral Geometry stamp complements similar $2 and $5 stamps issued in 2022. These stamps lend a contemporary appearance to packages. large envelopes and other mailings. The Floral Geometry stamps began as an exploration of the patterns found in nature. specifically the symmetry of flowers. The designs feature a series of overlapping geometric shapes ?a circles. ovals and triangles ?a that reflect the symmetry of floral patterns. As the stamp denominations rise from $2 to $5 to $10. the designs become more complex. The watercolor backgrounds were painted by hand and scanned. The background for the $10 stamp is red; white geometric lines and typography were added digitally. A foil treatment adds a stylish glimmer. The stamps were designed and created by the firm Spaeth Hill. Antonio Alcal?????? was the art director.</p>
+    <p>Description: SAN DIEGO a The U.S. Postal Service has issued a high-denomination stamp celebrating the mathematical symmetry of flowers. A dedication for the stamp was held today at the San Diego Stamp Show. The new $10 Floral Geometry stamp complements similar $2 and $5 stamps issued in 2022. These stamps lend a contemporary appearance to packages. large envelopes and other mailings. The Floral Geometry stamps began as an exploration of the patterns found in nature. specifically the symmetry of flowers. The designs feature a series of overlapping geometric shapes a circles. ovals and triangles a that reflect the symmetry of floral patterns. As the stamp denominations rise from $2 to $5 to $10. the designs become more complex. The watercolor backgrounds were painted by hand and scanned. The background for the $10 stamp is red; white geometric lines and typography were added digitally. A foil treatment adds a stylish glimmer. The stamps were designed and created by the firm Spaeth Hill. Antonio Alcal was the art director.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
@@ -423,6 +423,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>

@@ -193,7 +193,7 @@
     <button class="tab-btn active" data-tab="description">Description</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>Description: Since Kwanzaa is a holiday celebrating African culture. one way to make it extra special is by wearing traditional African clothing. ?This may include a kaftan (dress). dashiki (shirt). gele (headwrap). or kente fabric. ?Of all these. kente is one of the most widely known elements of African fashion. Kente is a textile that originated many centuries ago in West Africa. ?The weaving of this fabric is a cultural tradition said to have been inspired by the way spiders spin intricate designs in their webs. ?Kente fabric consists of bright colors arranged in special patterns to tell a unique story. ?(Kente sometimes includes different symbols as well.). The most common colors are black. red. blue. gold or yellow. green. white. and purple or maroon. ?Each color represents a different idea. ?For example. black is for spiritual strength and maturity. while blue stands for peace. love. unity. and harmony. ?Red can mean blood. death. or political passion. while gold or yellow symbolizes wealth or royalty. ?Green is used to reflect growth. harvest. or renewal. white means purity or cleansing. and purple or maroon represents Mother Earth. healing. and protection from evil. As African culture spread across the globe. kente cloth made its way into popular fashion trends. ?However. its most important use is still in the telling of stories and preservation of tradition ???C just like Kwanzaa.</p>
+    <p>Description: Since Kwanzaa is a holiday celebrating African culture. one way to make it extra special is by wearing traditional African clothing. This may include a kaftan (dress). dashiki (shirt). gele (headwrap). or kente fabric. Of all these. kente is one of the most widely known elements of African fashion. Kente is a textile that originated many centuries ago in West Africa. The weaving of this fabric is a cultural tradition said to have been inspired by the way spiders spin intricate designs in their webs. Kente fabric consists of bright colors arranged in special patterns to tell a unique story. (Kente sometimes includes different symbols as well.). The most common colors are black. red. blue. gold or yellow. green. white. and purple or maroon. Each color represents a different idea. For example. black is for spiritual strength and maturity. while blue stands for peace. love. unity. and harmony. Red can mean blood. death. or political passion. while gold or yellow symbolizes wealth or royalty. Green is used to reflect growth. harvest. or renewal. white means purity or cleansing. and purple or maroon represents Mother Earth. healing. and protection from evil. As African culture spread across the globe. kente cloth made its way into popular fashion trends. However. its most important use is still in the telling of stories and preservation of tradition C just like Kwanzaa.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
@@ -423,6 +423,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>

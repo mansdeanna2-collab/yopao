@@ -193,7 +193,7 @@
     <button class="tab-btn active" data-tab="description">Description</button>
   </div>
   <div class="tab-panel active" id="tab-description">
-    <p>Description: On Sept. 14. the United States Postal Service will issue its new Christmas forever stamp at the Smithsonian’s National Postal Museum in Washington. D.C. The nondenominated (73??) Christmas Madonna and Child stamp features an oil-on-canvas painting by the workshop of Sassoferrato (1609?C85). an Italian artist. According to the Postal Service. ??he and his workshop produced many versions of this painting.?? ??The artwork depicts a watchful Madonna. her head tilted toward the sleeping Christ child nestled against her. She wears a blue cloak and a dark red gown. from which off-white undersleeves emerge at the elbows. A beige veil. reminiscent of a halo. covers part of her light brown hair. Her child appears partially swaddled in beige cloth.?? the Postal Service said. Sassoferrato himself was credited specifically as the artist for the Christmas stamp (Scott 4424) issued in 2009. When asked about the selection of this painting for the new Christmas stamp. designer Breeding told Linn’s: ??Our research agency constantly researches Madonna and Child images on display in American museums. As we pore through the images. we are often drawn to those from the Renaissance and Baroque periods. These images. like this Sassoferrato workshop painting. are life-like and offer a sense of the tenderness and warmth between mother and child.??</p>
+    <p>Description: On Sept. 14. the United States Postal Service will issue its new Christmas forever stamp at the Smithsonian’s National Postal Museum in Washington. D.C. The nondenominated (73) Christmas Madonna and Child stamp features an oil-on-canvas painting by the workshop of Sassoferrato (1609C85). an Italian artist. According to the Postal Service. he and his workshop produced many versions of this painting. The artwork depicts a watchful Madonna. her head tilted toward the sleeping Christ child nestled against her. She wears a blue cloak and a dark red gown. from which off-white undersleeves emerge at the elbows. A beige veil. reminiscent of a halo. covers part of her light brown hair. Her child appears partially swaddled in beige cloth. the Postal Service said. Sassoferrato himself was credited specifically as the artist for the Christmas stamp (Scott 4424) issued in 2009. When asked about the selection of this painting for the new Christmas stamp. designer Breeding told Linn’s: Our research agency constantly researches Madonna and Child images on display in American museums. As we pore through the images. we are often drawn to those from the Renaissance and Baroque periods. These images. like this Sassoferrato workshop painting. are life-like and offer a sense of the tenderness and warmth between mother and child.</p>
     <ul style="list-style:disc; padding-left:24px; margin-top:12px;">
       <li>100% authentic USPS Forever stamps</li>
       <li>Self-adhesive &ndash; no licking required</li>
@@ -423,6 +423,22 @@ if (clearBtn) {
     if (priceEl) priceEl.style.display = "none";
   });
 }
+
+// Discount table row click - set quantity
+var discountRows = document.querySelectorAll(".discount-table tbody tr");
+discountRows.forEach(function(row) {
+  row.addEventListener("click", function() {
+    var qtyText = this.cells[0].textContent.trim();
+    var match = qtyText.match(/(\d+)/);
+    if (match) {
+      var minQty = parseInt(match[1]);
+      var input = document.getElementById("qty-input");
+      if (input) input.value = minQty;
+      discountRows.forEach(function(r) { r.classList.remove("active-row"); });
+      this.classList.add("active-row");
+    }
+  });
+});
 </script>
 
 </body>
