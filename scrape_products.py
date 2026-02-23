@@ -590,11 +590,31 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
     img1_thumb = product_data["img1"]
     img2_thumb = product_data["img2"]
 
-    # 获取全尺寸图片URL
-    img1_full = get_full_size_url(img1_thumb)
-    img2_full = get_full_size_url(img2_thumb)
-    img1_100 = get_thumb_100_url(img1_full)
-    img2_100 = get_thumb_100_url(img2_full)
+    # 构建完整的图片列表（优先使用远程抓取的所有图片）
+    remote_images = product_data.get("remote_images", [])
+    if remote_images:
+        gallery_images = list(remote_images)
+    else:
+        img1_full = get_full_size_url(img1_thumb)
+        img2_full = get_full_size_url(img2_thumb)
+        gallery_images = [img1_full]
+        if img2_full != img1_full:
+            gallery_images.append(img2_full)
+
+    # 确保gallery_images中的URL都是全尺寸的
+    gallery_images = [get_full_size_url(url) for url in gallery_images]
+    # 去重
+    seen = set()
+    unique_gallery = []
+    for url in gallery_images:
+        if url not in seen:
+            seen.add(url)
+            unique_gallery.append(url)
+    gallery_images = unique_gallery
+
+    # 为向后兼容保留 img1_full, img2_full
+    img1_full = gallery_images[0] if gallery_images else get_full_size_url(img1_thumb)
+    img2_full = gallery_images[1] if len(gallery_images) > 1 else img1_full
 
     # 解析价格
     price_match = re.search(r"[\d.]+", price_str)
@@ -642,6 +662,17 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
 
     # HTML转义名称
     name_escaped = html.escape(name)
+
+    # 生成画廊缩略图HTML（支持任意数量的图片）
+    gallery_thumbs_html = ""
+    for idx, img_url in enumerate(gallery_images):
+        thumb_url = get_thumb_100_url(img_url)
+        active_class = ' active' if idx == 0 else ''
+        gallery_thumbs_html += f'\n        <img class="gallery-thumb{active_class}" src="{thumb_url}" alt="{html.escape(name)} view {idx + 1}" data-index="{idx}" data-full="{img_url}">'
+
+    # 生成JS画廊图片数组
+    gallery_js_items = ", ".join(f"'{img}'" for img in gallery_images)
+    gallery_js_array = f"[{gallery_js_items}]"
 
     # 选择相关商品（同分类的其他商品，最多5个）
     related = []
@@ -785,9 +816,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
         <button class="gallery-arrow next" id="gallery-next">&#10095;</button>
         <button class="gallery-zoom" id="gallery-zoom-btn" aria-label="Zoom">&#128269;</button>
       </div>
-      <div class="gallery-thumbs">
-        <img class="gallery-thumb active" src="{img1_100}" alt="{name_escaped}" data-index="0" data-full="{img1_full}">
-        <img class="gallery-thumb" src="{img2_100}" alt="{name_escaped}" data-index="1" data-full="{img2_full}">
+      <div class="gallery-thumbs">{gallery_thumbs_html}
       </div>
     </div>
 
@@ -953,7 +982,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
 <script>
 (function () {{
   // Gallery Slider
-  var galleryImages = ['{img1_full}', '{img2_full}'];
+  var galleryImages = {gallery_js_array};
   var currentIndex = 0;
   var mainImg = document.getElementById("gallery-main-img");
   var thumbs = document.querySelectorAll(".gallery-thumb");
@@ -1189,6 +1218,8 @@ def main():
             p = unique_products[slug]
             if "price" in info:
                 p["price"] = info["price"]
+            if "images" in info:
+                p["remote_images"] = info["images"]
             if "img1" in info:
                 p["img1"] = info["img1"]
             if "img2" in info:
@@ -1235,6 +1266,32 @@ def main():
         # 使用远程SKU（如果有），否则生成
         sku = p.get("remote_sku", generate_sku(slug))
         stock = p.get("remote_stock", generate_stock(slug))
+
+        # 构建完整图片列表
+        remote_images = p.get("remote_images", [])
+        if remote_images:
+            all_images = [get_full_size_url(url) for url in remote_images]
+        else:
+            img1_f = get_full_size_url(p["img1"])
+            img2_f = get_full_size_url(p["img2"])
+            all_images = [img1_f]
+            if img2_f != img1_f:
+                all_images.append(img2_f)
+        # 去重
+        seen_imgs = set()
+        unique_imgs = []
+        for url in all_images:
+            if url not in seen_imgs:
+                seen_imgs.add(url)
+                unique_imgs.append(url)
+        all_images = unique_imgs
+
+        # 生成描述（优先使用远程数据）
+        if p.get("remote_description"):
+            desc = p["remote_description"]
+        else:
+            desc = generate_description(p["name"], p["category"])
+
         products_json.append(
             {
                 "slug": slug,
@@ -1244,6 +1301,8 @@ def main():
                 "price": p["price"],
                 "img1": p["img1"],
                 "img2": p["img2"],
+                "images": all_images,
+                "description": desc,
                 "sku": sku,
                 "stock": stock,
             }
