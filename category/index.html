@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category – Buy Discount Postage Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/category.css">
+</head>
+<body>
+
+<!-- ========== Top Bar ========== -->
+<div class="top-bar">
+  <span class="top-bar-text">Free Shipping All Over Orders. 3–8 Business Days Delivery</span>
+  <span class="top-bar-search">🔍</span>
+</div>
+
+<!-- ========== Header ========== -->
+<div class="header-wrapper" id="header">
+  <header class="site-header">
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
+    <div class="logo"><a href="../"><span class="logo-icon">S</span>stampstores</a></div>
+    <nav class="nav-main">
+      <a href="../">HOME</a>
+      <a href="/category/#flag-series">FLAG SERIES</a>
+      <a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a>
+      <a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a>
+      <a href="/category/#animal-series">ANIMAL SERIES</a>
+      <a href="/category/#other-years">OTHER YEARS ▾</a>
+      <a href="#">CONTACT US</a>
+    </nav>
+    <div class="header-right">
+      <a href="#" class="header-icon account-icon desktop-only" aria-label="Account">&#128100;</a>
+      <div class="cart-wrapper" id="cart-wrapper">
+        <button class="cart-link" id="cart-toggle" aria-label="Cart">
+          <span id="cart-total">$0.00</span>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+        <div class="cart-dropdown" id="cart-dropdown">
+          <div id="cart-items-list"></div>
+          <div class="cart-subtotal" id="cart-subtotal-row" style="display:none">
+            <span>Subtotal:</span>
+            <span class="subtotal-amount" id="cart-subtotal-amount">$0.00</span>
+          </div>
+          <div class="cart-actions" id="cart-action-btns" style="display:none">
+            <button class="cart-btn view-cart-btn">VIEW CART</button>
+            <button class="cart-btn checkout-btn">CHECKOUT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+<div class="mobile-nav-panel" id="mobile-nav-panel">
+  <div class="close-btn" id="mobile-nav-close">&times;</div>
+  <ul>
+    <li><a href="../">HOME</a></li>
+    <li><a href="/category/#flag-series">FLAG SERIES</a></li>
+    <li><a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a></li>
+    <li><a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a></li>
+    <li><a href="/category/#animal-series">ANIMAL SERIES</a></li>
+    <li><a href="/category/#other-years">OTHER YEARS</a></li>
+    <li><a href="/category/#2-oz-letter">2 OZ LETTER</a></li>
+    <li><a href="/category/#global-series">GLOBAL SERIES</a></li>
+    <li><a href="#">CONTACT US</a></li>
+  </ul>
+</div>
+
+<!-- ========== Breadcrumb & Page Title ========== -->
+<div class="page-title-section">
+  <div class="page-title-inner">
+    <div class="breadcrumb">
+      <a href="../">HOME</a>
+      <span class="divider">/</span>
+      <span class="current" id="breadcrumb-category"></span>
+    </div>
+    <div class="page-title-right">
+      <span class="result-count" id="result-count-top"></span>
+      <select class="sort-select">
+        <option selected>Default sorting</option>
+        <option>Sort by popularity</option>
+        <option>Sort by latest</option>
+        <option>Sort by price: low to high</option>
+        <option>Sort by price: high to low</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Main Content ========== -->
+<div class="main-content">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <input type="text" placeholder="Search…">
+      <button type="button">🔍</button>
+    </div>
+
+    <div class="price-filter">
+      <h3 class="filter-title">Filter by price</h3>
+      <div class="price-slider-container">
+        <div class="price-slider">
+          <div class="price-slider-fill"></div>
+          <div class="price-slider-handle left"></div>
+          <div class="price-slider-handle right"></div>
+        </div>
+      </div>
+      <div class="price-filter-actions">
+        <button class="filter-btn">Filter</button>
+        <span class="price-label">Price: $20 — $30</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Products Grid -->
+  <div class="products-area">
+    <div class="products-grid" id="products-grid"></div>
+
+    <!-- Pagination -->
+    <div class="pagination-area" id="pagination-area">
+      <span class="result-count-bottom" id="result-count-bottom"></span>
+      <nav class="pagination" id="pagination-nav" aria-label="Page navigation"></nav>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== Footer ========== -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h3>INFORMATION</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Refund and Return Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Billings Terms and Condition</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>NEED HELP</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CONTACT</h3>
+        <div class="footer-divider"></div>
+        <div class="contact-info">
+          <p><strong>EDDM LLC</strong></p>
+          <p><strong>Email:</strong> support@eddm.shop</p>
+          <p><strong>Phone:</strong> (970) 329-9777</p>
+          <p><strong>Address:</strong> 3605 Avalon St, Philadelphia, PA 19114</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="payment-icons">
+      <span>PayPal</span>
+      <span>Stripe</span>
+      <span>VISA</span>
+      <span>MasterCard</span>
+      <span>Cash on Delivery</span>
+    </div>
+    <div class="copyright">Copyright 2026 &copy; <strong>eddm.shop</strong></div>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
+
+<script src="../js/common.js"></script>
+<script>
+(function() {
+  var PER_PAGE = 12;
+
+  var CATEGORY_MAP = {
+    '2017': '2017',
+    '2018': '2018',
+    '2019': '2019',
+    '2020': '2020',
+    '2021': '2021',
+    '2022': '2022',
+    '2023': '2023',
+    '2024': '2024',
+    '2025': '2025',
+    'flag-series': 'Flag Series',
+    'christmas-holiday': 'Christmas & Holiday',
+    'wedding-flowers': 'Wedding & Flowers',
+    'animal-series': 'Animal Series',
+    'other-years': 'Other Years',
+    '2-oz-letter': '2 oz Letter',
+    'global-series': 'Global Series'
+  };
+
+  var allProducts = null;
+
+  function parseHash() {
+    var hash = window.location.hash.replace(/^#/, '');
+    if (!hash) return { slug: '', page: 1 };
+    var parts = hash.split('/');
+    var slug = parts[0];
+    var page = parts[1] ? parseInt(parts[1], 10) : 1;
+    if (isNaN(page) || page < 1) page = 1;
+    return { slug: slug, page: page };
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  function renderNotFound() {
+    document.getElementById('breadcrumb-category').textContent = 'Category Not Found';
+    document.title = 'Category Not Found – Buy Discount Postage Online';
+    document.getElementById('result-count-top').textContent = '';
+    document.getElementById('products-grid').innerHTML =
+      '<p style="grid-column:1/-1;text-align:center;padding:2rem;">Category not found. Please select a category:</p>' +
+      '<div style="grid-column:1/-1;text-align:center;">' +
+      Object.keys(CATEGORY_MAP).map(function(slug) {
+        return '<a href="/category/#' + slug + '" style="display:inline-block;margin:0.5rem;padding:0.5rem 1rem;border:1px solid #ccc;border-radius:4px;text-decoration:none;color:#333;">' + escapeHtml(CATEGORY_MAP[slug]) + '</a>';
+      }).join('') +
+      '</div>';
+    document.getElementById('result-count-bottom').textContent = '';
+    document.getElementById('pagination-nav').innerHTML = '';
+  }
+
+  function renderProducts(products, page, slug) {
+    var total = products.length;
+    var totalPages = Math.ceil(total / PER_PAGE);
+    if (page > totalPages && totalPages > 0) page = totalPages;
+
+    var start = (page - 1) * PER_PAGE;
+    var end = Math.min(start + PER_PAGE, total);
+    var pageProducts = products.slice(start, end);
+
+    var countText = 'Showing ' + (start + 1) + '\u2013' + end + ' of ' + total + ' results';
+    document.getElementById('result-count-top').textContent = countText;
+    document.getElementById('result-count-bottom').textContent = countText;
+
+    var grid = document.getElementById('products-grid');
+    var html = '';
+    for (var i = 0; i < pageProducts.length; i++) {
+      var p = pageProducts[i];
+      html += '<div class="product-card">' +
+        '<a href="/product/#' + encodeURIComponent(p.slug) + '">' +
+          '<div class="product-image">' +
+            '<img src="' + escapeHtml(p.img1) + '" alt="' + escapeHtml(p.name) + '">' +
+            '<img class="hover-img" src="' + escapeHtml(p.img2) + '" alt="">' +
+          '</div>' +
+          '<div class="product-info">' +
+            '<p class="product-category">' + escapeHtml(p.category) + '</p>' +
+            '<p class="product-name">' + escapeHtml(p.name) + '</p>' +
+            '<p class="product-price">' + escapeHtml(p.price) + '</p>' +
+          '</div>' +
+        '</a>' +
+      '</div>';
+    }
+    grid.innerHTML = html;
+
+    // Pagination
+    var nav = document.getElementById('pagination-nav');
+    if (totalPages <= 1) {
+      nav.innerHTML = '';
+      return;
+    }
+    var pHtml = '';
+    for (var pg = 1; pg <= totalPages; pg++) {
+      if (pg === page) {
+        pHtml += '<span class="page-num current-page">' + pg + '</span>';
+      } else {
+        var href = '#' + slug + (pg > 1 ? '/' + pg : '');
+        pHtml += '<a href="' + href + '" class="page-num">' + pg + '</a>';
+      }
+    }
+    if (page < totalPages) {
+      var nextHref = '#' + slug + '/' + (page + 1);
+      pHtml += '<a href="' + nextHref + '" class="page-arrow" aria-label="Next page">\u2192</a>';
+    }
+    nav.innerHTML = pHtml;
+  }
+
+  function render() {
+    var parsed = parseHash();
+    var slug = parsed.slug;
+    var page = parsed.page;
+
+    if (!slug || !CATEGORY_MAP[slug]) {
+      renderNotFound();
+      return;
+    }
+
+    var displayName = CATEGORY_MAP[slug];
+    document.getElementById('breadcrumb-category').textContent = displayName;
+    document.title = displayName + ' \u2013 Buy Discount Postage Online';
+
+    if (!allProducts) return;
+
+    var filtered = allProducts.filter(function(p) {
+      return p.all_categories && p.all_categories.indexOf(displayName) !== -1;
+    });
+
+    if (filtered.length === 0) {
+      document.getElementById('result-count-top').textContent = '0 results';
+      document.getElementById('products-grid').innerHTML =
+        '<p style="grid-column:1/-1;text-align:center;padding:2rem;">No products found in this category.</p>';
+      document.getElementById('result-count-bottom').textContent = '';
+      document.getElementById('pagination-nav').innerHTML = '';
+      return;
+    }
+
+    renderProducts(filtered, page, slug);
+  }
+
+  function init() {
+    fetch('../products_data.json')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        allProducts = data;
+        render();
+      })
+      .catch(function() {
+        document.getElementById('products-grid').innerHTML =
+          '<p style="grid-column:1/-1;text-align:center;padding:2rem;">Error loading products.</p>';
+      });
+  }
+
+  window.addEventListener('hashchange', render);
+  init();
+})();
+</script>
+
+</body>
+</html>
