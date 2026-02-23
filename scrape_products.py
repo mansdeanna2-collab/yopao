@@ -682,6 +682,9 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
         </a>
       </div>"""
 
+    # 预处理名称中的引号（避免f-string中包含反斜杠）
+    name_js_escaped = name.replace('"', '\\"')
+
     # 生成完整HTML页面
     page_html = f"""<!DOCTYPE html>
 <html lang="en-US">
@@ -1039,7 +1042,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
   document.getElementById("add-to-cart-btn").addEventListener("click", function() {{
     var qty = parseInt(document.getElementById("qty-input").value) || 1;
     var productId = "{slug}";
-    var productName = "{name.replace('"', '\\"')}";
+    var productName = "{name_js_escaped}";
     var productPrice = getDiscountPrice(qty);
     var productImage = galleryImages[0];
     for (var i = 0; i < qty; i++) {{
