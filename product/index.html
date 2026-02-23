@@ -430,9 +430,10 @@
       var pct = getDiscountPct(qty);
       var unitPrice = pct > 0 ? basePrice * (1 - pct / 100) : basePrice;
       unitPrice = Math.round(unitPrice * 100) / 100;
-      for (var i = 0; i < qty; i++) {
-        addToCart(product.sku, product.name, unitPrice, images[currentIdx]);
-      }
+      var ex = cart.find(function (i) { return i.id === product.sku; });
+      if (ex) { ex.qty += qty; } else { cart.push({ id: product.sku, name: product.name, price: unitPrice, qty: qty, image: images[currentIdx] }); }
+      saveCart();
+      renderCart();
       window.location.href = '/cart/';
     });
 

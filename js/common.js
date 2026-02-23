@@ -23,6 +23,7 @@ window.addEventListener('scroll',function(){backToTop.classList.toggle('visible'
 backToTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
 
 // ── Cart ──────────────────────────────────────────────────────────────────
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 var cart=[];
 try{var saved=localStorage.getItem('yopao_cart');if(saved){var parsed=JSON.parse(saved);if(Array.isArray(parsed)){cart=parsed.filter(function(i){return i&&typeof i.id==='string'&&typeof i.name==='string'&&typeof i.price==='number'&&typeof i.qty==='number'&&i.qty>0;});}}}catch(e){}
 function saveCart(){try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}}
@@ -55,18 +56,18 @@ function renderCart(){
     html+='<div class="cart-dropdown-items">';
     cart.forEach(function(item){
       html+='<div class="cart-item">';
-      html+='<img class="cart-item-img" src="'+item.image+'" alt="'+item.name+'">';
+      html+='<img class="cart-item-img" src="'+escapeHtml(item.image)+'" alt="'+escapeHtml(item.name)+'">';
       html+='<div class="cart-item-info">';
-      html+='<div class="cart-item-name">'+item.name+'</div>';
+      html+='<div class="cart-item-name">'+escapeHtml(item.name)+'</div>';
       html+='<div class="cart-item-qty-price">';
       html+='<div class="cart-item-qty-btns">';
-      html+='<button class="qty-btn" data-id="'+item.id+'" data-delta="-1">&#8722;</button>';
+      html+='<button class="qty-btn" data-id="'+escapeHtml(item.id)+'" data-delta="-1">&#8722;</button>';
       html+='<span class="cart-item-qty-val">'+item.qty+'</span>';
-      html+='<button class="qty-btn" data-id="'+item.id+'" data-delta="1">+</button>';
+      html+='<button class="qty-btn" data-id="'+escapeHtml(item.id)+'" data-delta="1">+</button>';
       html+='</div>';
       html+='<span>&times; '+fmt(item.price)+'</span>';
       html+='</div></div>';
-      html+='<button class="cart-item-remove" data-id="'+item.id+'">&times;</button>';
+      html+='<button class="cart-item-remove" data-id="'+escapeHtml(item.id)+'">&times;</button>';
       html+='</div>';
     });
     html+='</div>';
