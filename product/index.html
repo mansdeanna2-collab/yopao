@@ -195,7 +195,7 @@
     var images = product.images && product.images.length ? product.images : [product.img1, product.img2].filter(Boolean);
     var thumbsHTML = '';
     images.forEach(function (url, i) {
-      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + url + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '">';
+      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + url + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '" loading="lazy">';
     });
     return '<div class="product-gallery">' +
       '<div class="gallery-main" id="gallery-main">' +
@@ -349,6 +349,20 @@
     document.getElementById('gallery-prev').addEventListener('click', function () { showImage(currentIdx - 1); });
     document.getElementById('gallery-next').addEventListener('click', function () { showImage(currentIdx + 1); });
 
+    // Touch swipe support for mobile gallery
+    var galleryMain = document.getElementById('gallery-main');
+    var touchStartX = 0;
+    galleryMain.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    galleryMain.addEventListener('touchend', function (e) {
+      var diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) { showImage(currentIdx + 1); }
+        else { showImage(currentIdx - 1); }
+      }
+    }, { passive: true });
+
     // Quantity stepper
     var qtyInput = document.getElementById('qty-input');
     var selectedPriceEl = document.getElementById('selected-price');
@@ -384,6 +398,7 @@
       for (var i = 0; i < qty; i++) {
         addToCart(product.sku, product.name, unitPrice, images[currentIdx]);
       }
+      window.location.href = '/cart/';
     });
 
     // Variation toggle & clear
@@ -439,6 +454,16 @@
     var hash = window.location.hash.replace(/^#/, '');
     if (!hash) { showNotFound(); return; }
 
+    // Try sessionStorage cache first for faster loads
+    var cacheKey = 'yopao_products_cache';
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(cacheKey)); } catch(e) {}
+
+    if (cached) {
+      var product = cached.find(function (p) { return p.slug === hash; });
+      if (product) { renderProduct(product, cached); return; }
+    }
+
     // Fetch from PHP API (MySQL database) with fallback to static JSON
     fetch('/api/products.php?action=get&slug=' + encodeURIComponent(hash))
       .then(function (res) {
@@ -451,6 +476,7 @@
         return fetch('/api/products.php?action=list')
           .then(function (res) { return res.json(); })
           .then(function (allProducts) {
+            try { sessionStorage.setItem(cacheKey, JSON.stringify(allProducts)); } catch(e) {}
             renderProduct(product, allProducts);
           });
       })
@@ -459,6 +485,7 @@
         fetch('../products_data.json')
           .then(function (res) { return res.json(); })
           .then(function (allProducts) {
+            try { sessionStorage.setItem(cacheKey, JSON.stringify(allProducts)); } catch(e) {}
             var product = allProducts.find(function (p) { return p.slug === hash; });
             if (!product) { showNotFound(); return; }
             renderProduct(product, allProducts);

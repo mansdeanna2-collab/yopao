@@ -311,4 +311,24 @@ body { background: #fff; }
     font-size: 11px;
     gap: 6px;
   }
+  .cart-row {
+    gap: 10px;
+    padding: 14px 0;
+  }
+  .cart-row-img {
+    width: 64px;
+    height: 78px;
+  }
+  .cart-row-name {
+    font-size: 13px;
+  }
+  .cart-row-total {
+    font-size: 14px;
+  }
+  .cart-page-section {
+    padding: 20px 10px 40px;
+  }
+  .cart-totals-box {
+    padding: 18px 14px;
+  }
 }
