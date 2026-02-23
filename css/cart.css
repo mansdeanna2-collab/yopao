@@ -328,16 +328,19 @@ body { background: #fff; }
 }
 @media (max-width: 600px) {
   .checkout-breadcrumb-inner {
-    font-size: 11px;
-    gap: 6px;
+    font-size: 10px;
+    gap: 4px;
+  }
+  .checkout-breadcrumb {
+    padding: 18px 10px 14px;
   }
   .cart-row {
     gap: 10px;
     padding: 14px 0;
   }
   .cart-row-img {
-    width: 64px;
-    height: 78px;
+    width: 60px;
+    height: 72px;
   }
   .cart-row-name {
     font-size: 13px;
@@ -350,5 +353,29 @@ body { background: #fff; }
   }
   .cart-totals-box {
     padding: 18px 14px;
+  }
+  .cart-row-qty button {
+    width: 36px;
+    height: 36px;
+  }
+  .cart-row-qty .qty-val {
+    line-height: 36px;
+  }
+  .btn-checkout {
+    padding: 16px;
+    font-size: 14px;
+  }
+  .btn-continue-shopping {
+    padding: 14px 28px;
+    font-size: 14px;
+  }
+  .cart-empty-icon {
+    font-size: 48px;
+  }
+  .cart-empty-state p {
+    font-size: 14px;
+  }
+  .coupon-input {
+    font-size: 16px;
   }
 }
