@@ -144,6 +144,51 @@
       .hero-banner { padding-top: 75%; }
       .hero-banner-bg { background-position: 30% center; }
     }
+
+    /* Add to Cart Button */
+    .add-to-cart-btn { display: block; width: 100%; background: #333365; color: #fff; border: none; padding: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; border-radius: 3px; cursor: pointer; margin-top: 8px; transition: background 0.2s; font-family: 'Lato', sans-serif; letter-spacing: 0.5px; }
+    .add-to-cart-btn:hover { background: #22224f; }
+
+    /* Cart wrapper & dropdown */
+    .cart-wrapper { position: relative; }
+    .cart-dropdown { position: absolute; top: calc(100% + 14px); right: 0; width: 300px; background: #fff; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 2000; padding: 20px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+    .cart-dropdown.visible { opacity: 1; visibility: visible; }
+
+    /* Cart items */
+    .cart-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; position: relative; }
+    .cart-item-img { width: 60px; height: 72px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; padding-right: 28px; }
+    .cart-item-name { font-weight: 700; font-size: 13px; line-height: 1.4; margin-bottom: 6px; color: #333; }
+    .cart-item-qty-price { font-size: 13px; color: #888; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .cart-item-qty-btns { display: flex; align-items: center; gap: 4px; }
+    .qty-btn { width: 22px; height: 22px; border: 1px solid #ddd; background: #f5f5f5; border-radius: 3px; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; color: #555; transition: background 0.2s; padding: 0; }
+    .qty-btn:hover { background: #e0e0e0; }
+    .cart-item-qty-val { font-size: 13px; color: #555; min-width: 20px; text-align: center; }
+    .cart-item-remove { position: absolute; top: 10px; right: 0; width: 22px; height: 22px; border-radius: 50%; background: #e0e0e0; border: none; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; color: #555; transition: background 0.2s, color 0.2s; padding: 0; }
+    .cart-item-remove:hover { background: #e53935; color: #fff; }
+
+    /* Cart empty */
+    .cart-empty { text-align: center; color: #999; padding: 20px 0; font-size: 14px; }
+
+    /* Cart subtotal */
+    .cart-subtotal { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 12px; font-weight: 700; }
+    .subtotal-amount { font-size: 16px; font-weight: 700; }
+
+    /* Cart action buttons */
+    .cart-actions { display: flex; flex-direction: column; gap: 8px; }
+    .cart-btn { display: block; width: 100%; padding: 10px; font-size: 13px; font-weight: 700; text-transform: uppercase; border: none; border-radius: 3px; cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s; font-family: 'Lato', sans-serif; }
+    .view-cart-btn { background: #666; color: #fff; }
+    .view-cart-btn:hover { background: #555; }
+    .checkout-btn { background: #333365; color: #fff; }
+    .checkout-btn:hover { background: #22224f; }
+
+    /* Badge pop animation */
+    @keyframes badgePop { 0%,100% { transform: scale(1); } 50% { transform: scale(1.45); } }
+    .cart-badge.pop { animation: badgePop 0.3s ease; }
+
+    @media (max-width: 768px) {
+      .cart-dropdown { width: calc(100vw - 30px); right: 0; }
+    }
   </style>
 </head>
 <body>
@@ -168,10 +213,23 @@
     </nav>
     <div class="header-right">
       <a href="#" class="header-icon account-icon desktop-only" aria-label="Account">&#128100;</a>
-      <a href="#" class="cart-link" aria-label="Cart">
-        <span>$0.00</span>
-        <span class="cart-badge">0</span>
-      </a>
+      <div class="cart-wrapper" id="cart-wrapper">
+        <button class="cart-link" id="cart-toggle" aria-label="Cart">
+          <span id="cart-total">$0.00</span>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+        <div class="cart-dropdown" id="cart-dropdown">
+          <div id="cart-items-list"></div>
+          <div class="cart-subtotal" id="cart-subtotal-row" style="display:none">
+            <span>Subtotal:</span>
+            <span class="subtotal-amount" id="cart-subtotal-amount">$0.00</span>
+          </div>
+          <div class="cart-actions" id="cart-action-btns" style="display:none">
+            <button class="cart-btn view-cart-btn">VIEW CART</button>
+            <button class="cart-btn checkout-btn">CHECKOUT</button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 </div>
@@ -373,6 +431,116 @@ var slider=document.getElementById('testimonial-slider'),dots=document.querySele
 function go(i){cur=i;slider.style.transform='translateX(-'+(i*100)+'%)';dots.forEach(function(d,x){d.classList.toggle('active',x===i);});}
 dots.forEach(function(d){d.addEventListener('click',function(){go(parseInt(this.getAttribute('data-index')));clearInterval(auto);auto=setInterval(function(){go((cur+1)%total);},4000);});});
 auto=setInterval(function(){go((cur+1)%total);},4000);
+
+// ── Cart ──────────────────────────────────────────────────────────────────
+var cart=[];
+var cartWrapper=document.getElementById('cart-wrapper');
+var cartDropdown=document.getElementById('cart-dropdown');
+var cartBadge=document.getElementById('cart-badge');
+var cartTotalEl=document.getElementById('cart-total');
+var cartItemsList=document.getElementById('cart-items-list');
+var cartSubtotalRow=document.getElementById('cart-subtotal-row');
+var cartSubtotalAmount=document.getElementById('cart-subtotal-amount');
+var cartActionBtns=document.getElementById('cart-action-btns');
+
+function cartTotal(){return cart.reduce(function(s,i){return s+i.price*i.qty;},0);}
+function cartCount(){return cart.reduce(function(s,i){return s+i.qty;},0);}
+function fmt(n){return '$'+n.toFixed(2);}
+
+function renderCart(){
+  var count=cartCount(),tot=cartTotal();
+  cartTotalEl.textContent=fmt(tot);
+  cartBadge.textContent=count;
+  cartBadge.classList.remove('pop');
+  void cartBadge.offsetWidth; // force reflow to restart CSS animation
+  cartBadge.classList.add('pop');
+  if(cart.length===0){
+    cartItemsList.innerHTML='<div class="cart-empty">Your cart is empty</div>';
+    cartSubtotalRow.style.display='none';
+    cartActionBtns.style.display='none';
+  } else {
+    var html='';
+    cart.forEach(function(item){
+      html+='<div class="cart-item">';
+      html+='<img class="cart-item-img" src="'+item.image+'" alt="'+item.name+'">';
+      html+='<div class="cart-item-info">';
+      html+='<div class="cart-item-name">'+item.name+'</div>';
+      html+='<div class="cart-item-qty-price">';
+      html+='<div class="cart-item-qty-btns">';
+      html+='<button class="qty-btn" data-id="'+item.id+'" data-delta="-1">&#8722;</button>';
+      html+='<span class="cart-item-qty-val">'+item.qty+'</span>';
+      html+='<button class="qty-btn" data-id="'+item.id+'" data-delta="1">+</button>';
+      html+='</div>';
+      html+='<span>&times; '+fmt(item.price)+'</span>';
+      html+='</div></div>';
+      html+='<button class="cart-item-remove" data-id="'+item.id+'">&times;</button>';
+      html+='</div>';
+    });
+    cartItemsList.innerHTML=html;
+    cartSubtotalRow.style.display='flex';
+    cartSubtotalAmount.textContent=fmt(tot);
+    cartActionBtns.style.display='flex';
+    cartItemsList.querySelectorAll('.cart-item-remove').forEach(function(btn){
+      btn.addEventListener('click',function(){removeFromCart(this.getAttribute('data-id'));});
+    });
+    cartItemsList.querySelectorAll('.qty-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){updateQty(this.getAttribute('data-id'),parseInt(this.getAttribute('data-delta')));});
+    });
+  }
+}
+
+function addToCart(id,name,price,image){
+  var ex=cart.find(function(i){return i.id===id;});
+  if(ex){ex.qty++;}else{cart.push({id:id,name:name,price:price,qty:1,image:image});}
+  renderCart();
+  cartDropdown.classList.add('visible');
+}
+
+function removeFromCart(id){
+  cart=cart.filter(function(i){return i.id!==id;});
+  renderCart();
+}
+
+function updateQty(id,delta){
+  var item=cart.find(function(i){return i.id===id;});
+  if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0){removeFromCart(id);}else{renderCart();}
+}
+
+// Inject data attributes and ADD TO CART buttons into each product card
+document.querySelectorAll('.product-card').forEach(function(card,idx){
+  var img=card.querySelector('.product-image img');
+  var nameEl=card.querySelector('.product-name a');
+  var priceEl=card.querySelector('.price-current');
+  var id='p'+idx;
+  var name=nameEl?nameEl.textContent.trim():'Product';
+  var price=priceEl?parseFloat(priceEl.textContent.replace(/[$,]/g,'').trim()):0;
+  var image=img?img.src:'';
+  card.setAttribute('data-id',id);
+  card.setAttribute('data-name',name);
+  card.setAttribute('data-price',price);
+  card.setAttribute('data-image',image);
+  var btn=document.createElement('button');
+  btn.className='add-to-cart-btn';
+  btn.textContent='ADD TO CART';
+  btn.addEventListener('click',function(){addToCart(id,name,price,image);});
+  card.querySelector('.product-info').appendChild(btn);
+});
+
+// Dropdown: hover on desktop, click-toggle on touch
+cartWrapper.addEventListener('mouseenter',function(){cartDropdown.classList.add('visible');});
+cartWrapper.addEventListener('mouseleave',function(){cartDropdown.classList.remove('visible');});
+document.getElementById('cart-toggle').addEventListener('click',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  cartDropdown.classList.toggle('visible');
+});
+document.addEventListener('click',function(e){
+  if(!cartWrapper.contains(e.target)){cartDropdown.classList.remove('visible');}
+});
+
+renderCart();
 </script>
 </body>
 </html>
