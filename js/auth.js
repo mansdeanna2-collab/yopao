@@ -8,7 +8,7 @@
 
   function $(id) { return document.getElementById(id); }
 
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var EMAIL_RE = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
   /* ========== Open login modal from auth pages ========== */
   var loginLink = $('open-login-link');
@@ -99,7 +99,8 @@
       if (i < score) segs[i].classList.add(classes[score]);
     }
     label.textContent = levels[score];
-    label.style.color = score === 0 ? '#999' : score === 1 ? '#e53935' : score === 2 ? '#ff9800' : score === 3 ? '#4caf50' : '#333365';
+    var colors = ['#999', '#e53935', '#ff9800', '#4caf50', '#333365'];
+    label.style.color = colors[score];
   }
 
   /* ========== Validate Helpers ========== */
