@@ -448,6 +448,10 @@
 
     // Add to Cart
     document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+      if (!currentUser) {
+        openLoginModal();
+        return;
+      }
       var qty = parseInt(qtyInput.value, 10) || 1;
       var pct = getDiscountPct(qty);
       var unitPrice = pct > 0 ? basePrice * (1 - pct / 100) : basePrice;

@@ -77,6 +77,10 @@
   var btnCheckout = document.querySelector('.btn-checkout');
   if (btnCheckout) {
     btnCheckout.addEventListener('click', function () {
+      if (!currentUser) {
+        openLoginModal();
+        return;
+      }
       window.location.href = '/checkout/';
     });
   }
