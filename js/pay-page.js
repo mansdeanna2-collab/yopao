@@ -48,8 +48,10 @@
   // ── Countdown Timer ───────────────────────────────────────────────────────
   var timerEl = document.getElementById('pay-countdown');
   var timerWrap = document.getElementById('pay-timer-wrap');
+  var progressBar = document.getElementById('pay-progress-bar');
   var statusSection = document.getElementById('pay-status');
   var statusText = document.getElementById('pay-status-text');
+  var confirmSection = document.getElementById('pay-confirm-section');
   var remaining = COUNTDOWN_SECONDS;
 
   // Try to restore timer from sessionStorage
@@ -75,6 +77,18 @@
     if (!timerEl) return;
     timerEl.textContent = formatTime(remaining);
 
+    // Update progress bar
+    var pct = (remaining / COUNTDOWN_SECONDS) * 100;
+    if (progressBar) {
+      progressBar.style.width = pct + '%';
+      progressBar.classList.remove('warning', 'expired');
+      if (remaining <= 0) {
+        progressBar.classList.add('expired');
+      } else if (remaining <= 120) {
+        progressBar.classList.add('warning');
+      }
+    }
+
     // Color transitions
     if (timerWrap) {
       timerWrap.classList.remove('warning', 'expired');
@@ -97,6 +111,8 @@
         statusText.appendChild(dot);
         statusText.appendChild(document.createTextNode(' Payment time expired. Please place a new order.'));
       }
+      // Hide confirm button on expiry
+      if (confirmSection) confirmSection.style.display = 'none';
       return;
     }
 
@@ -106,8 +122,7 @@
 
   updateTimer();
 
-  // ── QR Code Generation (lightweight inline implementation) ─────────────────
-  // Uses a QR code API via <img> tag for reliability
+  // ── QR Code Generation ────────────────────────────────────────────────────
   var qrContainer = document.getElementById('pay-qr-code');
   if (qrContainer) {
     var qrImg = document.createElement('img');
@@ -128,18 +143,33 @@
     qrContainer.appendChild(qrImg);
   }
 
-  // ── Copy to Clipboard ─────────────────────────────────────────────────────
+  // ── Clipboard helper ──────────────────────────────────────────────────────
+  function copyToClipboard(text) {
+    // Try modern API first, fall back to execCommand
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return execCopy(text); });
+    }
+    return Promise.resolve(execCopy(text));
+  }
+
+  function execCopy(text) {
+    var textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(textArea);
+    return ok;
+  }
+
+  // ── Copy Address ──────────────────────────────────────────────────────────
   var copyBtn = document.getElementById('pay-copy-btn');
   if (copyBtn) {
     copyBtn.addEventListener('click', function () {
-      var textArea = document.createElement('textarea');
-      textArea.value = USDT_ADDRESS;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-9999px';
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
+      copyToClipboard(USDT_ADDRESS).then(function () {
         copyBtn.classList.add('copied');
         copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied';
         showToast('Address copied to clipboard!');
@@ -147,10 +177,19 @@
           copyBtn.classList.remove('copied');
           copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
         }, 2000);
-      } catch (e) {
-        showToast('Copy failed. Please select and copy manually.');
-      }
-      document.body.removeChild(textArea);
+      });
+    });
+  }
+
+  // ── Copy Amount ───────────────────────────────────────────────────────────
+  var copyAmountBtn = document.getElementById('pay-copy-amount');
+  if (copyAmountBtn) {
+    copyAmountBtn.addEventListener('click', function () {
+      copyToClipboard(displayAmount).then(function () {
+        copyAmountBtn.classList.add('copied');
+        showToast('Amount ' + displayAmount + ' USDT copied!');
+        setTimeout(function () { copyAmountBtn.classList.remove('copied'); }, 1500);
+      });
     });
   }
 
@@ -158,17 +197,37 @@
   var copyOrderBtn = document.getElementById('pay-copy-order');
   if (copyOrderBtn) {
     copyOrderBtn.addEventListener('click', function () {
-      var textArea = document.createElement('textarea');
-      textArea.value = sanitizedOrderId;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-9999px';
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
+      copyToClipboard(sanitizedOrderId).then(function () {
+        copyOrderBtn.classList.add('copied');
         showToast('Order ID copied!');
-      } catch (e) {}
-      document.body.removeChild(textArea);
+        setTimeout(function () { copyOrderBtn.classList.remove('copied'); }, 1500);
+      });
+    });
+  }
+
+  // ── Confirm Payment Button ────────────────────────────────────────────────
+  var confirmBtn = document.getElementById('pay-confirm-btn');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', function () {
+      if (confirmBtn.classList.contains('disabled')) return;
+      confirmBtn.classList.add('disabled');
+      confirmBtn.textContent = 'Verifying payment…';
+      // Simulate verification delay, then show confirmation
+      setTimeout(function () {
+        if (statusText) {
+          statusText.textContent = '';
+          var dot = document.createElement('span');
+          dot.className = 'pay-status-dot';
+          statusText.appendChild(dot);
+          statusText.appendChild(document.createTextNode(' Payment confirmation received. Processing your order…'));
+        }
+        if (statusSection) {
+          statusSection.style.background = '#e8f5e9';
+          statusSection.style.borderColor = '#c8e6c9';
+        }
+        confirmBtn.textContent = '✓ Submitted – We\'ll verify shortly';
+        showToast('Thank you! We are verifying your payment.');
+      }, 1500);
     });
   }
 
