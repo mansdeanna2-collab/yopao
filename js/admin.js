@@ -9,6 +9,7 @@
     var currentPage = 'dashboard';
     var LOW_STOCK_THRESHOLD = 5;
     var adminToken = null;
+    var _initialized = false; // prevent duplicate event listener binding
 
     /* ===================== 管理员登录 ===================== */
     function getStoredToken() {
@@ -36,6 +37,11 @@
     function showLoginScreen() {
         document.getElementById('admin-login-overlay').style.display = 'flex';
         document.getElementById('admin-layout').style.display = 'none';
+        // Reset login form state
+        var errorEl = document.getElementById('admin-login-error');
+        var passwordEl = document.getElementById('admin-password');
+        if (errorEl) errorEl.textContent = '';
+        if (passwordEl) passwordEl.value = '';
     }
 
     function showAdminPanel() {
@@ -48,20 +54,53 @@
         }
     }
 
+    /**
+     * Verify stored token against the server. Returns a Promise<boolean>.
+     */
+    function verifyTokenWithServer() {
+        if (!adminToken) return Promise.resolve(false);
+        return fetch(API_BASE + '?action=stats', {
+            headers: { 'Authorization': 'Bearer ' + adminToken }
+        }).then(function (r) {
+            return r.status !== 401;
+        }).catch(function () {
+            return false;
+        });
+    }
+
+    /**
+     * Bind all panel event listeners once. Subsequent calls are no-ops.
+     */
+    function initPanelOnce() {
+        if (_initialized) return;
+        _initialized = true;
+        initNavigation();
+        initMobileMenu();
+        initLogout();
+    }
+
     /* ===================== 初始化 ===================== */
     document.addEventListener('DOMContentLoaded', function () {
+        initLoginForm();
+
         // Check if already logged in
         adminToken = getStoredToken();
         if (adminToken) {
+            // Verify token is still valid before showing panel
             showAdminPanel();
-            initNavigation();
-            initMobileMenu();
-            initLogout();
-            loadPage('dashboard');
+            initPanelOnce();
+            verifyTokenWithServer().then(function (valid) {
+                if (valid) {
+                    loadPage('dashboard');
+                } else {
+                    adminToken = null;
+                    clearSession();
+                    showLoginScreen();
+                }
+            });
         } else {
             showLoginScreen();
         }
-        initLoginForm();
     });
 
     function initLoginForm() {
@@ -95,13 +134,17 @@
                 if (result.data.success && result.data.token) {
                     adminToken = result.data.token;
                     storeSession(result.data.token, result.data.admin);
+                    // Clear form fields on successful login
+                    document.getElementById('admin-username').value = '';
+                    document.getElementById('admin-password').value = '';
                     showAdminPanel();
-                    initNavigation();
-                    initMobileMenu();
-                    initLogout();
+                    initPanelOnce();
                     loadPage('dashboard');
                 } else {
                     errorEl.textContent = result.data.error || '登录失败，请重试。';
+                    // Clear password on failed attempt
+                    document.getElementById('admin-password').value = '';
+                    document.getElementById('admin-password').focus();
                 }
             }).catch(function () {
                 btn.disabled = false;
@@ -527,7 +570,7 @@
         if (btn) btn.disabled = true;
         if (msgEl) msgEl.textContent = '保存中...';
 
-        fetchAPI({ action: 'update_order_status', id: orderId, status: newStatus }).then(function (data) {
+        postAPI('update_order_status', { order_id: orderId, status: newStatus }).then(function (data) {
             if (data.success) {
                 if (msgEl) {
                     msgEl.textContent = '✅ 状态已更新';

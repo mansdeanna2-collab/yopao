@@ -10,7 +10,7 @@
  *   GET /api/admin.php?action=users                           — List users (paginated)
  *   GET /api/admin.php?action=categories                      — List categories
  *   GET /api/admin.php?action=order_detail&id=XX              — Single order detail
- *   GET /api/admin.php?action=update_order_status&id=XX&status=YY — Update order status
+ *   POST /api/admin.php?action=update_order_status             — Update order status
  *   GET /api/admin.php?action=login_logs                      — List login logs (paginated)
  *   POST /api/admin.php?action=delete_order                   — Delete an order
  *   POST /api/admin.php?action=delete_user                    — Delete a user
@@ -98,6 +98,7 @@ try {
 
 /**
  * Handle admin login. Accepts POST with JSON body { username, password }.
+ * Includes basic rate limiting to prevent brute force attacks.
  */
 function handleAdminLogin($pdo) {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -116,14 +117,59 @@ function handleAdminLogin($pdo) {
         return;
     }
 
+    // Rate limiting: max 5 failed attempts per IP in 15 minutes
+    $clientIp = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+    $rateLimitKey = 'admin_login_' . md5($clientIp);
+    $maxAttempts = 5;
+    $windowSeconds = 900; // 15 minutes
+
+    // Use a simple file-based rate limit (works without extra dependencies)
+    $rateLimitDir = sys_get_temp_dir() . '/yopao_rate_limit';
+    if (!is_dir($rateLimitDir)) {
+        @mkdir($rateLimitDir, 0700, true);
+    }
+    $rateLimitFile = $rateLimitDir . '/' . $rateLimitKey;
+
+    $attempts = 0;
+    $firstAttemptTime = time();
+    if (file_exists($rateLimitFile)) {
+        $data = @json_decode(@file_get_contents($rateLimitFile), true);
+        if ($data && isset($data['attempts']) && isset($data['first_at'])) {
+            if (time() - $data['first_at'] < $windowSeconds) {
+                $attempts = (int)$data['attempts'];
+                $firstAttemptTime = $data['first_at'];
+            }
+            // Window expired — reset
+        }
+    }
+
+    if ($attempts >= $maxAttempts) {
+        $retryAfter = $windowSeconds - (time() - $firstAttemptTime);
+        http_response_code(429);
+        echo json_encode(['error' => 'Too many login attempts. Please try again in ' . ceil($retryAfter / 60) . ' minutes.']);
+        return;
+    }
+
     $stmt = $pdo->prepare('SELECT id, username, password_hash FROM admin_users WHERE username = ?');
     $stmt->execute([$username]);
     $admin = $stmt->fetch();
 
     if (!$admin || !password_verify($password, $admin['password_hash'])) {
+        // Record failed attempt
+        $attempts++;
+        @file_put_contents($rateLimitFile, json_encode([
+            'attempts' => $attempts,
+            'first_at' => $firstAttemptTime
+        ]));
+
         http_response_code(401);
         echo json_encode(['error' => 'Invalid username or password.']);
         return;
+    }
+
+    // Successful login — clear rate limit
+    if (file_exists($rateLimitFile)) {
+        @unlink($rateLimitFile);
     }
 
     // Generate a secure random token
@@ -361,12 +407,19 @@ function handleOrderDetail($pdo) {
  * Update order status.
  */
 function handleUpdateOrderStatus($pdo) {
-    $orderId = isset($_GET['id']) ? trim($_GET['id']) : '';
-    $newStatus = isset($_GET['status']) ? trim($_GET['status']) : '';
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['error' => 'Only POST requests are allowed.']);
+        return;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    $orderId = isset($input['order_id']) ? trim($input['order_id']) : '';
+    $newStatus = isset($input['status']) ? trim($input['status']) : '';
 
     if ($orderId === '' || $newStatus === '') {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing id or status parameter']);
+        echo json_encode(['error' => 'Missing order_id or status parameter']);
         return;
     }
 
