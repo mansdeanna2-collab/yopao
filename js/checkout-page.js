@@ -295,7 +295,8 @@
     paymentOptions.forEach(function(opt) { opt.classList.remove('selected'); });
   }
   paymentOptions.forEach(function(option) {
-    option.addEventListener('click', function() {
+    option.addEventListener('click', function(e) {
+      if (option.classList.contains('disabled')) { e.preventDefault(); return; }
       clearPaymentSelection();
       option.classList.add('selected');
       var radio = option.querySelector('input[type="radio"]');
@@ -310,6 +311,7 @@
     var radio = option.querySelector('input[type="radio"]');
     if (radio) {
       radio.addEventListener('change', function() {
+        if (option.classList.contains('disabled')) return;
         clearPaymentSelection();
         option.classList.add('selected');
       });

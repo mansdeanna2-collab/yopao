@@ -340,6 +340,43 @@
   border-radius: 4px;
 }
 
+/* Disabled payment option (e.g. PayPal) */
+.co-payment-option.disabled {
+  border-color: #d5d5d5;
+  background: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.co-payment-option.disabled:hover {
+  border-color: #d5d5d5;
+  background: #f5f5f5;
+  box-shadow: none;
+}
+.co-payment-option.disabled .pay-label {
+  color: #999;
+}
+.co-pay-disabled-badge {
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
+  background: #eaeaea;
+  border-radius: 3px;
+  padding: 2px 8px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+/* Footer payment icons */
+.footer-pay-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+.footer-pay-icon.unavailable {
+  opacity: 0.4;
+}
+
 /* ========== Place Order button ========== */
 .btn-place-order {
   display: block;
