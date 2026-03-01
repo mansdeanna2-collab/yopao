@@ -100,6 +100,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .footer-bottom { background: #2a2a55; color: #bdc3c7; padding: 20px 20px; text-align: center; font-size: 13px; }
 .payment-icons { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
 .payment-icons span { background: rgba(255,255,255,0.12); padding: 5px 12px; border-radius: 3px; font-size: 11px; font-weight: 700; color: #ccc; text-transform: uppercase; letter-spacing: 0.5px; }
+.footer-pay-icon { display: inline-flex; align-items: center; gap: 4px; }
+.footer-pay-icon.unavailable { opacity: 0.55; }
 .copyright { color: #999; }
 .copyright strong { color: #bdc3c7; }
 
