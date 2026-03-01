@@ -76,3 +76,61 @@ CREATE TABLE IF NOT EXISTS login_logs (
     INDEX idx_ip_address (ip_address),
     INDEX idx_login_at (login_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── User Cart (server-side persistent cart) ─────────────────────
+CREATE TABLE IF NOT EXISTS user_cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id VARCHAR(255) NOT NULL,
+    product_name VARCHAR(500) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    qty INT NOT NULL DEFAULT 1,
+    image VARCHAR(500) DEFAULT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_product (user_id, product_id),
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Browsing History ────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS browsing_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_slug VARCHAR(255) NOT NULL,
+    product_name VARCHAR(500) DEFAULT NULL,
+    viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_viewed_at (viewed_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Orders Table ────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(50) NOT NULL UNIQUE,
+    user_id INT DEFAULT NULL,
+    email VARCHAR(255) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    address VARCHAR(500) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) DEFAULT NULL,
+    postcode VARCHAR(20) NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Order Items Table ───────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(50) NOT NULL,
+    product_id VARCHAR(255) NOT NULL,
+    product_name VARCHAR(500) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    qty INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    INDEX idx_order_id (order_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

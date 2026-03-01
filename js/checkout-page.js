@@ -350,11 +350,49 @@
         + String(now.getMinutes()).padStart(2, '0')
         + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
 
-      // Redirect to USDT TRC20 payment page
-      setTimeout(function () {
+      // Save order to database if user is logged in
+      var loggedInUser = null;
+      try { var u = localStorage.getItem('yopao_user'); if (u) loggedInUser = JSON.parse(u); } catch (e) {}
+
+      var payUrl = '../pay/?amount=' + orderTotal.toFixed(2) + '&order=' + oid;
+      var _redirected = false;
+
+      function doRedirect() {
+        if (_redirected) return;
+        _redirected = true;
         try { localStorage.removeItem('yopao_cart'); } catch (e) {}
-        window.location.href = '../pay/?amount=' + orderTotal.toFixed(2) + '&order=' + oid;
-      }, 1200);
+        window.location.href = payUrl;
+      }
+
+      if (loggedInUser && loggedInUser.id) {
+        var orderData = {
+          user_id: loggedInUser.id,
+          order_id: oid,
+          email: ((document.getElementById('billing_email') || {}).value || '').trim(),
+          first_name: ((document.getElementById('billing_first_name') || {}).value || '').trim(),
+          last_name: ((document.getElementById('billing_last_name') || {}).value || '').trim(),
+          address: ((document.getElementById('billing_address_1') || {}).value || '').trim(),
+          city: ((document.getElementById('billing_city') || {}).value || '').trim(),
+          state: ((document.getElementById('billing_state') || {}).value || '').trim(),
+          postcode: ((document.getElementById('billing_postcode') || {}).value || '').trim(),
+          total: orderTotal,
+          items: cart
+        };
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/user.php?action=create_order', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== 4) return;
+          // Redirect after order is saved (or on error, still redirect to payment)
+          doRedirect();
+        };
+        xhr.send(JSON.stringify(orderData));
+        // Fallback: redirect after 5s even if request hangs
+        setTimeout(doRedirect, 5000);
+      } else {
+        // Not logged in — redirect after short delay
+        setTimeout(doRedirect, 1200);
+      }
     });
   }
 

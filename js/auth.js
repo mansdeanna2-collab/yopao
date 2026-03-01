@@ -1,6 +1,18 @@
 (function () {
   'use strict';
 
+  /* ========== Redirect logged-in users away from register page ========== */
+  try {
+    var su = localStorage.getItem('yopao_user');
+    if (su) {
+      var u = JSON.parse(su);
+      if (u && u.id && u.email && document.getElementById('register-form')) {
+        window.location.href = '/';
+        return;
+      }
+    }
+  } catch (e) {}
+
   /* ========== Helpers ========== */
   function escapeHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -205,11 +217,10 @@
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'CREATE ACCOUNT'; }
         try {
           var resp = JSON.parse(xhr.responseText);
-          if (xhr.status === 200 && resp.success) {
-            showToast(resp.message || 'Account created successfully!');
-            regForm.reset();
-            updateStrengthBar(0);
-            blurred = {};
+          if (xhr.status === 200 && resp.success && resp.user) {
+            // Auto-login: store user data and redirect to home
+            try { localStorage.setItem('yopao_user', JSON.stringify(resp.user)); } catch (e) {}
+            window.location.href = '/';
           } else {
             showToast(resp.error || 'Registration failed. Please try again.');
           }
