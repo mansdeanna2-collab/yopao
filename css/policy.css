@@ -143,3 +143,39 @@
     font-size: 13px;
   }
 }
+
+@media (max-width: 380px) {
+  .policy-section {
+    padding: 12px 10px 24px;
+  }
+
+  .policy-heading {
+    font-size: 13px;
+    margin: 20px 0 10px;
+    padding-bottom: 6px;
+  }
+
+  .policy-subheading {
+    font-size: 12px;
+    margin: 16px 0 6px;
+  }
+
+  .policy-intro {
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .policy-container p {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .policy-list li {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .breadcrumb-inner {
+    padding: 0 10px;
+  }
+}

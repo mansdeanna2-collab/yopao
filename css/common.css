@@ -110,6 +110,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .back-to-top:hover { background: #333365; border-color: #333365; }
 .back-to-top.visible { display: flex; }
 
+/* Remove tap highlight flash on mobile */
+a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+/* Prevent parent scroll when mobile nav is open */
+.mobile-nav-panel { overscroll-behavior-y: contain; }
+
 /* ========== Common Responsive ========== */
 @media (max-width: 768px) {
   .nav-main, .header-right .header-icon.desktop-only { display: none; }
@@ -129,6 +134,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .back-to-top { bottom: 20px; left: 16px; width: 36px; height: 36px; font-size: 14px; }
   .footer-content { padding: 30px 0 20px; }
   .footer-bottom { padding: 15px 15px; font-size: 12px; }
+}
+
+@media (max-width: 480px) {
+  .site-header { height: 54px; padding: 0 12px; }
+  .logo a { font-size: 19px; }
+  .logo-icon { width: 19px; height: 19px; font-size: 10px; }
+  .footer-content { padding: 24px 0 16px; }
+  .footer-columns { padding: 0 12px; }
+  .footer-bottom { padding: 12px; font-size: 11px; }
+  .back-to-top { bottom: 16px; left: 12px; width: 34px; height: 34px; font-size: 13px; }
+  .cart-dropdown { border-radius: 10px 10px 0 0; max-height: 75vh; }
 }
 
 @media (max-width: 380px) {

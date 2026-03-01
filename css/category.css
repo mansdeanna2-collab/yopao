@@ -53,6 +53,7 @@ body { background: #fff; }
   background-repeat: no-repeat;
   background-position: right 10px center;
   cursor: pointer;
+  min-height: 40px;
 }
 
 /* ========== Main Layout ========== */

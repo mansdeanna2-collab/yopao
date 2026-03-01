@@ -104,6 +104,20 @@ body { background: #f8f8f8; overflow-x: hidden; }
   .add-to-cart-btn { padding: 7px; font-size: 11px; }
   .category-name { font-size: 12px; }
   .category-count { font-size: 10px; }
+  /* Features bar: 2 columns on small phones (odd items get right border to visually divide the two columns;
+     !important needed because the 768px block already sets border-right: none !important) */
+  .features-bar { flex-direction: row; flex-wrap: wrap; padding: 16px 8px; }
+  .feature-item { flex: 1 1 calc(50% - 1px); border-right: none !important; border-bottom: 1px solid #eee; padding: 16px 8px; }
+  .feature-item:nth-child(odd) { border-right: 1px solid #eee !important; }
+  .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+  .feature-icon-circle { width: 40px; height: 40px; margin-bottom: 10px; }
+  .feature-icon-circle svg { width: 18px; height: 18px; }
+  .feature-item h5 { font-size: 12px; margin-bottom: 4px; }
+  .feature-item p { font-size: 11px; }
+  /* Testimonials */
+  .testimonial-slide { padding: 0 12px; }
+  .testimonial-text { font-size: 13px; line-height: 1.6; }
+  .testimonials-section { padding: 28px 0 16px; }
 }
 @media (max-width: 380px) {
   .categories-grid { gap: 8px; }
@@ -111,4 +125,19 @@ body { background: #f8f8f8; overflow-x: hidden; }
   .product-price { font-size: 12px; }
   .section-title h2 { font-size: 16px; }
   .section-title h2::before, .section-title h2::after { width: 30px; }
+  /* Features keep 2-column on very small screens */
+  .feature-item p { display: none; }
+}
+
+/* Disable card hover effects on touch-only devices */
+@media (hover: none) {
+  .product-card:hover { box-shadow: none; transform: none; }
+  .product-card:hover .product-image img { transform: none; }
+  .category-card:hover { transform: none; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .product-card, .product-card .product-image img, .category-card,
+  .testimonial-slider { transition: none; }
 }

@@ -135,3 +135,32 @@ a.contact-info-card__value:hover {
     margin-bottom: 12px;
   }
 }
+
+@media (max-width: 380px) {
+  .contact-section {
+    padding: 12px 10px 24px;
+  }
+
+  .contact-info-card {
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .contact-info-card__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .contact-info-card__icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .contact-info-card__value {
+    font-size: 12px;
+  }
+
+  .contact-info-card__label {
+    font-size: 10px;
+  }
+}
