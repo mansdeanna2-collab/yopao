@@ -943,7 +943,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Shipping Policy</a></li>
           <li><a href="#">Refund and Return Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
+          <li><a href="../terms-of-service/">Terms of Service</a></li>
           <li><a href="#">Billings Terms and Condition</a></li>
         </ul>
       </div>
