@@ -235,11 +235,11 @@
     var images = product.images && product.images.length ? product.images : [product.img1, product.img2].filter(Boolean);
     var thumbsHTML = '';
     images.forEach(function (url, i) {
-      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + url + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '">';
+      thumbsHTML += '<img class="gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + escapeHTML(url) + '" alt="' + escapeHTML(product.name) + ' view ' + (i + 1) + '" data-index="' + i + '">';
     });
     return '<div class="product-gallery">' +
       '<div class="gallery-main" id="gallery-main">' +
-      '<img id="main-img" src="' + images[0] + '" alt="' + escapeHTML(product.name) + '">' +
+      '<img id="main-img" src="' + escapeHTML(images[0]) + '" alt="' + escapeHTML(product.name) + '">' +
       '<button class="gallery-arrow prev" id="gallery-prev" aria-label="Previous image">&#8249;</button>' +
       '<button class="gallery-arrow next" id="gallery-next" aria-label="Next image">&#8250;</button>' +
       '<button class="gallery-zoom" aria-label="Zoom image">&#128269;</button>' +
@@ -335,8 +335,8 @@
     related.forEach(function (p) {
       var displayCat = p.all_categories && p.all_categories.length ? p.all_categories[0] : p.category;
       cardsHTML += '<div class="product-card">' +
-        '<a href="/product/#' + p.slug + '">' +
-          '<div class="product-image"><img src="' + (p.img1 || (p.images && p.images[0]) || '') + '" alt="' + escapeHTML(p.name) + '" loading="lazy"></div>' +
+        '<a href="/product/#' + encodeURIComponent(p.slug) + '">' +
+          '<div class="product-image"><img src="' + escapeHTML(p.img1 || (p.images && p.images[0]) || '') + '" alt="' + escapeHTML(p.name) + '" loading="lazy"></div>' +
           '<div class="product-info">' +
             '<p class="product-category">' + escapeHTML(displayCat) + '</p>' +
             '<p class="product-name">' + escapeHTML(p.name) + '</p>' +

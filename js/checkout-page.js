@@ -262,6 +262,7 @@
     ['billing_city',       'err-city'],
     ['billing_postcode',   'err-postcode'],
     ['billing_email',      'err-email'],
+    ['billing_state',      'err-state'],
     ['shipping_first_name', 'err-shipping-first-name'],
     ['shipping_last_name',  'err-shipping-last-name'],
     ['shipping_address_1',  'err-shipping-address1'],
@@ -340,8 +341,8 @@
       setTimeout(function () {
         // Clear cart after successful order
         try { localStorage.removeItem('yopao_cart'); } catch (e) {}
-        // Redirect to order complete page
-        window.location.href = '../order-complete/' ;
+        // Redirect to home page after order
+        window.location.href = '../';
       }, 1200);
     });
   }
