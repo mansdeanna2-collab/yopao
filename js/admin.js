@@ -7,6 +7,7 @@
 
     var API_BASE = '/api/admin.php';
     var currentPage = 'dashboard';
+    var LOW_STOCK_THRESHOLD = 5;
 
     /* ===================== 初始化 ===================== */
     document.addEventListener('DOMContentLoaded', function () {
@@ -96,13 +97,12 @@
     }
 
     /* ===================== API 请求 ===================== */
-    function fetchAPI(params, options) {
+    function fetchAPI(params) {
         var qs = Object.keys(params).map(function (k) {
             return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
         }).join('&');
 
-        var fetchOptions = options || {};
-        return fetch(API_BASE + '?' + qs, fetchOptions).then(function (r) {
+        return fetch(API_BASE + '?' + qs).then(function (r) {
             if (!r.ok) throw new Error('API 错误 ' + r.status);
             return r.json();
         });
@@ -207,13 +207,13 @@
 
         data.items.forEach(function (p) {
             var imgSrc = p.img1 || '';
-            var stockClass = (p.stock <= 5) ? ' class="low-stock"' : '';
+            var stockClass = (p.stock <= LOW_STOCK_THRESHOLD) ? ' class="low-stock"' : '';
             html += '<tr>' +
                 '<td>' + (imgSrc ? '<img class="product-thumb" src="' + escapeHtml(imgSrc) + '" alt="" loading="lazy">' : '—') + '</td>' +
                 '<td>' + escapeHtml(p.name) + '</td>' +
                 '<td class="hide-mobile">' + escapeHtml(p.sku || '—') + '</td>' +
                 '<td>' + escapeHtml(p.price) + '</td>' +
-                '<td' + stockClass + '>' + p.stock + (p.stock <= 5 ? ' ⚠️' : '') + '</td>' +
+                '<td' + stockClass + '>' + p.stock + (p.stock <= LOW_STOCK_THRESHOLD ? ' ⚠️' : '') + '</td>' +
                 '</tr>';
         });
 
