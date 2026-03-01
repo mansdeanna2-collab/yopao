@@ -107,10 +107,13 @@
           var resp = JSON.parse(xhr.responseText);
           if (resp.success && resp.address && resp.address.first_name) {
             var a = resp.address;
+            var addrParts = [escapeHtml(a.city || '')];
+            if (a.state) addrParts.push(escapeHtml(a.state));
+            addrParts.push(escapeHtml(a.postcode || ''));
             savedAddrEl.innerHTML = '<div style="margin-top:4px;"><strong>Shipping Address:</strong></div>' +
-              '<div>' + escapeHtml(a.first_name) + ' ' + escapeHtml(a.last_name) + '</div>' +
-              '<div>' + escapeHtml(a.address) + '</div>' +
-              '<div>' + escapeHtml(a.city) + ', ' + escapeHtml(a.state) + ' ' + escapeHtml(a.postcode) + '</div>';
+              '<div>' + escapeHtml(a.first_name || '') + ' ' + escapeHtml(a.last_name || '') + '</div>' +
+              '<div>' + escapeHtml(a.address || '') + '</div>' +
+              '<div>' + addrParts.join(', ') + '</div>';
           }
         } catch (e) {}
       };
