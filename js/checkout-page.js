@@ -150,16 +150,6 @@
       clearError('billing_city', 'err-city');
     }
 
-    // State
-    var state = (document.getElementById('billing_state') || {}).value || '';
-    if (state === '') {
-      showError('billing_state', 'err-state', 'Please select a state.');
-      valid = false;
-      if (!firstInvalid) firstInvalid = document.getElementById('billing_state');
-    } else {
-      clearError('billing_state', 'err-state');
-    }
-
     // ZIP / Postcode – basic US ZIP validation
     var postcode = (document.getElementById('billing_postcode') || {}).value || '';
     if (postcode.trim() === '') {
@@ -208,7 +198,6 @@
     ['billing_last_name',  'err-last-name'],
     ['billing_address_1',  'err-address1'],
     ['billing_city',       'err-city'],
-    ['billing_state',      'err-state'],
     ['billing_postcode',   'err-postcode'],
     ['billing_email',      'err-email']
   ].forEach(function (pair) {
