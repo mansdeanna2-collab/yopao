@@ -205,11 +205,10 @@
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'CREATE ACCOUNT'; }
         try {
           var resp = JSON.parse(xhr.responseText);
-          if (xhr.status === 200 && resp.success) {
-            showToast(resp.message || 'Account created successfully!');
-            regForm.reset();
-            updateStrengthBar(0);
-            blurred = {};
+          if (xhr.status === 200 && resp.success && resp.user) {
+            // Auto-login: store user data and redirect to home
+            try { localStorage.setItem('yopao_user', JSON.stringify(resp.user)); } catch (e) {}
+            window.location.href = '/';
           } else {
             showToast(resp.error || 'Registration failed. Please try again.');
           }

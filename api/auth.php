@@ -119,7 +119,21 @@ function handleRegister($pdo, $input) {
     $stmt = $pdo->prepare('INSERT INTO users (email, password_hash, register_ip) VALUES (?, ?, ?)');
     $stmt->execute([$email, $hash, $registerIp]);
 
-    echo json_encode(['success' => true, 'message' => 'Account created successfully!']);
+    $userId = (int)$pdo->lastInsertId();
+
+    // Record login log for auto-login after registration
+    $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 500) : '';
+    $stmt = $pdo->prepare('INSERT INTO login_logs (user_id, ip_address, user_agent) VALUES (?, ?, ?)');
+    $stmt->execute([$userId, $registerIp, $userAgent]);
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Account created successfully!',
+        'user'    => [
+            'id'    => $userId,
+            'email' => $email
+        ]
+    ]);
 }
 
 /**

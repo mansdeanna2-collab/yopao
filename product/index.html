@@ -366,6 +366,20 @@
       buildRelatedProducts(product, allProducts);
 
     initInteractions(product);
+
+    // Record browsing history for logged-in users
+    try {
+      var u = localStorage.getItem('yopao_user');
+      if (u) {
+        var user = JSON.parse(u);
+        if (user && user.id && product.slug) {
+          var bxhr = new XMLHttpRequest();
+          bxhr.open('POST', '/api/user.php?action=record_browse', true);
+          bxhr.setRequestHeader('Content-Type', 'application/json');
+          bxhr.send(JSON.stringify({ user_id: user.id, product_slug: product.slug, product_name: product.name }));
+        }
+      }
+    } catch (e) {}
   }
 
   function initInteractions(product) {

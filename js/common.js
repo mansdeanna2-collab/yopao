@@ -6,16 +6,107 @@ hamburger.addEventListener('click',openMobileNav);
 overlay.addEventListener('click',closeMobileNav);
 closeBtn.addEventListener('click',closeMobileNav);
 
+// ── User Session ─────────────────────────────────────────────────────────
+var currentUser=null;
+try{var su=localStorage.getItem('yopao_user');if(su){currentUser=JSON.parse(su);if(!currentUser||!currentUser.id||!currentUser.email){currentUser=null;}}}catch(e){currentUser=null;}
+
+function saveUser(user){
+  currentUser=user;
+  try{localStorage.setItem('yopao_user',JSON.stringify(user));}catch(e){}
+}
+function clearUser(){
+  currentUser=null;
+  try{localStorage.removeItem('yopao_user');}catch(e){}
+}
+function syncCartToServer(){
+  if(!currentUser)return;
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST','/api/user.php?action=sync_cart',true);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.send(JSON.stringify({user_id:currentUser.id,items:cart}));
+}
+function loadCartFromServer(callback){
+  if(!currentUser){if(callback)callback();return;}
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST','/api/user.php?action=get_cart',true);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.onreadystatechange=function(){
+    if(xhr.readyState!==4)return;
+    try{
+      var resp=JSON.parse(xhr.responseText);
+      if(resp.success&&Array.isArray(resp.items)){
+        // Merge server cart with local cart (local items take priority for qty)
+        resp.items.forEach(function(si){
+          var existing=cart.find(function(li){return li.id===si.id;});
+          if(!existing){cart.push(si);}
+        });
+        // Save to localStorage only (avoid re-syncing to server what we just loaded)
+        try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}
+        renderCart();
+      }
+    }catch(e){}
+    if(callback)callback();
+  };
+  xhr.send(JSON.stringify({user_id:currentUser.id}));
+}
+
 // ── Login Modal ──────────────────────────────────────────────────────────
 var accountBtn=document.getElementById('account-btn');
 var loginOverlay=document.getElementById('login-modal-overlay');
 var loginClose=document.getElementById('login-modal-close');
 function openLoginModal(){loginOverlay.classList.add('active');}
 function closeLoginModal(){loginOverlay.classList.remove('active');}
-if(accountBtn){accountBtn.addEventListener('click',function(e){e.preventDefault();openLoginModal();});}
+
+// Update account button based on login state
+function updateAccountUI(){
+  if(!accountBtn)return;
+  // Remove existing dropdown if any
+  var existingDd=document.getElementById('account-dropdown');
+  if(existingDd)existingDd.parentNode.removeChild(existingDd);
+
+  if(currentUser){
+    accountBtn.removeAttribute('href');
+    accountBtn.style.position='relative';
+    // Create dropdown for logged-in user
+    var dd=document.createElement('div');
+    dd.id='account-dropdown';
+    dd.style.cssText='display:none;position:absolute;top:100%;right:0;background:#fff;border:1px solid #ddd;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.12);min-width:180px;z-index:1000;padding:8px 0;';
+    var info=document.createElement('div');
+    info.style.cssText='padding:10px 16px;font-size:13px;color:#666;border-bottom:1px solid #eee;word-break:break-all;';
+    info.textContent=currentUser.email;
+    dd.appendChild(info);
+    var logoutBtn=document.createElement('button');
+    logoutBtn.textContent='Log out';
+    logoutBtn.style.cssText='display:block;width:100%;padding:10px 16px;border:none;background:none;text-align:left;font-size:14px;color:#333;cursor:pointer;';
+    logoutBtn.addEventListener('mouseenter',function(){logoutBtn.style.background='#f5f5f5';});
+    logoutBtn.addEventListener('mouseleave',function(){logoutBtn.style.background='none';});
+    logoutBtn.addEventListener('click',function(e){
+      e.stopPropagation();
+      clearUser();
+      window.location.reload();
+    });
+    dd.appendChild(logoutBtn);
+    accountBtn.parentNode.style.position='relative';
+    accountBtn.parentNode.appendChild(dd);
+
+    accountBtn.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      dd.style.display=dd.style.display==='none'?'block':'none';
+    };
+    document.addEventListener('click',function(e){
+      if(!accountBtn.parentNode.contains(e.target)){dd.style.display='none';}
+    });
+  }else{
+    if(accountBtn){accountBtn.addEventListener('click',function(e){e.preventDefault();openLoginModal();});}
+  }
+}
+
 if(loginClose){loginClose.addEventListener('click',closeLoginModal);}
 if(loginOverlay){loginOverlay.addEventListener('click',function(e){if(e.target===loginOverlay){closeLoginModal();}});}
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&loginOverlay&&loginOverlay.classList.contains('active')){closeLoginModal();}});
+
+updateAccountUI();
 
 // ── Login Form Submit ────────────────────────────────────────────────────
 var loginForm=document.getElementById('login-form');
@@ -37,9 +128,11 @@ if(loginForm){
       if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Log in';}
       try{
         var resp=JSON.parse(xhr.responseText);
-        if(xhr.status===200&&resp.success){
+        if(xhr.status===200&&resp.success&&resp.user){
+          saveUser(resp.user);
           closeLoginModal();
-          alert(resp.message||'Login successful!');
+          syncCartToServer();
+          updateAccountUI();
         }else{
           alert(resp.error||'Login failed. Please try again.');
         }
@@ -58,7 +151,7 @@ backToTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'s
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 var cart=[];
 try{var saved=localStorage.getItem('yopao_cart');if(saved){var parsed=JSON.parse(saved);if(Array.isArray(parsed)){cart=parsed.filter(function(i){return i&&typeof i.id==='string'&&typeof i.name==='string'&&typeof i.price==='number'&&typeof i.qty==='number'&&i.qty>0;});}}}catch(e){}
-function saveCart(){try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}}
+function saveCart(){try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}syncCartToServer();}
 var cartWrapper=document.getElementById('cart-wrapper');
 var cartDropdown=document.getElementById('cart-dropdown');
 var cartBadge=document.getElementById('cart-badge');
@@ -187,6 +280,9 @@ if(viewCartBtn){viewCartBtn.addEventListener('click',function(){window.location.
 if(checkoutBtn){checkoutBtn.addEventListener('click',function(){window.location.href='/cart/';});}
 
 renderCart();
+
+// Load cart from server for logged-in users (merge with local cart)
+loadCartFromServer();
 
 // ── Active Nav Link ──────────────────────────────────────────────────────
 (function(){
