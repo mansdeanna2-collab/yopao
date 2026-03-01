@@ -435,10 +435,7 @@ function handleDeleteOrder($pdo) {
         return;
     }
 
-    // Delete order items first (CASCADE should handle this, but be explicit)
-    $stmt = $pdo->prepare('DELETE FROM order_items WHERE order_id = ?');
-    $stmt->execute([$orderId]);
-
+    // order_items are automatically removed via CASCADE foreign key
     $stmt = $pdo->prepare('DELETE FROM orders WHERE order_id = ?');
     $stmt->execute([$orderId]);
 
