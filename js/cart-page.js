@@ -72,4 +72,12 @@
   });
 
   renderCartPage();
+
+  // Navigate to checkout when clicking Proceed to Checkout
+  var btnCheckout = document.querySelector('.btn-checkout');
+  if (btnCheckout) {
+    btnCheckout.addEventListener('click', function () {
+      window.location.href = '/checkout/';
+    });
+  }
 }());

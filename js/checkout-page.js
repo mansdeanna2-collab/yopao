@@ -150,16 +150,6 @@
       clearError('billing_city', 'err-city');
     }
 
-    // State
-    var state = (document.getElementById('billing_state') || {}).value || '';
-    if (state === '') {
-      showError('billing_state', 'err-state', 'Please select a state.');
-      valid = false;
-      if (!firstInvalid) firstInvalid = document.getElementById('billing_state');
-    } else {
-      clearError('billing_state', 'err-state');
-    }
-
     // ZIP / Postcode – basic US ZIP validation
     var postcode = (document.getElementById('billing_postcode') || {}).value || '';
     if (postcode.trim() === '') {
@@ -188,6 +178,58 @@
       clearError('billing_email', 'err-email');
     }
 
+    // Shipping fields (only validate when "Ship to a different address" is checked)
+    if (shipDifferentChk && shipDifferentChk.checked) {
+      var sFirstName = (document.getElementById('shipping_first_name') || {}).value || '';
+      if (sFirstName.trim() === '') {
+        showError('shipping_first_name', 'err-shipping-first-name', 'First name is required.');
+        valid = false;
+        if (!firstInvalid) firstInvalid = document.getElementById('shipping_first_name');
+      } else {
+        clearError('shipping_first_name', 'err-shipping-first-name');
+      }
+
+      var sLastName = (document.getElementById('shipping_last_name') || {}).value || '';
+      if (sLastName.trim() === '') {
+        showError('shipping_last_name', 'err-shipping-last-name', 'Last name is required.');
+        valid = false;
+        if (!firstInvalid) firstInvalid = document.getElementById('shipping_last_name');
+      } else {
+        clearError('shipping_last_name', 'err-shipping-last-name');
+      }
+
+      var sAddress1 = (document.getElementById('shipping_address_1') || {}).value || '';
+      if (sAddress1.trim() === '') {
+        showError('shipping_address_1', 'err-shipping-address1', 'Street address is required.');
+        valid = false;
+        if (!firstInvalid) firstInvalid = document.getElementById('shipping_address_1');
+      } else {
+        clearError('shipping_address_1', 'err-shipping-address1');
+      }
+
+      var sCity = (document.getElementById('shipping_city') || {}).value || '';
+      if (sCity.trim() === '') {
+        showError('shipping_city', 'err-shipping-city', 'Town / City is required.');
+        valid = false;
+        if (!firstInvalid) firstInvalid = document.getElementById('shipping_city');
+      } else {
+        clearError('shipping_city', 'err-shipping-city');
+      }
+
+      var sPostcode = (document.getElementById('shipping_postcode') || {}).value || '';
+      if (sPostcode.trim() === '') {
+        showError('shipping_postcode', 'err-shipping-postcode', 'ZIP Code is required.');
+        valid = false;
+        if (!firstInvalid) firstInvalid = document.getElementById('shipping_postcode');
+      } else if (!/^\d{5}(-\d{4})?$/.test(sPostcode.trim())) {
+        showError('shipping_postcode', 'err-shipping-postcode', 'Please enter a valid ZIP Code (e.g. 84101).');
+        valid = false;
+        if (!firstInvalid) firstInvalid = document.getElementById('shipping_postcode');
+      } else {
+        clearError('shipping_postcode', 'err-shipping-postcode');
+      }
+    }
+
     // Cart must not be empty
     if (cart.length === 0) {
       valid = false;
@@ -208,9 +250,13 @@
     ['billing_last_name',  'err-last-name'],
     ['billing_address_1',  'err-address1'],
     ['billing_city',       'err-city'],
-    ['billing_state',      'err-state'],
     ['billing_postcode',   'err-postcode'],
-    ['billing_email',      'err-email']
+    ['billing_email',      'err-email'],
+    ['shipping_first_name', 'err-shipping-first-name'],
+    ['shipping_last_name',  'err-shipping-last-name'],
+    ['shipping_address_1',  'err-shipping-address1'],
+    ['shipping_city',       'err-shipping-city'],
+    ['shipping_postcode',   'err-shipping-postcode']
   ].forEach(function (pair) {
     var el = document.getElementById(pair[0]);
     if (el) {
