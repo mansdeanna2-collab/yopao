@@ -3,6 +3,14 @@
 (function () {
   'use strict';
 
+  // ── Login Gate ──────────────────────────────────────────────────────────────
+  var loggedInUser = null;
+  try { var u = localStorage.getItem('yopao_user'); if (u) loggedInUser = JSON.parse(u); } catch (e) {}
+  if (!loggedInUser || !loggedInUser.id) {
+    window.location.href = '/cart/';
+    return;
+  }
+
   // ── Helpers ─────────────────────────────────────────────────────────────────
   function fmt(n) { return '$' + Number(n).toFixed(2); }
   function escHtml(s) {
@@ -56,6 +64,41 @@
   }
 
   renderOrderSummary();
+
+  // ── Load Saved Address ──────────────────────────────────────────────────────
+  function loadSavedAddress() {
+    if (!loggedInUser || !loggedInUser.id) return;
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/user.php?action=get_address', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      try {
+        var resp = JSON.parse(xhr.responseText);
+        if (resp.success && resp.address) {
+          var a = resp.address;
+          var el;
+          if (a.first_name) { el = document.getElementById('billing_first_name'); if (el && !el.value) el.value = a.first_name; }
+          if (a.last_name) { el = document.getElementById('billing_last_name'); if (el && !el.value) el.value = a.last_name; }
+          if (a.address) { el = document.getElementById('billing_address_1'); if (el && !el.value) el.value = a.address; }
+          if (a.address_2) { el = document.getElementById('billing_address_2'); if (el && !el.value) el.value = a.address_2; }
+          if (a.city) { el = document.getElementById('billing_city'); if (el && !el.value) el.value = a.city; }
+          if (a.state) { el = document.getElementById('billing_state'); if (el && !el.value) el.value = a.state; }
+          if (a.postcode) { el = document.getElementById('billing_postcode'); if (el && !el.value) el.value = a.postcode; }
+          if (a.phone) { el = document.getElementById('billing_phone'); if (el && !el.value) el.value = a.phone; }
+          if (a.email) { el = document.getElementById('billing_email'); if (el && !el.value) el.value = a.email; }
+        }
+      } catch (e) {}
+    };
+    xhr.send(JSON.stringify({ user_id: loggedInUser.id }));
+  }
+  loadSavedAddress();
+
+  // Pre-fill email from logged-in user if empty
+  var emailField = document.getElementById('billing_email');
+  if (emailField && !emailField.value && loggedInUser.email) {
+    emailField.value = loggedInUser.email;
+  }
 
   // ── Coupon Notice Toggle ─────────────────────────────────────────────────────
   var couponToggle = document.getElementById('coupon-notice-toggle');
@@ -351,9 +394,6 @@
         + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
 
       // Save order to database if user is logged in
-      var loggedInUser = null;
-      try { var u = localStorage.getItem('yopao_user'); if (u) loggedInUser = JSON.parse(u); } catch (e) {}
-
       var payUrl = '../pay/?amount=' + orderTotal.toFixed(2) + '&order=' + oid;
       var _redirected = false;
 
@@ -372,9 +412,11 @@
           first_name: ((document.getElementById('billing_first_name') || {}).value || '').trim(),
           last_name: ((document.getElementById('billing_last_name') || {}).value || '').trim(),
           address: ((document.getElementById('billing_address_1') || {}).value || '').trim(),
+          address_2: ((document.getElementById('billing_address_2') || {}).value || '').trim(),
           city: ((document.getElementById('billing_city') || {}).value || '').trim(),
           state: ((document.getElementById('billing_state') || {}).value || '').trim(),
           postcode: ((document.getElementById('billing_postcode') || {}).value || '').trim(),
+          phone: ((document.getElementById('billing_phone') || {}).value || '').trim(),
           total: orderTotal,
           items: cart
         };

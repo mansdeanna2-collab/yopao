@@ -129,6 +129,28 @@
         </div>
         <button class="btn-checkout">Proceed to Checkout</button>
       </div>
+
+      <!-- Order Info Summary (visible when logged in) -->
+      <div class="cart-totals-box" id="cart-order-info" style="display:none;margin-top:16px;">
+        <div class="cart-totals-title">ORDER INFORMATION</div>
+        <div id="cart-order-items" style="padding:0 0 8px;"></div>
+        <div class="totals-divider"></div>
+        <div class="totals-shipping-row">
+          <span class="shipping-label">Shipping</span>
+          <span class="shipping-free">FREE</span>
+        </div>
+        <div class="totals-divider"></div>
+        <div class="totals-shipping-row">
+          <span class="shipping-label">Payment Method</span>
+          <span class="shipping-free" style="color:#26A17B;font-weight:700;">USDT TRC20</span>
+        </div>
+        <div class="totals-divider"></div>
+        <div class="totals-estimated-row">
+          <span class="totals-estimated-label">Order Total</span>
+          <span class="totals-estimated-amount" id="order-info-total">$0.00</span>
+        </div>
+        <div id="cart-saved-address" style="padding:8px 0 0;font-size:13px;color:#666;"></div>
+      </div>
     </div>
 
   </div>

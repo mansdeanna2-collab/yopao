@@ -228,6 +228,10 @@ function renderCart(){
 }
 
 function addToCart(id,name,price,image,btnEl){
+  if(!currentUser){
+    openLoginModal();
+    return;
+  }
   var ex=cart.find(function(i){return i.id===id;});
   if(ex){ex.qty++;}else{cart.push({id:id,name:name,price:price,qty:1,image:image});}
   saveCart();
@@ -295,7 +299,7 @@ document.addEventListener('click',function(e){
 var viewCartBtn=document.querySelector('.view-cart-btn');
 var checkoutBtn=document.querySelector('.checkout-btn');
 if(viewCartBtn){viewCartBtn.addEventListener('click',function(){window.location.href='/cart/';});}
-if(checkoutBtn){checkoutBtn.addEventListener('click',function(){window.location.href='/cart/';});}
+if(checkoutBtn){checkoutBtn.addEventListener('click',function(){if(!currentUser){openLoginModal();return;}window.location.href='/cart/';});}
 
 renderCart();
 

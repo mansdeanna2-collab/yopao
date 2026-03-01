@@ -69,6 +69,12 @@ try {
         case 'create_order':
             handleCreateOrder($pdo, $userId, $input);
             break;
+        case 'save_address':
+            handleSaveAddress($pdo, $userId, $input);
+            break;
+        case 'get_address':
+            handleGetAddress($pdo, $userId);
+            break;
         default:
             http_response_code(400);
             echo json_encode(['error' => 'Invalid action.']);
@@ -200,10 +206,102 @@ function handleCreateOrder($pdo, $userId, $input) {
         $stmt = $pdo->prepare('DELETE FROM user_cart WHERE user_id = ?');
         $stmt->execute([$userId]);
 
+        // Auto-save address from order
+        saveAddressFromOrder($pdo, $userId, $input);
+
         $pdo->commit();
         echo json_encode(['success' => true, 'order_id' => $orderId]);
     } catch (PDOException $e) {
         $pdo->rollBack();
         throw $e;
+    }
+}
+
+/**
+ * Save or update a user's default address from order data.
+ */
+function saveAddressFromOrder($pdo, $userId, $input) {
+    $firstName = isset($input['first_name']) ? substr(trim($input['first_name']), 0, 100) : '';
+    $lastName  = isset($input['last_name']) ? substr(trim($input['last_name']), 0, 100) : '';
+    $address   = isset($input['address']) ? substr(trim($input['address']), 0, 500) : '';
+    $address2  = isset($input['address_2']) ? substr(trim($input['address_2']), 0, 500) : '';
+    $city      = isset($input['city']) ? substr(trim($input['city']), 0, 100) : '';
+    $state     = isset($input['state']) ? substr(trim($input['state']), 0, 100) : '';
+    $postcode  = isset($input['postcode']) ? substr(trim($input['postcode']), 0, 20) : '';
+    $phone     = isset($input['phone']) ? substr(trim($input['phone']), 0, 50) : '';
+    $email     = isset($input['email']) ? substr(trim($input['email']), 0, 255) : '';
+
+    if ($firstName === '' || $address === '' || $city === '' || $postcode === '') return;
+
+    // Check if a default address already exists
+    $stmt = $pdo->prepare('SELECT id FROM user_addresses WHERE user_id = ? AND is_default = 1 LIMIT 1');
+    $stmt->execute([$userId]);
+    $existing = $stmt->fetch();
+
+    if ($existing) {
+        $stmt = $pdo->prepare(
+            'UPDATE user_addresses SET first_name=?, last_name=?, address=?, address_2=?, city=?, state=?, postcode=?, phone=?, email=? WHERE id=?'
+        );
+        $stmt->execute([$firstName, $lastName, $address, $address2, $city, $state, $postcode, $phone, $email, $existing['id']]);
+    } else {
+        $stmt = $pdo->prepare(
+            'INSERT INTO user_addresses (user_id, first_name, last_name, address, address_2, city, state, postcode, phone, email, is_default) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)'
+        );
+        $stmt->execute([$userId, $firstName, $lastName, $address, $address2, $city, $state, $postcode, $phone, $email]);
+    }
+}
+
+/**
+ * Save a user's address.
+ */
+function handleSaveAddress($pdo, $userId, $input) {
+    $firstName = isset($input['first_name']) ? substr(trim($input['first_name']), 0, 100) : '';
+    $lastName  = isset($input['last_name']) ? substr(trim($input['last_name']), 0, 100) : '';
+    $address   = isset($input['address']) ? substr(trim($input['address']), 0, 500) : '';
+    $address2  = isset($input['address_2']) ? substr(trim($input['address_2']), 0, 500) : '';
+    $city      = isset($input['city']) ? substr(trim($input['city']), 0, 100) : '';
+    $state     = isset($input['state']) ? substr(trim($input['state']), 0, 100) : '';
+    $postcode  = isset($input['postcode']) ? substr(trim($input['postcode']), 0, 20) : '';
+    $phone     = isset($input['phone']) ? substr(trim($input['phone']), 0, 50) : '';
+    $email     = isset($input['email']) ? substr(trim($input['email']), 0, 255) : '';
+
+    if ($firstName === '' || $address === '' || $city === '' || $postcode === '') {
+        http_response_code(400);
+        echo json_encode(['error' => 'Missing required address fields (first_name, address, city, postcode).']);
+        return;
+    }
+
+    // Upsert: update existing default or insert new
+    $stmt = $pdo->prepare('SELECT id FROM user_addresses WHERE user_id = ? AND is_default = 1 LIMIT 1');
+    $stmt->execute([$userId]);
+    $existing = $stmt->fetch();
+
+    if ($existing) {
+        $stmt = $pdo->prepare(
+            'UPDATE user_addresses SET first_name=?, last_name=?, address=?, address_2=?, city=?, state=?, postcode=?, phone=?, email=? WHERE id=?'
+        );
+        $stmt->execute([$firstName, $lastName, $address, $address2, $city, $state, $postcode, $phone, $email, $existing['id']]);
+    } else {
+        $stmt = $pdo->prepare(
+            'INSERT INTO user_addresses (user_id, first_name, last_name, address, address_2, city, state, postcode, phone, email, is_default) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)'
+        );
+        $stmt->execute([$userId, $firstName, $lastName, $address, $address2, $city, $state, $postcode, $phone, $email]);
+    }
+
+    echo json_encode(['success' => true]);
+}
+
+/**
+ * Get a user's default saved address.
+ */
+function handleGetAddress($pdo, $userId) {
+    $stmt = $pdo->prepare('SELECT first_name, last_name, address, address_2, city, state, postcode, phone, email FROM user_addresses WHERE user_id = ? AND is_default = 1 LIMIT 1');
+    $stmt->execute([$userId]);
+    $address = $stmt->fetch();
+
+    if ($address) {
+        echo json_encode(['success' => true, 'address' => $address]);
+    } else {
+        echo json_encode(['success' => true, 'address' => null]);
     }
 }
