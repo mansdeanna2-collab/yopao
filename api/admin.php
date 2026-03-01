@@ -172,9 +172,13 @@ function handleUsers($pdo) {
     $total = (int)$stmt->fetch()['cnt'];
 
     $stmt = $pdo->prepare('SELECT u.id, u.email, u.register_ip, u.created_at,
-        (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS order_count,
-        (SELECT COUNT(*) FROM login_logs l WHERE l.user_id = u.id) AS login_count
-        FROM users u ORDER BY u.created_at DESC LIMIT ? OFFSET ?');
+        COUNT(DISTINCT o.id) AS order_count,
+        COUNT(DISTINCT l.id) AS login_count
+        FROM users u
+        LEFT JOIN orders o ON o.user_id = u.id
+        LEFT JOIN login_logs l ON l.user_id = u.id
+        GROUP BY u.id
+        ORDER BY u.created_at DESC LIMIT ? OFFSET ?');
     $stmt->execute([$limit, $offset]);
     $users = $stmt->fetchAll();
 

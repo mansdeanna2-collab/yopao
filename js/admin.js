@@ -269,12 +269,19 @@
                 '<td>$' + Number(o.total).toFixed(2) + '</td>' +
                 '<td>' + statusBadge(o.status) + '</td>' +
                 '<td class="hide-mobile">' + formatDate(o.created_at) + '</td>' +
-                '<td><button class="filter-btn" onclick="window._viewOrder(\'' + escapeHtml(o.order_id) + '\')">View</button></td>' +
+                '<td><button class="filter-btn view-order-btn" data-order-id="' + escapeHtml(o.order_id) + '">View</button></td>' +
                 '</tr>';
         });
 
         html += '</tbody></table>';
         body.innerHTML = html;
+
+        // Bind view buttons via event delegation
+        body.querySelectorAll('.view-order-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                window._viewOrder(this.getAttribute('data-order-id'));
+            });
+        });
 
         renderPagination('orders-pagination', data.page, data.pages, function (pg) { loadOrders(pg); });
     }
@@ -300,7 +307,7 @@
             html += detailRow('Status', statusBadge(data.status));
             html += detailRow('Customer', escapeHtml((data.first_name || '') + ' ' + (data.last_name || '')));
             html += detailRow('Email', escapeHtml(data.email));
-            html += detailRow('Address', escapeHtml(data.address + ', ' + data.city + ', ' + (data.state || '') + ' ' + data.postcode));
+            html += detailRow('Address', escapeHtml([data.address, data.city, data.state, data.postcode].filter(Boolean).join(', ')));
             html += detailRow('Total', '$' + Number(data.total).toFixed(2));
             html += detailRow('Created', formatDate(data.created_at));
 
