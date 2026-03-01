@@ -143,6 +143,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .skeleton-img { width: 100%; aspect-ratio: 247 / 296; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 400px 100%; animation: shimmer 1.5s infinite; }
 .skeleton-text { height: 14px; margin: 10px 12px 6px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 400px 100%; animation: shimmer 1.5s infinite; border-radius: 3px; }
 .skeleton-text.short { width: 50%; }
+.skeleton-product-layout { max-width: 1200px; margin: 0 auto; padding: 30px 15px; display: flex; gap: 40px; }
+.skeleton-product-gallery { width: 50%; flex-shrink: 0; }
+.skeleton-product-gallery .skeleton-img { aspect-ratio: 1 / 1; }
+.skeleton-product-info { flex: 1; }
+.skeleton-product-info .skeleton-text { margin: 0 0 12px; }
+.skeleton-product-info .skeleton-text-title { height: 24px; width: 80%; }
+.skeleton-product-info .skeleton-text-price { height: 18px; width: 40%; }
+.skeleton-product-info .skeleton-text-btn { height: 40px; width: 100%; }
 
 /* ========== Login Modal ========== */
 @keyframes loginFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }

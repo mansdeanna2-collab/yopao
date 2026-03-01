@@ -90,7 +90,14 @@ function addToCart(id,name,price,image,btnEl){
   saveCart();
   renderCart();
   cartDropdown.classList.add('visible');
-  if(btnEl){btnEl.classList.remove('added');void btnEl.offsetWidth;btnEl.classList.add('added');var orig=btnEl.textContent;btnEl.textContent='\u2713 ADDED';setTimeout(function(){btnEl.textContent=orig;},800);}
+  if(btnEl){
+    btnEl.classList.remove('added');
+    void btnEl.offsetWidth;
+    btnEl.classList.add('added');
+    var orig=btnEl.textContent;
+    btnEl.textContent='\u2713 ADDED';
+    setTimeout(function(){btnEl.textContent=orig;},800);
+  }
 }
 
 function removeFromCart(id){
@@ -159,9 +166,7 @@ renderCart();
     var resolved=new URL(href,window.location.href);
     var linkPath=resolved.pathname.replace(/\/$/,'');
     var linkHash=resolved.hash;
-    if(path===linkPath||(path===''&&linkPath==='')){
-      if(!linkHash||(linkHash&&hash&&linkHash===hash)){a.classList.add('active');}
-      else if(!hash&&(linkPath==='.'||linkPath==='..'||linkPath==='/'||linkPath==='')){a.classList.add('active');}
-    }
+    var samePath=(path===linkPath);
+    if(samePath&&(!linkHash||(linkHash===hash))){a.classList.add('active');}
   });
 })();
