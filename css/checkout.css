@@ -433,6 +433,10 @@
   .checkout-layout {
     flex-direction: column;
   }
+  .checkout-billing-col {
+    width: 100%;
+    padding: 0 24px;
+  }
   .checkout-order-col {
     width: 100%;
   }
@@ -457,6 +461,9 @@
 @media (max-width: 480px) {
   .checkout-layout {
     padding: 20px 12px 40px;
+  }
+  .checkout-billing-col {
+    padding: 0 14px;
   }
   .co-order-box {
     padding: 16px 14px;
