@@ -337,12 +337,23 @@
       placeOrderBtn.classList.add('loading');
       placeOrderBtn.textContent = 'Processing…';
 
-      // Simulate a brief processing delay, then redirect to order-complete
+      // Read the already-rendered order total from the DOM
+      var totalText = (document.getElementById('order-total-amount') || {}).textContent || '$0.00';
+      var orderTotal = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
+
+      // Generate order ID
+      var now = new Date();
+      var oid = 'ORD' + now.getFullYear().toString().slice(-2)
+        + String(now.getMonth() + 1).padStart(2, '0')
+        + String(now.getDate()).padStart(2, '0')
+        + String(now.getHours()).padStart(2, '0')
+        + String(now.getMinutes()).padStart(2, '0')
+        + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+
+      // Redirect to USDT TRC20 payment page
       setTimeout(function () {
-        // Clear cart after successful order
         try { localStorage.removeItem('yopao_cart'); } catch (e) {}
-        // Redirect to home page after order
-        window.location.href = '../';
+        window.location.href = '../pay/?amount=' + orderTotal.toFixed(2) + '&order=' + oid;
       }, 1200);
     });
   }
