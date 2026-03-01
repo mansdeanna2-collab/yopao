@@ -423,3 +423,130 @@ body { background: #fff; }
     font-size: 16px;
   }
 }
+
+/* ========== Pending Orders Section ========== */
+.pending-orders-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #999;
+  margin-bottom: 16px;
+  padding-top: 8px;
+}
+.pending-order-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.pending-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.pending-order-id {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  margin-right: 10px;
+}
+.pending-order-date {
+  font-size: 12px;
+  color: #999;
+}
+.pending-order-status {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+.status-unpaid {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffe0b2;
+}
+.status-other {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+.pending-order-items {
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+  margin-bottom: 10px;
+}
+.pending-order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 13px;
+  color: #555;
+}
+.pending-item-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 12px;
+}
+.pending-item-price {
+  font-weight: 700;
+  color: #333;
+  white-space: nowrap;
+}
+.pending-order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+.pending-order-total {
+  font-size: 14px;
+  color: #333;
+}
+.pending-order-pay-btn {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #333365;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.pending-order-pay-btn:hover {
+  background: #22224f;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(51,51,101,0.25);
+}
+@media (max-width: 600px) {
+  .pending-order-card {
+    padding: 12px 14px;
+  }
+  .pending-order-id {
+    font-size: 12px;
+  }
+  .pending-order-item {
+    font-size: 12px;
+  }
+  .pending-order-pay-btn {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+}
