@@ -35,7 +35,7 @@ function loadCartFromServer(callback){
     try{
       var resp=JSON.parse(xhr.responseText);
       if(resp.success&&Array.isArray(resp.items)){
-        // Merge server cart with local cart (local items take priority for qty)
+        // Merge: add server-only items to local cart (items already in local cart are kept as-is)
         resp.items.forEach(function(si){
           var existing=cart.find(function(li){return li.id===si.id;});
           if(!existing){cart.push(si);}
@@ -58,6 +58,7 @@ function openLoginModal(){loginOverlay.classList.add('active');}
 function closeLoginModal(){loginOverlay.classList.remove('active');}
 
 // Update account button based on login state
+var _accountListenerAttached=false;
 function updateAccountUI(){
   if(!accountBtn)return;
   // Remove existing dropdown if any
@@ -97,8 +98,9 @@ function updateAccountUI(){
     document.addEventListener('click',function(e){
       if(!accountBtn.parentNode.contains(e.target)){dd.style.display='none';}
     });
-  }else{
-    if(accountBtn){accountBtn.addEventListener('click',function(e){e.preventDefault();openLoginModal();});}
+  }else if(!_accountListenerAttached){
+    _accountListenerAttached=true;
+    accountBtn.addEventListener('click',function(e){e.preventDefault();openLoginModal();});
   }
 }
 

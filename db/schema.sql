@@ -131,5 +131,6 @@ CREATE TABLE IF NOT EXISTS order_items (
     product_name VARCHAR(500) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     qty INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     INDEX idx_order_id (order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
