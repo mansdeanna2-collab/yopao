@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Stampstores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ========== Left Sidebar ========== -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="sidebar-logo-icon">S</span>
+        Admin Panel
+      </div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="#" data-page="dashboard" class="active"><span class="nav-icon">📊</span> Dashboard</a></li>
+      <li><a href="#" data-page="products"><span class="nav-icon">📦</span> Products</a></li>
+      <li><a href="#" data-page="orders"><span class="nav-icon">🛒</span> Orders</a></li>
+      <li><a href="#" data-page="users"><span class="nav-icon">👥</span> Users</a></li>
+      <li><a href="#" data-page="categories"><span class="nav-icon">📂</span> Categories</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="../">← Back to Store</a>
+    </div>
+  </aside>
+
+  <!-- Sidebar overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ========== Right Content ========== -->
+  <main class="admin-main">
+
+    <!-- Top Bar -->
+    <div class="admin-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu">☰</button>
+        <span class="topbar-title" id="page-title">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <a href="../" class="topbar-link">View Store</a>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="admin-content">
+
+      <!-- ===== Dashboard ===== -->
+      <div class="page-section active" id="section-dashboard">
+        <div class="stats-grid" id="dashboard-stats">
+          <div class="loading-spinner">Loading...</div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="admin-panel">
+            <div class="panel-header"><h2>Recent Orders</h2></div>
+            <div class="panel-body" id="recent-orders-body"></div>
+          </div>
+          <div class="admin-panel">
+            <div class="panel-header"><h2>Recent Users</h2></div>
+            <div class="panel-body" id="recent-users-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Products ===== -->
+      <div class="page-section" id="section-products">
+        <div class="admin-panel">
+          <div class="panel-header">
+            <h2>All Products</h2>
+            <div class="filter-bar">
+              <input type="text" class="filter-input" id="product-search" placeholder="Search products...">
+              <button class="filter-btn" id="product-search-btn">Search</button>
+            </div>
+          </div>
+          <div class="panel-body" id="products-table-body"></div>
+          <div class="pagination" id="products-pagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== Orders ===== -->
+      <div class="page-section" id="section-orders">
+        <div class="admin-panel">
+          <div class="panel-header">
+            <h2>All Orders</h2>
+            <div class="filter-bar">
+              <select class="filter-select" id="order-status-filter">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="shipped">Shipped</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-body" id="orders-table-body"></div>
+          <div class="pagination" id="orders-pagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== Users ===== -->
+      <div class="page-section" id="section-users">
+        <div class="admin-panel">
+          <div class="panel-header"><h2>All Users</h2></div>
+          <div class="panel-body" id="users-table-body"></div>
+          <div class="pagination" id="users-pagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== Categories ===== -->
+      <div class="page-section" id="section-categories">
+        <div class="admin-panel">
+          <div class="panel-header"><h2>All Categories</h2></div>
+          <div class="panel-body" id="categories-table-body"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Order Detail Modal -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Order Detail</h2>
+      <button class="modal-close" id="order-modal-close">×</button>
+    </div>
+    <div class="modal-body" id="order-modal-body"></div>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>
