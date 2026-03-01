@@ -17,6 +17,38 @@ if(loginClose){loginClose.addEventListener('click',closeLoginModal);}
 if(loginOverlay){loginOverlay.addEventListener('click',function(e){if(e.target===loginOverlay){closeLoginModal();}});}
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&loginOverlay&&loginOverlay.classList.contains('active')){closeLoginModal();}});
 
+// ── Login Form Submit ────────────────────────────────────────────────────
+var loginForm=document.getElementById('login-form');
+if(loginForm){
+  loginForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var emailField=document.getElementById('login-username');
+    var pwField=document.getElementById('login-password');
+    var submitBtn=loginForm.querySelector('.login-modal-submit');
+    var email=emailField?emailField.value.trim():'';
+    var pw=pwField?pwField.value:'';
+    if(!email||!pw){alert('Please enter your email and password.');return;}
+    if(submitBtn){submitBtn.disabled=true;submitBtn.textContent='Logging in…';}
+    var xhr=new XMLHttpRequest();
+    xhr.open('POST','/api/auth.php?action=login',true);
+    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.onreadystatechange=function(){
+      if(xhr.readyState!==4)return;
+      if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Log in';}
+      try{
+        var resp=JSON.parse(xhr.responseText);
+        if(xhr.status===200&&resp.success){
+          closeLoginModal();
+          alert(resp.message||'Login successful!');
+        }else{
+          alert(resp.error||'Login failed. Please try again.');
+        }
+      }catch(ex){alert('Server error. Please try again later.');}
+    };
+    xhr.send(JSON.stringify({email:email,password:pw}));
+  });
+}
+
 // ── Back to Top ──────────────────────────────────────────────────────────
 var backToTop=document.getElementById('back-to-top');
 window.addEventListener('scroll',function(){backToTop.classList.toggle('visible',window.scrollY>400);});
