@@ -379,6 +379,15 @@ body { background: #fff; }
     font-size: 16px;
   }
 }
+@media (max-width: 480px) {
+  .cart-table-header { font-size: 10px; }
+  .cart-row-total { font-size: 13px; }
+  .totals-estimated-label { font-size: 13px; }
+  .totals-estimated-amount { font-size: 16px; }
+  .coupon-toggle { font-size: 13px; }
+  .cart-row-qty button { width: 38px; height: 38px; }
+  .cart-row-qty .qty-val { line-height: 38px; }
+}
 @media (max-width: 380px) {
   .checkout-breadcrumb-inner {
     font-size: 9px;

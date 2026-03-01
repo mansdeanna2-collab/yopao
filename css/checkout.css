@@ -446,3 +446,53 @@
     margin-bottom: 18px;
   }
 }
+@media (max-width: 480px) {
+  .checkout-layout {
+    padding: 20px 12px 40px;
+  }
+  .co-order-box {
+    padding: 16px 14px;
+  }
+  .coupon-bar {
+    font-size: 13px;
+  }
+  .coupon-bar-form input {
+    font-size: 16px;
+  }
+  .btn-place-order {
+    padding: 15px;
+  }
+  /* Fix toast centering on narrow screens: use left/right edges instead of
+     translateX(-50%) centering. The Y slide animation is kept the same. */
+  .checkout-toast {
+    left: 12px;
+    right: 12px;
+    transform: translateY(20px);
+    white-space: normal;
+    text-align: center;
+  }
+  .checkout-toast.show {
+    transform: translateY(0);
+  }
+}
+@media (max-width: 380px) {
+  .checkout-breadcrumb-inner {
+    font-size: 9px;
+    gap: 3px;
+    letter-spacing: 0;
+  }
+  .checkout-breadcrumb {
+    padding: 14px 10px 12px;
+  }
+  .co-section-title {
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  .co-field label {
+    font-size: 13px;
+  }
+  .btn-place-order {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+}
