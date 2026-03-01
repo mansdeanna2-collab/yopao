@@ -1,0 +1,315 @@
+/* ========== Auth Pages – Shared Styles ========== */
+
+/* Wrapper – pushes footer down */
+.auth-wrapper {
+  min-height: calc(100vh - 260px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #f0f1f6 0%, #e8e9f0 100%);
+}
+
+/* Card */
+.auth-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 40px 36px;
+  max-width: 460px;
+  width: 100%;
+  animation: authFadeIn 0.35s ease;
+}
+
+@keyframes authFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Icon (forgot-password page) */
+.auth-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  background: #f0f1f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth-icon svg {
+  width: 30px;
+  height: 30px;
+  color: #333365;
+}
+
+/* Title & Subtitle */
+.auth-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.auth-subtitle {
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+/* ========== Fields ========== */
+.auth-field {
+  margin-bottom: 18px;
+}
+
+.auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  color: #999;
+}
+.auth-input-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.auth-input-wrap input {
+  width: 100%;
+  padding: 11px 12px 11px 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.auth-input-wrap input:focus {
+  border-color: #333365;
+  outline: none;
+}
+.auth-input-wrap input.has-error {
+  border-color: #e53935;
+}
+
+/* Field-level error */
+.auth-field-error {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  min-height: 0;
+}
+
+/* ========== Password Toggle ========== */
+.auth-toggle-pw {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  color: #999;
+  transition: color 0.2s;
+}
+.auth-toggle-pw:hover {
+  color: #555;
+}
+.auth-toggle-pw svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ========== Password Strength ========== */
+.password-strength {
+  margin: -10px 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.strength-bars {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.strength-seg {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background: #e0e0e0;
+  transition: background 0.3s;
+}
+
+.strength-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #999;
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* Strength colors */
+.strength-seg.weak   { background: #e53935; }
+.strength-seg.medium { background: #ff9800; }
+.strength-seg.strong { background: #4caf50; }
+.strength-seg.very-strong { background: #333365; }
+
+/* ========== Checkbox ========== */
+.auth-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  line-height: 1.5;
+}
+.auth-checkbox input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: #333365;
+  flex-shrink: 0;
+}
+.auth-checkbox a {
+  color: #333365;
+  text-decoration: underline;
+}
+.auth-checkbox a:hover {
+  color: #22224f;
+}
+
+/* ========== Submit Button ========== */
+.auth-submit {
+  display: block;
+  width: 100%;
+  background: #333365;
+  color: #fff;
+  border: none;
+  padding: 13px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.auth-submit:hover {
+  background: #22224f;
+}
+
+/* ========== Alt Links ========== */
+.auth-alt-link {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  margin-top: 20px;
+}
+.auth-alt-link a {
+  color: #333365;
+  font-weight: 700;
+  text-decoration: none;
+}
+.auth-alt-link a:hover {
+  text-decoration: underline;
+  color: #22224f;
+}
+
+.auth-alt-links {
+  margin-top: 20px;
+}
+.auth-alt-links .auth-alt-link {
+  margin-top: 10px;
+}
+
+/* ========== Success Message ========== */
+.auth-success {
+  text-align: center;
+  padding: 20px 0 0;
+  animation: authFadeIn 0.35s ease;
+}
+.auth-success svg {
+  width: 48px;
+  height: 48px;
+  color: #4caf50;
+  margin-bottom: 12px;
+}
+.auth-success h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+.auth-success p {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+}
+
+/* ========== Toast ========== */
+.auth-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #4caf50;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.auth-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ========== Shake Animation ========== */
+@keyframes authShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+.auth-input-wrap input.shake {
+  animation: authShake 0.35s ease;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 520px) {
+  .auth-wrapper {
+    padding: 30px 12px;
+  }
+  .auth-card {
+    padding: 28px 20px;
+    border-radius: 8px;
+  }
+  .auth-title {
+    font-size: 20px;
+  }
+  .auth-submit {
+    font-size: 13px;
+  }
+}
