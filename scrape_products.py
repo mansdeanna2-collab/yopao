@@ -746,7 +746,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
 <div class="header-wrapper" id="header">
   <header class="site-header">
     <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
-    <div class="logo"><a href="../../index.html"><span class="logo-icon">S</span>stampstores</a></div>
+    <div class="logo"><a href="../../index.html"><span class="logo-icon">S</span>StampSwift</a></div>
     <nav class="nav-main">
       <a href="../../index.html">HOME</a>
       <a href="../../flag-series/">FLAG SERIES</a>
@@ -962,7 +962,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
         <div class="footer-divider"></div>
         <div class="contact-info">
           <p><strong>EDDM LLC</strong></p>
-          <p><strong>Email:</strong> support@eddm.shop</p>
+          <p><strong>Email:</strong> mansdeanna2@gmail.com</p>
           <p><strong>Phone:</strong> (970) 329-9777</p>
           <p><strong>Address:</strong> 3605 Avalon St, Philadelphia, PA 19114</p>
         </div>
@@ -977,7 +977,7 @@ def generate_product_page(product_data, all_products, all_products_by_slug):
       <span>MasterCard</span>
       <span>Cash on Delivery</span>
     </div>
-    <div class="copyright">Copyright 2026 &copy; <strong>eddm.shop</strong></div>
+    <div class="copyright">Copyright 2026 &copy; <strong>StampSwift</strong></div>
   </div>
 </footer>
 
