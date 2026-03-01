@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout – Buy Discount Postage Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/checkout.css">
+</head>
+<body>
+
+<!-- ========== Top Bar ========== -->
+<div class="top-bar">
+  <span class="top-bar-text">Free Shipping On All Orders. 3–8 Business Days Delivery</span>
+  <span class="top-bar-search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+</div>
+
+<!-- ========== Header ========== -->
+<div class="header-wrapper" id="header">
+  <header class="site-header">
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
+    <div class="logo"><a href="../"><span class="logo-icon">S</span>stampstores</a></div>
+    <nav class="nav-main">
+      <a href="../">HOME</a>
+      <a href="/category/#flag-series">FLAG SERIES</a>
+      <a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a>
+      <a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a>
+      <a href="/category/#animal-series">ANIMAL SERIES</a>
+      <a href="/category/#other-years">OTHER YEARS &#9662;</a>
+      <a href="#">CONTACT US</a>
+    </nav>
+    <div class="header-right">
+      <a href="#" id="account-btn" class="header-icon account-icon" aria-label="Account"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></a>
+      <div class="cart-wrapper" id="cart-wrapper">
+        <button class="cart-link" id="cart-toggle" aria-label="Cart">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span id="cart-total">$0.00</span>
+            <span class="cart-divider"></span>
+            <span class="cart-badge" id="cart-badge">0</span>
+          </button>
+        <div class="cart-dropdown" id="cart-dropdown">
+          <div id="cart-items-list"></div>
+          <div class="cart-subtotal" id="cart-subtotal-row" style="display:none">
+            <span>Subtotal:</span>
+            <span class="subtotal-amount" id="cart-subtotal-amount">$0.00</span>
+          </div>
+          <div class="cart-actions" id="cart-action-btns" style="display:none">
+            <button class="cart-btn view-cart-btn">VIEW CART</button>
+            <button class="cart-btn checkout-btn">CHECKOUT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- ========== Mobile Nav ========== -->
+<div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+<div class="mobile-nav-panel" id="mobile-nav-panel">
+  <div class="close-btn" id="mobile-nav-close">&times;</div>
+  <ul>
+    <li><a href="../">HOME</a></li>
+    <li><a href="/category/#flag-series">FLAG SERIES</a></li>
+    <li><a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a></li>
+    <li><a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a></li>
+    <li><a href="/category/#animal-series">ANIMAL SERIES</a></li>
+    <li><a href="/category/#other-years">OTHER YEARS</a></li>
+    <li><a href="#">CONTACT US</a></li>
+  </ul>
+</div>
+
+<!-- ========== Checkout Breadcrumb ========== -->
+<div class="checkout-breadcrumb">
+  <div class="checkout-breadcrumb-inner">
+    <span class="step"><a href="/cart/">SHOPPING CART</a></span>
+    <span class="chevron">&#62;</span>
+    <span class="step active">CHECKOUT DETAILS</span>
+    <span class="chevron">&#62;</span>
+    <span class="step">ORDER COMPLETE</span>
+  </div>
+</div>
+
+<!-- ========== Checkout Page Content ========== -->
+<div class="checkout-layout">
+
+  <!-- LEFT: Billing Details -->
+  <div class="checkout-billing-col">
+
+    <!-- Coupon Bar -->
+    <div class="coupon-bar">
+      Have a coupon? <button id="coupon-notice-toggle">Click here to enter your code</button>
+      <div class="coupon-bar-form" id="coupon-notice-form">
+        <input type="text" id="coupon-code-input" placeholder="Coupon code">
+        <button id="coupon-apply-btn">APPLY COUPON</button>
+      </div>
+    </div>
+
+    <form id="checkout-form" onsubmit="return false;" novalidate>
+
+      <!-- Billing Details -->
+      <div class="co-section-title">BILLING DETAILS</div>
+
+      <!-- First / Last Name -->
+      <div class="co-field-group">
+        <div class="co-field">
+          <label for="billing_first_name">First name <span class="req">*</span></label>
+          <input type="text" id="billing_first_name" name="billing_first_name" required autocomplete="given-name">
+          <span class="field-error" id="err-first-name"></span>
+        </div>
+        <div class="co-field">
+          <label for="billing_last_name">Last name <span class="req">*</span></label>
+          <input type="text" id="billing_last_name" name="billing_last_name" required autocomplete="family-name">
+          <span class="field-error" id="err-last-name"></span>
+        </div>
+      </div>
+
+      <!-- Country -->
+      <div class="co-field">
+        <label>Country / Region <span class="req">*</span></label>
+        <div class="country-display">United States (US)</div>
+      </div>
+
+      <!-- Street Address -->
+      <div class="co-field">
+        <label for="billing_address_1">Street address <span class="req">*</span></label>
+        <div class="co-field-group" style="margin-bottom:8px;">
+          <div class="co-field" style="margin-bottom:0;flex:1;">
+            <input type="text" id="billing_address_1" name="billing_address_1" placeholder="House number and street name" required autocomplete="address-line1">
+            <span class="field-error" id="err-address1"></span>
+          </div>
+          <div class="co-field" style="margin-bottom:0;flex:1;">
+            <input type="text" id="billing_address_2" name="billing_address_2" placeholder="Apartment, suite, unit, etc. (optional)" autocomplete="address-line2">
+          </div>
+        </div>
+      </div>
+
+      <!-- City -->
+      <div class="co-field">
+        <label for="billing_city">Town / City <span class="req">*</span></label>
+        <input type="text" id="billing_city" name="billing_city" required autocomplete="address-level2">
+        <span class="field-error" id="err-city"></span>
+      </div>
+
+      <!-- State -->
+      <div class="co-field">
+        <label for="billing_state">State <span class="req">*</span></label>
+        <select id="billing_state" name="billing_state" required autocomplete="address-level1">
+          <option value="">Select a state…</option>
+          <option value="AL">Alabama</option>
+          <option value="AK">Alaska</option>
+          <option value="AZ">Arizona</option>
+          <option value="AR">Arkansas</option>
+          <option value="CA">California</option>
+          <option value="CO">Colorado</option>
+          <option value="CT">Connecticut</option>
+          <option value="DE">Delaware</option>
+          <option value="DC">District of Columbia</option>
+          <option value="FL">Florida</option>
+          <option value="GA">Georgia</option>
+          <option value="HI">Hawaii</option>
+          <option value="ID">Idaho</option>
+          <option value="IL">Illinois</option>
+          <option value="IN">Indiana</option>
+          <option value="IA">Iowa</option>
+          <option value="KS">Kansas</option>
+          <option value="KY">Kentucky</option>
+          <option value="LA">Louisiana</option>
+          <option value="ME">Maine</option>
+          <option value="MD">Maryland</option>
+          <option value="MA">Massachusetts</option>
+          <option value="MI">Michigan</option>
+          <option value="MN">Minnesota</option>
+          <option value="MS">Mississippi</option>
+          <option value="MO">Missouri</option>
+          <option value="MT">Montana</option>
+          <option value="NE">Nebraska</option>
+          <option value="NV">Nevada</option>
+          <option value="NH">New Hampshire</option>
+          <option value="NJ">New Jersey</option>
+          <option value="NM">New Mexico</option>
+          <option value="NY">New York</option>
+          <option value="NC">North Carolina</option>
+          <option value="ND">North Dakota</option>
+          <option value="OH">Ohio</option>
+          <option value="OK">Oklahoma</option>
+          <option value="OR">Oregon</option>
+          <option value="PA">Pennsylvania</option>
+          <option value="RI">Rhode Island</option>
+          <option value="SC">South Carolina</option>
+          <option value="SD">South Dakota</option>
+          <option value="TN">Tennessee</option>
+          <option value="TX">Texas</option>
+          <option value="UT" selected>Utah</option>
+          <option value="VT">Vermont</option>
+          <option value="VA">Virginia</option>
+          <option value="WA">Washington</option>
+          <option value="WV">West Virginia</option>
+          <option value="WI">Wisconsin</option>
+          <option value="WY">Wyoming</option>
+        </select>
+        <span class="field-error" id="err-state"></span>
+      </div>
+
+      <!-- ZIP Code -->
+      <div class="co-field">
+        <label for="billing_postcode">ZIP Code <span class="req">*</span></label>
+        <input type="text" id="billing_postcode" name="billing_postcode" required autocomplete="postal-code">
+        <span class="field-error" id="err-postcode"></span>
+      </div>
+
+      <!-- Phone -->
+      <div class="co-field">
+        <label for="billing_phone">Phone (optional)</label>
+        <input type="tel" id="billing_phone" name="billing_phone" autocomplete="tel">
+      </div>
+
+      <!-- Email -->
+      <div class="co-field">
+        <label for="billing_email">Email address <span class="req">*</span></label>
+        <input type="email" id="billing_email" name="billing_email" required autocomplete="email">
+        <span class="field-error" id="err-email"></span>
+      </div>
+
+      <!-- Ship to Different Address -->
+      <label class="ship-diff-toggle">
+        <input type="checkbox" id="ship-to-different">
+        Ship to a different address?
+      </label>
+
+      <div id="shipping-address-block">
+        <div class="co-section-title">SHIPPING ADDRESS</div>
+        <div class="co-field-group">
+          <div class="co-field">
+            <label for="shipping_first_name">First name <span class="req">*</span></label>
+            <input type="text" id="shipping_first_name" name="shipping_first_name" autocomplete="given-name">
+          </div>
+          <div class="co-field">
+            <label for="shipping_last_name">Last name <span class="req">*</span></label>
+            <input type="text" id="shipping_last_name" name="shipping_last_name" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="co-field">
+          <label>Country / Region <span class="req">*</span></label>
+          <div class="country-display">United States (US)</div>
+        </div>
+        <div class="co-field">
+          <label for="shipping_address_1">Street address <span class="req">*</span></label>
+          <div class="co-field-group" style="margin-bottom:8px;">
+            <div class="co-field" style="margin-bottom:0;flex:1;">
+              <input type="text" id="shipping_address_1" name="shipping_address_1" placeholder="House number and street name" autocomplete="address-line1">
+            </div>
+            <div class="co-field" style="margin-bottom:0;flex:1;">
+              <input type="text" id="shipping_address_2" name="shipping_address_2" placeholder="Apartment, suite, unit, etc. (optional)" autocomplete="address-line2">
+            </div>
+          </div>
+        </div>
+        <div class="co-field">
+          <label for="shipping_city">Town / City <span class="req">*</span></label>
+          <input type="text" id="shipping_city" name="shipping_city" autocomplete="address-level2">
+        </div>
+        <div class="co-field">
+          <label for="shipping_state">State <span class="req">*</span></label>
+          <select id="shipping_state" name="shipping_state" autocomplete="address-level1">
+            <option value="">Select a state…</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="DC">District of Columbia</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+          </select>
+        </div>
+        <div class="co-field">
+          <label for="shipping_postcode">ZIP Code <span class="req">*</span></label>
+          <input type="text" id="shipping_postcode" name="shipping_postcode" autocomplete="postal-code">
+        </div>
+        <div class="co-field">
+          <label for="shipping_phone">Phone (optional)</label>
+          <input type="tel" id="shipping_phone" name="shipping_phone" autocomplete="tel">
+        </div>
+      </div>
+
+      <!-- Order Notes -->
+      <div class="co-field">
+        <label for="order_notes">Order notes (optional)</label>
+        <textarea id="order_notes" name="order_notes" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- RIGHT: Your Order -->
+  <div class="checkout-order-col">
+    <div class="co-order-box">
+      <div class="co-order-title">YOUR ORDER</div>
+      <table class="co-order-table">
+        <thead>
+          <tr>
+            <th>PRODUCT</th>
+            <th>SUBTOTAL</th>
+          </tr>
+        </thead>
+        <tbody id="order-items-body">
+        </tbody>
+        <tfoot>
+          <tr class="co-subtotal">
+            <td>Subtotal</td>
+            <td id="order-subtotal-amount">$0.00</td>
+          </tr>
+          <tr class="co-shipping">
+            <td>
+              Shipping
+              <span class="co-shipping-label">Free USPS First Class Shipping (3-7 business days)</span>
+            </td>
+            <td>$0.00</td>
+          </tr>
+          <tr class="co-total">
+            <td>Total</td>
+            <td id="order-total-amount">$0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- Guaranteed Safe Checkout -->
+      <div class="co-safe-checkout">
+        <div class="co-safe-checkout-title">GUARANTEED SAFE CHECKOUT</div>
+        <div class="co-payment-icons">
+          <span class="co-payment-icon">AES 256bit</span>
+          <span class="co-payment-icon">PayPal</span>
+          <span class="co-payment-icon">Powered by Stripe</span>
+          <span class="co-payment-icon">McAfee SECURE</span>
+          <span class="co-payment-icon">Norton</span>
+          <span class="co-payment-icon">VISA</span>
+          <span class="co-payment-icon">MasterCard</span>
+          <span class="co-payment-icon">AMEX</span>
+          <span class="co-payment-icon">DISCOVER</span>
+        </div>
+      </div>
+
+      <!-- Place Order -->
+      <button class="btn-place-order" id="place-order-btn">PLACE ORDER</button>
+
+      <!-- Privacy Note -->
+      <p class="co-privacy-note">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="/privacy-policy/">privacy policy</a>.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== Footer ========== -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h3>INFORMATION</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Refund and Return Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Billings Terms and Condition</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>NEED HELP</h3>
+        <div class="footer-divider"></div>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CONTACT</h3>
+        <div class="footer-divider"></div>
+        <div class="contact-info">
+          <p><strong>EDDM LLC</strong></p>
+          <p><strong>Email:</strong> support@eddm.shop</p>
+          <p><strong>Phone:</strong> (970) 329-9777</p>
+          <p><strong>Address:</strong> 3605 Avalon St, Philadelphia, PA 19114</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="payment-icons">
+      <span>PayPal</span>
+      <span>Stripe</span>
+      <span>VISA</span>
+      <span>MasterCard</span>
+      <span>Cash on Delivery</span>
+    </div>
+    <div class="copyright">Copyright 2026 &copy; <strong>eddm.shop</strong></div>
+  </div>
+</footer>
+
+<!-- ========== Back to Top ========== -->
+<button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
+
+<!-- ========== Login Modal ========== -->
+<div id="login-modal-overlay">
+  <div id="login-modal">
+    <button id="login-modal-close" aria-label="Close">&times;</button>
+    <h2>Login</h2>
+    <form onsubmit="return false;">
+      <input class="login-modal-input" type="text" id="login-username" placeholder="Username or Email" aria-label="Username or Email" autocomplete="username">
+      <input class="login-modal-input" type="password" id="login-password" placeholder="Password" aria-label="Password" autocomplete="current-password">
+      <label class="login-modal-remember"><input type="checkbox"> Remember me</label>
+      <button class="login-modal-submit" type="submit">Log in</button>
+    </form>
+    <a href="#" class="login-modal-lost">Lost your password?</a>
+    <hr class="login-modal-divider">
+    <button class="login-modal-create" type="button">Create an account</button>
+  </div>
+</div>
+
+<script src="../js/common.js"></script>
+<script src="../js/checkout-page.js"></script>
+
+</body>
+</html>
