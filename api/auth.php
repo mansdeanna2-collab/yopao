@@ -11,6 +11,8 @@ header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
@@ -67,10 +69,37 @@ function handleRegister($pdo, $input) {
         return;
     }
 
-    // Validate password
+    // Reject excessively long email
+    if (strlen($email) > 255) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Email address is too long.']);
+        return;
+    }
+
+    // Validate password (must match frontend rules in js/auth.js)
     if (strlen($password) < 8) {
         http_response_code(400);
         echo json_encode(['error' => 'Password must be at least 8 characters.']);
+        return;
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Password must include at least one uppercase letter.']);
+        return;
+    }
+    if (!preg_match('/[a-z]/', $password)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Password must include at least one lowercase letter.']);
+        return;
+    }
+    if (!preg_match('/\d/', $password)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Password must include at least one number.']);
+        return;
+    }
+    if (!preg_match('/[^A-Za-z0-9]/', $password)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Password must include at least one special character.']);
         return;
     }
 
@@ -85,9 +114,10 @@ function handleRegister($pdo, $input) {
 
     // Hash password and insert user
     $hash = password_hash($password, PASSWORD_DEFAULT);
+    $registerIp = getClientIp();
 
-    $stmt = $pdo->prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)');
-    $stmt->execute([$email, $hash]);
+    $stmt = $pdo->prepare('INSERT INTO users (email, password_hash, register_ip) VALUES (?, ?, ?)');
+    $stmt->execute([$email, $hash, $registerIp]);
 
     echo json_encode(['success' => true, 'message' => 'Account created successfully!']);
 }
