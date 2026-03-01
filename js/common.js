@@ -1,7 +1,7 @@
 // ── Mobile Navigation ─────────────────────────────────────────────────────
 var hamburger=document.getElementById('hamburger-btn'),overlay=document.getElementById('mobile-nav-overlay'),panel=document.getElementById('mobile-nav-panel'),closeBtn=document.getElementById('mobile-nav-close');
-function openMobileNav(){overlay.classList.add('active');panel.classList.add('active');}
-function closeMobileNav(){overlay.classList.remove('active');panel.classList.remove('active');}
+function openMobileNav(){overlay.classList.add('active');panel.classList.add('active');document.body.classList.add('nav-open');}
+function closeMobileNav(){overlay.classList.remove('active');panel.classList.remove('active');document.body.classList.remove('nav-open');}
 hamburger.addEventListener('click',openMobileNav);
 overlay.addEventListener('click',closeMobileNav);
 closeBtn.addEventListener('click',closeMobileNav);
@@ -84,12 +84,20 @@ function renderCart(){
   }
 }
 
-function addToCart(id,name,price,image){
+function addToCart(id,name,price,image,btnEl){
   var ex=cart.find(function(i){return i.id===id;});
   if(ex){ex.qty++;}else{cart.push({id:id,name:name,price:price,qty:1,image:image});}
   saveCart();
   renderCart();
   cartDropdown.classList.add('visible');
+  if(btnEl){
+    btnEl.classList.remove('added');
+    void btnEl.offsetWidth;
+    btnEl.classList.add('added');
+    var orig=btnEl.textContent;
+    btnEl.textContent='\u2713 ADDED';
+    setTimeout(function(){btnEl.textContent=orig;},800);
+  }
 }
 
 function removeFromCart(id){
@@ -147,3 +155,18 @@ if(viewCartBtn){viewCartBtn.addEventListener('click',function(){window.location.
 if(checkoutBtn){checkoutBtn.addEventListener('click',function(){window.location.href='/cart/';});}
 
 renderCart();
+
+// ── Active Nav Link ──────────────────────────────────────────────────────
+(function(){
+  var path=window.location.pathname.replace(/\/$/,'');
+  var hash=window.location.hash;
+  var links=document.querySelectorAll('.nav-main a, .mobile-nav-panel ul li a');
+  links.forEach(function(a){
+    var href=a.getAttribute('href');if(!href||href==='#')return;
+    var resolved=new URL(href,window.location.href);
+    var linkPath=resolved.pathname.replace(/\/$/,'');
+    var linkHash=resolved.hash;
+    var samePath=(path===linkPath);
+    if(samePath&&(!linkHash||(linkHash===hash))){a.classList.add('active');}
+  });
+})();
