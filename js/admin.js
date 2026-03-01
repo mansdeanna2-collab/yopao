@@ -1,6 +1,6 @@
 /**
  * 后台管理面板 JavaScript
- * 处理页面导航、数据获取和界面渲染
+ * 处理页面导航、数据获取、界面渲染、管理员登录和删除操作
  */
 (function () {
     'use strict';
@@ -8,13 +8,162 @@
     var API_BASE = '/api/admin.php';
     var currentPage = 'dashboard';
     var LOW_STOCK_THRESHOLD = 5;
+    var adminToken = null;
+    var _initialized = false; // prevent duplicate event listener binding
+
+    /* ===================== 管理员登录 ===================== */
+    function getStoredToken() {
+        try { return sessionStorage.getItem('admin_token'); } catch (e) { return null; }
+    }
+    function getStoredAdmin() {
+        try {
+            var s = sessionStorage.getItem('admin_user');
+            return s ? JSON.parse(s) : null;
+        } catch (e) { return null; }
+    }
+    function storeSession(token, admin) {
+        try {
+            sessionStorage.setItem('admin_token', token);
+            sessionStorage.setItem('admin_user', JSON.stringify(admin));
+        } catch (e) {}
+    }
+    function clearSession() {
+        try {
+            sessionStorage.removeItem('admin_token');
+            sessionStorage.removeItem('admin_user');
+        } catch (e) {}
+    }
+
+    function showLoginScreen() {
+        document.getElementById('admin-login-overlay').style.display = 'flex';
+        document.getElementById('admin-layout').style.display = 'none';
+        // Reset login form state
+        var errorEl = document.getElementById('admin-login-error');
+        var passwordEl = document.getElementById('admin-password');
+        if (errorEl) errorEl.textContent = '';
+        if (passwordEl) passwordEl.value = '';
+    }
+
+    function showAdminPanel() {
+        document.getElementById('admin-login-overlay').style.display = 'none';
+        document.getElementById('admin-layout').style.display = '';
+        var adminInfo = getStoredAdmin();
+        var infoEl = document.getElementById('admin-user-info');
+        if (infoEl && adminInfo) {
+            infoEl.textContent = '管理员: ' + adminInfo.username;
+        }
+    }
+
+    /**
+     * Verify stored token against the server. Returns a Promise<boolean>.
+     */
+    function verifyTokenWithServer() {
+        if (!adminToken) return Promise.resolve(false);
+        return fetch(API_BASE + '?action=stats', {
+            headers: { 'Authorization': 'Bearer ' + adminToken }
+        }).then(function (r) {
+            return r.status !== 401;
+        }).catch(function () {
+            return false;
+        });
+    }
+
+    /**
+     * Bind all panel event listeners once. Subsequent calls are no-ops.
+     */
+    function initPanelOnce() {
+        if (_initialized) return;
+        _initialized = true;
+        initNavigation();
+        initMobileMenu();
+        initLogout();
+    }
 
     /* ===================== 初始化 ===================== */
     document.addEventListener('DOMContentLoaded', function () {
-        initNavigation();
-        initMobileMenu();
-        loadPage('dashboard');
+        initLoginForm();
+
+        // Check if already logged in
+        adminToken = getStoredToken();
+        if (adminToken) {
+            // Verify token is still valid before showing panel
+            verifyTokenWithServer().then(function (valid) {
+                if (valid) {
+                    showAdminPanel();
+                    initPanelOnce();
+                    loadPage('dashboard');
+                } else {
+                    adminToken = null;
+                    clearSession();
+                    showLoginScreen();
+                }
+            });
+        } else {
+            showLoginScreen();
+        }
     });
+
+    function initLoginForm() {
+        var form = document.getElementById('admin-login-form');
+        if (!form) return;
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var username = document.getElementById('admin-username').value.trim();
+            var password = document.getElementById('admin-password').value;
+            var errorEl = document.getElementById('admin-login-error');
+            var btn = document.getElementById('admin-login-btn');
+
+            if (!username || !password) {
+                errorEl.textContent = '请输入用户名和密码';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '登录中...';
+            errorEl.textContent = '';
+
+            fetch(API_BASE + '?action=admin_login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: username, password: password })
+            }).then(function (r) {
+                return r.json().then(function (data) { return { status: r.status, data: data }; });
+            }).then(function (result) {
+                btn.disabled = false;
+                btn.textContent = '登 录';
+                if (result.data.success && result.data.token) {
+                    adminToken = result.data.token;
+                    storeSession(result.data.token, result.data.admin);
+                    // Clear form fields on successful login
+                    document.getElementById('admin-username').value = '';
+                    document.getElementById('admin-password').value = '';
+                    showAdminPanel();
+                    initPanelOnce();
+                    loadPage('dashboard');
+                } else {
+                    errorEl.textContent = result.data.error || '登录失败，请重试。';
+                    // Clear password on failed attempt
+                    document.getElementById('admin-password').value = '';
+                    document.getElementById('admin-password').focus();
+                }
+            }).catch(function () {
+                btn.disabled = false;
+                btn.textContent = '登 录';
+                errorEl.textContent = '网络错误，请稍后重试。';
+            });
+        });
+    }
+
+    function initLogout() {
+        var btn = document.getElementById('admin-logout-btn');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                adminToken = null;
+                clearSession();
+                showLoginScreen();
+            });
+        }
+    }
 
     /* ===================== 导航 ===================== */
     function initNavigation() {
@@ -102,7 +251,41 @@
             return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
         }).join('&');
 
-        return fetch(API_BASE + '?' + qs).then(function (r) {
+        var headers = {};
+        if (adminToken) {
+            headers['Authorization'] = 'Bearer ' + adminToken;
+        }
+
+        return fetch(API_BASE + '?' + qs, { headers: headers }).then(function (r) {
+            if (r.status === 401) {
+                // Token expired or invalid — force re-login
+                adminToken = null;
+                clearSession();
+                showLoginScreen();
+                throw new Error('认证已过期，请重新登录');
+            }
+            if (!r.ok) throw new Error('API 错误 ' + r.status);
+            return r.json();
+        });
+    }
+
+    function postAPI(action, body) {
+        var headers = { 'Content-Type': 'application/json' };
+        if (adminToken) {
+            headers['Authorization'] = 'Bearer ' + adminToken;
+        }
+
+        return fetch(API_BASE + '?action=' + encodeURIComponent(action), {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(body)
+        }).then(function (r) {
+            if (r.status === 401) {
+                adminToken = null;
+                clearSession();
+                showLoginScreen();
+                throw new Error('认证已过期，请重新登录');
+            }
             if (!r.ok) throw new Error('API 错误 ' + r.status);
             return r.json();
         });
@@ -276,21 +459,47 @@
                 '<td>$' + Number(o.total).toFixed(2) + '</td>' +
                 '<td>' + statusBadge(o.status) + '</td>' +
                 '<td class="hide-mobile">' + formatDate(o.created_at) + '</td>' +
-                '<td><button class="filter-btn view-order-btn" data-order-id="' + escapeHtml(o.order_id) + '">查看</button></td>' +
+                '<td>' +
+                '<button class="filter-btn view-order-btn" data-order-id="' + escapeHtml(o.order_id) + '">查看</button> ' +
+                '<button class="filter-btn delete-btn delete-order-btn" data-order-id="' + escapeHtml(o.order_id) + '">删除</button>' +
+                '</td>' +
                 '</tr>';
         });
 
         html += '</tbody></table>';
         body.innerHTML = html;
 
-        // 通过事件委托绑定查看按钮
+        // 绑定查看按钮
         body.querySelectorAll('.view-order-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 viewOrder(this.getAttribute('data-order-id'));
             });
         });
 
+        // 绑定删除按钮
+        body.querySelectorAll('.delete-order-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var orderId = this.getAttribute('data-order-id');
+                if (confirm('确定要删除订单 ' + orderId + ' 吗？此操作不可撤销！')) {
+                    deleteOrder(orderId);
+                }
+            });
+        });
+
         renderPagination('orders-pagination', data.page, data.pages, function (pg) { loadOrders(pg); });
+    }
+
+    function deleteOrder(orderId) {
+        postAPI('delete_order', { order_id: orderId }).then(function (data) {
+            if (data.success) {
+                loadOrders(1);
+                if (currentPage === 'dashboard') loadDashboard();
+            } else {
+                alert(data.error || '删除失败');
+            }
+        }).catch(function () {
+            alert('网络错误，删除失败');
+        });
     }
 
     // 绑定订单状态筛选
@@ -361,7 +570,7 @@
         if (btn) btn.disabled = true;
         if (msgEl) msgEl.textContent = '保存中...';
 
-        fetchAPI({ action: 'update_order_status', id: orderId, status: newStatus }).then(function (data) {
+        postAPI('update_order_status', { order_id: orderId, status: newStatus }).then(function (data) {
             if (data.success) {
                 if (msgEl) {
                     msgEl.textContent = '✅ 状态已更新';
@@ -425,7 +634,7 @@
         }
 
         var html = '<table class="admin-table"><thead><tr>' +
-            '<th>ID</th><th>邮箱</th><th class="hide-mobile">注册IP</th><th>订单数</th><th class="hide-mobile">登录次数</th><th>注册时间</th>' +
+            '<th>ID</th><th>邮箱</th><th class="hide-mobile">注册IP</th><th>订单数</th><th class="hide-mobile">登录次数</th><th>注册时间</th><th>操作</th>' +
             '</tr></thead><tbody>';
 
         data.items.forEach(function (u) {
@@ -436,13 +645,38 @@
                 '<td>' + u.order_count + '</td>' +
                 '<td class="hide-mobile">' + u.login_count + '</td>' +
                 '<td>' + formatDate(u.created_at) + '</td>' +
+                '<td><button class="filter-btn delete-btn delete-user-btn" data-user-id="' + u.id + '" data-user-email="' + escapeHtml(u.email) + '">删除</button></td>' +
                 '</tr>';
         });
 
         html += '</tbody></table>';
         body.innerHTML = html;
 
+        // 绑定删除按钮
+        body.querySelectorAll('.delete-user-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var userId = this.getAttribute('data-user-id');
+                var userEmail = this.getAttribute('data-user-email');
+                if (confirm('确定要删除用户 ' + userEmail + ' (ID: ' + userId + ') 吗？\n该用户的所有相关数据（购物车、浏览记录、地址等）也将被删除！')) {
+                    deleteUser(userId);
+                }
+            });
+        });
+
         renderPagination('users-pagination', data.page, data.pages, function (pg) { loadUsers(pg); });
+    }
+
+    function deleteUser(userId) {
+        postAPI('delete_user', { user_id: parseInt(userId, 10) }).then(function (data) {
+            if (data.success) {
+                loadUsers(1);
+                if (currentPage === 'dashboard') loadDashboard();
+            } else {
+                alert(data.error || '删除失败');
+            }
+        }).catch(function () {
+            alert('网络错误，删除失败');
+        });
     }
 
     /* ===================== 分类管理 ===================== */

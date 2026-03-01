@@ -571,6 +571,143 @@ img { max-width: 100%; display: block; }
     font-size: 14px;
 }
 
+/* ========== Admin Login Screen ========== */
+.admin-login-overlay {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #1e1e3f 0%, #333365 100%);
+    z-index: 20000;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-login-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.admin-login-logo {
+    margin-bottom: 16px;
+}
+
+.admin-login-logo .sidebar-logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #1e1e3f;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.admin-login-box h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 24px;
+}
+
+.admin-login-field {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.admin-login-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.admin-login-field input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.admin-login-field input:focus {
+    outline: none;
+    border-color: #1e1e3f;
+}
+
+.admin-login-error {
+    font-size: 13px;
+    color: #d93025;
+    min-height: 20px;
+    margin-bottom: 8px;
+}
+
+.admin-login-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    background: #1e1e3f;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.admin-login-btn:hover {
+    background: #333365;
+}
+
+.admin-login-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* ========== Admin Logout Button ========== */
+.admin-logout-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.admin-logout-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.admin-user-info {
+    font-size: 13px;
+    color: #888;
+}
+
+/* ========== Delete Button ========== */
+.delete-btn {
+    background: #d93025 !important;
+    color: #fff !important;
+}
+
+.delete-btn:hover {
+    background: #b71c1c !important;
+}
+
 /* ========== Sidebar Overlay (mobile) ========== */
 .sidebar-overlay {
     display: none;

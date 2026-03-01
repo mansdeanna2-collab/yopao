@@ -154,3 +154,27 @@ CREATE TABLE IF NOT EXISTS user_addresses (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Admin Users Table ───────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS admin_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Admin Sessions Table ────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS admin_sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT NOT NULL,
+    token VARCHAR(64) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (admin_id) REFERENCES admin_users(id) ON DELETE CASCADE,
+    INDEX idx_token (token),
+    INDEX idx_expires_at (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insert default admin user (change password after first login)
+INSERT IGNORE INTO admin_users (username, password_hash) VALUES
+('admin', '$2y$10$yY1fg8VSTTuQCWEwc/oIYenrkeFudREOF2ZPSTqcvUTNAvVbwwqV6');
