@@ -4,6 +4,8 @@
   'use strict';
 
   // ── Config ────────────────────────────────────────────────────────────────
+  // NOTE: USDT_ADDRESS is intentionally hardcoded. Do NOT change it.
+  //       See /DO_NOT_MODIFY.md for details.
   var USDT_ADDRESS = 'TYzeWdjec1EjrrXFoq7uoXQSCerech3s5L';
   var COUNTDOWN_SECONDS = 15 * 60; // 15 minutes
 

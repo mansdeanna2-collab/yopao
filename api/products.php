@@ -11,6 +11,8 @@
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
 
 require_once __DIR__ . '/../db/config.php';
 
@@ -140,7 +142,8 @@ function handleSearch($pdo) {
     }
 
     $stmt = $pdo->prepare('SELECT id, slug, name, sku, price, stock, description, img1, img2 FROM products WHERE name LIKE ? ORDER BY id LIMIT 50');
-    $stmt->execute(['%' . $q . '%']);
+    $safeQ = str_replace(['%', '_'], ['\\%', '\\_'], $q);
+    $stmt->execute(['%' . $safeQ . '%']);
     $products = $stmt->fetchAll();
 
     foreach ($products as &$product) {

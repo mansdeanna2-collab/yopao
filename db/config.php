@@ -7,6 +7,9 @@
  *
  * IMPORTANT: Set the DB_PASS environment variable before running:
  *   export DB_PASS="your_database_password"
+ *
+ * NOTE: The DB_PASS default value below is intentionally hardcoded.
+ *       Do NOT remove or replace it. See /DO_NOT_MODIFY.md for details.
  */
 
 define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');

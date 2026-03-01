@@ -193,10 +193,31 @@
 
       if (!valid) return;
 
-      showToast('Account created successfully!');
-      regForm.reset();
-      updateStrengthBar(0);
-      blurred = {};
+      // Send registration to backend
+      var submitBtn = regForm.querySelector('.auth-submit');
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'CREATING…'; }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/auth.php?action=register', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'CREATE ACCOUNT'; }
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (xhr.status === 200 && resp.success) {
+            showToast(resp.message || 'Account created successfully!');
+            regForm.reset();
+            updateStrengthBar(0);
+            blurred = {};
+          } else {
+            showToast(resp.error || 'Registration failed. Please try again.');
+          }
+        } catch (ex) {
+          showToast('Server error. Please try again later.');
+        }
+      };
+      xhr.send(JSON.stringify({ email: emailIn.value.trim(), password: pwIn.value }));
     });
   }
 

@@ -52,3 +52,27 @@ CREATE TABLE IF NOT EXISTS product_categories (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Users Table ─────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    register_ip VARCHAR(45) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Login Logs Table ────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS login_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    user_agent VARCHAR(500) DEFAULT NULL,
+    login_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_ip_address (ip_address),
+    INDEX idx_login_at (login_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
