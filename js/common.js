@@ -33,14 +33,13 @@ function loadCartFromServer(callback){
   xhr.setRequestHeader('Content-Type','application/json');
   xhr.onreadystatechange=function(){
     if(xhr.readyState!==4)return;
-    var merged=false;
     try{
       var resp=JSON.parse(xhr.responseText);
       if(resp.success&&Array.isArray(resp.items)){
         // Merge: add server-only items to local cart (items already in local cart are kept as-is)
         resp.items.forEach(function(si){
           var existing=cart.find(function(li){return li.id===si.id;});
-          if(!existing){cart.push(si);merged=true;}
+          if(!existing){cart.push(si);}
         });
         // Save to localStorage
         try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}
@@ -69,7 +68,7 @@ if(accountBtn){
     if(currentUser){
       // Toggle account dropdown
       var dd=document.getElementById('account-dropdown');
-      if(dd)dd.style.display=dd.style.display==='none'?'block':'none';
+      if(dd)dd.style.display=dd.style.display==='block'?'none':'block';
     }else{
       openLoginModal();
     }
