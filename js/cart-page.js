@@ -73,76 +73,55 @@
 
   renderCartPage();
 
-  // Render pending (unpaid) orders for logged-in users
-  function renderPendingOrders() {
-    var section = document.getElementById('pending-orders-section');
-    if (!section || !currentUser) return;
+  // Render order info summary for logged-in users
+  function renderOrderInfo() {
+    var orderInfoBox = document.getElementById('cart-order-info');
+    var orderItemsEl = document.getElementById('cart-order-items');
+    var orderTotalEl = document.getElementById('order-info-total');
+    var savedAddrEl = document.getElementById('cart-saved-address');
+    if (!orderInfoBox || !currentUser) return;
+    if (cart.length === 0) { orderInfoBox.style.display = 'none'; return; }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/user.php?action=get_orders', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-      try {
-        var resp = JSON.parse(xhr.responseText);
-        if (!resp.success || !resp.orders || resp.orders.length === 0) {
-          section.style.display = 'none';
-          return;
-        }
+    orderInfoBox.style.display = 'block';
+    var html = '';
+    var total = 0;
+    cart.forEach(function (item) {
+      var lineTotal = item.price * item.qty;
+      total += lineTotal;
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;">';
+      html += '<span>' + escapeHtml(item.name) + ' &times; ' + item.qty + '</span>';
+      html += '<span style="font-weight:700;">' + fmt(lineTotal) + '</span>';
+      html += '</div>';
+    });
+    if (orderItemsEl) orderItemsEl.innerHTML = html;
+    if (orderTotalEl) orderTotalEl.textContent = fmt(total);
 
-        var orders = resp.orders;
-        section.style.display = 'block';
-        var html = '<div class="pending-orders-title">YOUR ORDERS</div>';
-        orders.forEach(function (order) {
-          var isPending = order.status === 'pending';
-          var statusLabel = isPending ? 'Unpaid' : order.status;
-          var statusClass = isPending ? 'status-unpaid' : 'status-other';
-          var dateStr = '';
-          if (order.created_at) {
-            var d = new Date(order.created_at.replace(' ', 'T'));
-            if (!isNaN(d.getTime())) {
-              dateStr = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
-            }
+    // Load saved address
+    if (savedAddrEl) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/user.php?action=get_address', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.success && resp.address && resp.address.first_name) {
+            var a = resp.address;
+            var addrParts = [escapeHtml(a.city || '')];
+            if (a.state) addrParts.push(escapeHtml(a.state));
+            addrParts.push(escapeHtml(a.postcode || ''));
+            savedAddrEl.innerHTML = '<div style="margin-top:4px;"><strong>Shipping Address:</strong></div>' +
+              '<div>' + escapeHtml(a.first_name || '') + ' ' + escapeHtml(a.last_name || '') + '</div>' +
+              '<div>' + escapeHtml(a.address || '') + '</div>' +
+              '<div>' + addrParts.join(', ') + '</div>';
           }
-
-          html += '<div class="pending-order-card">';
-          html += '<div class="pending-order-header">';
-          html += '<div>';
-          html += '<span class="pending-order-id">' + escapeHtml(order.order_id) + '</span>';
-          if (dateStr) html += '<span class="pending-order-date">' + escapeHtml(dateStr) + '</span>';
-          html += '</div>';
-          html += '<span class="pending-order-status ' + statusClass + '">' + escapeHtml(statusLabel) + '</span>';
-          html += '</div>';
-
-          // Order items
-          if (order.items && order.items.length > 0) {
-            html += '<div class="pending-order-items">';
-            order.items.forEach(function (item) {
-              html += '<div class="pending-order-item">';
-              html += '<span class="pending-item-name">' + escapeHtml(item.product_name) + ' &times; ' + item.qty + '</span>';
-              html += '<span class="pending-item-price">' + fmt(item.price * item.qty) + '</span>';
-              html += '</div>';
-            });
-            html += '</div>';
-          }
-
-          html += '<div class="pending-order-footer">';
-          html += '<span class="pending-order-total">Total: <strong>' + fmt(order.total) + '</strong></span>';
-          if (isPending) {
-            html += '<a class="pending-order-pay-btn" href="/pay/?amount=' + order.total.toFixed(2) + '&order=' + encodeURIComponent(order.order_id) + '">Pay Now</a>';
-          }
-          html += '</div>';
-          html += '</div>';
-        });
-        section.innerHTML = html;
-      } catch (e) {
-        section.style.display = 'none';
-      }
-    };
-    xhr.send(JSON.stringify({ user_id: currentUser.id, status: 'pending' }));
+        } catch (e) {}
+      };
+      xhr.send(JSON.stringify({ user_id: currentUser.id }));
+    }
   }
 
-  renderPendingOrders();
+  renderOrderInfo();
 
   // Navigate to checkout when clicking Proceed to Checkout
   var btnCheckout = document.querySelector('.btn-checkout');

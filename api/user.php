@@ -75,9 +75,6 @@ try {
         case 'get_address':
             handleGetAddress($pdo, $userId);
             break;
-        case 'get_orders':
-            handleGetOrders($pdo, $userId, $input);
-            break;
         default:
             http_response_code(400);
             echo json_encode(['error' => 'Invalid action.']);
@@ -297,49 +294,4 @@ function handleGetAddress($pdo, $userId) {
     } else {
         echo json_encode(['success' => true, 'address' => null]);
     }
-}
-
-/**
- * Get a user's orders, optionally filtered by status.
- */
-function handleGetOrders($pdo, $userId, $input) {
-    $status = isset($input['status']) ? substr(trim($input['status']), 0, 50) : '';
-    $allowedStatuses = ['pending', 'paid', 'cancelled', 'refunded', 'completed'];
-
-    if ($status !== '' && in_array($status, $allowedStatuses, true)) {
-        $stmt = $pdo->prepare('SELECT order_id, email, first_name, last_name, total, status, created_at FROM orders WHERE user_id = ? AND status = ? ORDER BY created_at DESC LIMIT 50');
-        $stmt->execute([$userId, $status]);
-    } else {
-        $stmt = $pdo->prepare('SELECT order_id, email, first_name, last_name, total, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 50');
-        $stmt->execute([$userId]);
-    }
-    $orders = $stmt->fetchAll();
-
-    if (empty($orders)) {
-        echo json_encode(['success' => true, 'orders' => []]);
-        return;
-    }
-
-    // Fetch all items for these orders in a single query to avoid N+1
-    $orderIds = array_map(function ($o) { return $o['order_id']; }, $orders);
-    $placeholders = implode(',', array_fill(0, count($orderIds), '?'));
-    $itemStmt = $pdo->prepare('SELECT order_id, product_id, product_name, price, qty FROM order_items WHERE order_id IN (' . $placeholders . ')');
-    $itemStmt->execute($orderIds);
-    $allItems = $itemStmt->fetchAll();
-
-    // Group items by order_id
-    $itemsByOrder = [];
-    foreach ($allItems as $item) {
-        $item['price'] = (float)$item['price'];
-        $item['qty']   = (int)$item['qty'];
-        $itemsByOrder[$item['order_id']][] = $item;
-    }
-
-    // Attach items to each order
-    foreach ($orders as &$order) {
-        $order['total'] = (float)$order['total'];
-        $order['items'] = isset($itemsByOrder[$order['order_id']]) ? $itemsByOrder[$order['order_id']] : [];
-    }
-
-    echo json_encode(['success' => true, 'orders' => $orders]);
 }
