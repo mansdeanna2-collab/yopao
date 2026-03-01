@@ -147,7 +147,7 @@
   function copyToClipboard(text) {
     // Try modern API first, fall back to execCommand
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return execCopy(text); });
+      return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return Promise.resolve(execCopy(text)); });
     }
     return Promise.resolve(execCopy(text));
   }
