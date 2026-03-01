@@ -11,7 +11,29 @@
 </head>
 <body>
 
-<div class="admin-layout">
+<!-- ========== 管理员登录表单 ========== -->
+<div class="admin-login-overlay" id="admin-login-overlay">
+  <div class="admin-login-box">
+    <div class="admin-login-logo">
+      <span class="sidebar-logo-icon">S</span>
+    </div>
+    <h2>后台管理登录</h2>
+    <form id="admin-login-form">
+      <div class="admin-login-field">
+        <label for="admin-username">用户名</label>
+        <input type="text" id="admin-username" name="username" required autocomplete="username" placeholder="请输入管理员用户名">
+      </div>
+      <div class="admin-login-field">
+        <label for="admin-password">密码</label>
+        <input type="password" id="admin-password" name="password" required autocomplete="current-password" placeholder="请输入密码">
+      </div>
+      <div class="admin-login-error" id="admin-login-error"></div>
+      <button type="submit" class="admin-login-btn" id="admin-login-btn">登 录</button>
+    </form>
+  </div>
+</div>
+
+<div class="admin-layout" id="admin-layout" style="display:none;">
 
   <!-- ========== 左侧导航栏 ========== -->
   <aside class="admin-sidebar" id="admin-sidebar">
@@ -47,6 +69,8 @@
         <span class="topbar-title" id="page-title">仪表盘</span>
       </div>
       <div class="topbar-right">
+        <span class="admin-user-info" id="admin-user-info"></span>
+        <button class="topbar-link admin-logout-btn" id="admin-logout-btn">退出登录</button>
         <a href="../" class="topbar-link">查看商城</a>
       </div>
     </div>

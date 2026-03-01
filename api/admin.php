@@ -3,20 +3,33 @@
  * Admin API
  *
  * Endpoints:
- *   GET /api/admin.php?action=stats                          — Dashboard statistics
- *   GET /api/admin.php?action=products                       — List products (paginated)
- *   GET /api/admin.php?action=orders                         — List orders (paginated)
- *   GET /api/admin.php?action=users                          — List users (paginated)
- *   GET /api/admin.php?action=categories                     — List categories
- *   GET /api/admin.php?action=order_detail&id=XX             — Single order detail
+ *   POST /api/admin.php?action=admin_login                    — Admin login (public)
+ *   GET /api/admin.php?action=stats                           — Dashboard statistics
+ *   GET /api/admin.php?action=products                        — List products (paginated)
+ *   GET /api/admin.php?action=orders                          — List orders (paginated)
+ *   GET /api/admin.php?action=users                           — List users (paginated)
+ *   GET /api/admin.php?action=categories                      — List categories
+ *   GET /api/admin.php?action=order_detail&id=XX              — Single order detail
  *   GET /api/admin.php?action=update_order_status&id=XX&status=YY — Update order status
- *   GET /api/admin.php?action=login_logs                     — List login logs (paginated)
+ *   GET /api/admin.php?action=login_logs                      — List login logs (paginated)
+ *   POST /api/admin.php?action=delete_order                   — Delete an order
+ *   POST /api/admin.php?action=delete_user                    — Delete a user
+ *
+ * All endpoints except admin_login require a valid admin token
+ * sent via the Authorization header: "Bearer <token>"
  */
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
 
 require_once __DIR__ . '/../db/config.php';
 
@@ -24,6 +37,20 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'stats';
 
 try {
     $pdo = getDBConnection();
+
+    // Admin login is the only public endpoint
+    if ($action === 'admin_login') {
+        handleAdminLogin($pdo);
+        exit;
+    }
+
+    // All other actions require admin authentication
+    $admin = verifyAdminToken($pdo);
+    if (!$admin) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Unauthorized. Please log in as admin.']);
+        exit;
+    }
 
     switch ($action) {
         case 'stats':
@@ -50,6 +77,12 @@ try {
         case 'login_logs':
             handleLoginLogs($pdo);
             break;
+        case 'delete_order':
+            handleDeleteOrder($pdo);
+            break;
+        case 'delete_user':
+            handleDeleteUser($pdo);
+            break;
         default:
             http_response_code(400);
             echo json_encode(['error' => 'Invalid action.']);
@@ -59,6 +92,92 @@ try {
     error_log('Admin API database error: ' . $e->getMessage());
     http_response_code(500);
     echo json_encode(['error' => 'Database connection failed. Please check db/config.php settings.']);
+}
+
+/* ========== Admin Authentication ========== */
+
+/**
+ * Handle admin login. Accepts POST with JSON body { username, password }.
+ */
+function handleAdminLogin($pdo) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['error' => 'Only POST requests are allowed for login.']);
+        return;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    $username = isset($input['username']) ? trim($input['username']) : '';
+    $password = isset($input['password']) ? $input['password'] : '';
+
+    if ($username === '' || $password === '') {
+        http_response_code(400);
+        echo json_encode(['error' => 'Username and password are required.']);
+        return;
+    }
+
+    $stmt = $pdo->prepare('SELECT id, username, password_hash FROM admin_users WHERE username = ?');
+    $stmt->execute([$username]);
+    $admin = $stmt->fetch();
+
+    if (!$admin || !password_verify($password, $admin['password_hash'])) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Invalid username or password.']);
+        return;
+    }
+
+    // Generate a secure random token
+    $token = bin2hex(random_bytes(32));
+    $expiresAt = date('Y-m-d H:i:s', time() + 86400); // 24 hours
+
+    // Clean up expired sessions
+    $pdo->exec('DELETE FROM admin_sessions WHERE expires_at < NOW()');
+
+    // Insert new session
+    $stmt = $pdo->prepare('INSERT INTO admin_sessions (admin_id, token, expires_at) VALUES (?, ?, ?)');
+    $stmt->execute([$admin['id'], $token, $expiresAt]);
+
+    echo json_encode([
+        'success' => true,
+        'token'   => $token,
+        'admin'   => [
+            'id'       => (int)$admin['id'],
+            'username' => $admin['username']
+        ]
+    ]);
+}
+
+/**
+ * Verify admin token from Authorization header.
+ * Returns admin user array on success, false on failure.
+ */
+function verifyAdminToken($pdo) {
+    $authHeader = '';
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+    } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    } elseif (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        if (isset($headers['Authorization'])) {
+            $authHeader = $headers['Authorization'];
+        }
+    }
+
+    if ($authHeader === '' || strpos($authHeader, 'Bearer ') !== 0) {
+        return false;
+    }
+
+    $token = substr($authHeader, 7);
+    if (strlen($token) !== 64 || !ctype_xdigit($token)) {
+        return false;
+    }
+
+    $stmt = $pdo->prepare('SELECT s.admin_id, a.username FROM admin_sessions s JOIN admin_users a ON a.id = s.admin_id WHERE s.token = ? AND s.expires_at > NOW()');
+    $stmt->execute([$token]);
+    $session = $stmt->fetch();
+
+    return $session ?: false;
 }
 
 /**
@@ -295,4 +414,71 @@ function handleLoginLogs($pdo) {
         'page'  => $page,
         'pages' => max(1, ceil($total / $limit))
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+}
+
+/**
+ * Delete an order by order_id (POST with JSON body { order_id }).
+ */
+function handleDeleteOrder($pdo) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['error' => 'Only POST requests are allowed.']);
+        return;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    $orderId = isset($input['order_id']) ? trim($input['order_id']) : '';
+
+    if ($orderId === '') {
+        http_response_code(400);
+        echo json_encode(['error' => 'Missing order_id parameter.']);
+        return;
+    }
+
+    // Delete order items first (CASCADE should handle this, but be explicit)
+    $stmt = $pdo->prepare('DELETE FROM order_items WHERE order_id = ?');
+    $stmt->execute([$orderId]);
+
+    $stmt = $pdo->prepare('DELETE FROM orders WHERE order_id = ?');
+    $stmt->execute([$orderId]);
+
+    if ($stmt->rowCount() === 0) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Order not found.']);
+        return;
+    }
+
+    echo json_encode(['success' => true]);
+}
+
+/**
+ * Delete a user by id (POST with JSON body { user_id }).
+ */
+function handleDeleteUser($pdo) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['error' => 'Only POST requests are allowed.']);
+        return;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    $userId = isset($input['user_id']) ? (int)$input['user_id'] : 0;
+
+    if ($userId <= 0) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Missing or invalid user_id parameter.']);
+        return;
+    }
+
+    // The CASCADE foreign keys will clean up related records (login_logs, user_cart, browsing_history, user_addresses)
+    $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
+    $stmt->execute([$userId]);
+
+    if ($stmt->rowCount() === 0) {
+        http_response_code(404);
+        echo json_encode(['error' => 'User not found.']);
+        return;
+    }
+
+    echo json_encode(['success' => true]);
 }
