@@ -10,6 +10,12 @@
   margin: 0 auto;
 }
 
+.contact-container p {
+  line-height: 1.85;
+  color: #555;
+  margin-bottom: 14px;
+}
+
 /* ── Contact Info Grid ── */
 .contact-info-grid {
   display: flex;
@@ -104,6 +110,10 @@ a.contact-info-card__value:hover {
   .contact-info-card__value {
     font-size: 14px;
   }
+
+  .contact-container p {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -118,5 +128,10 @@ a.contact-info-card__value:hover {
 
   .contact-info-card__value {
     font-size: 13px;
+  }
+
+  .contact-container p {
+    font-size: 13px;
+    margin-bottom: 12px;
   }
 }
