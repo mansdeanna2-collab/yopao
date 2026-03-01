@@ -27,22 +27,26 @@ function syncCartToServer(){
 }
 function loadCartFromServer(callback){
   if(!currentUser){if(callback)callback();return;}
+  var localHadItems=cart.length>0;
   var xhr=new XMLHttpRequest();
   xhr.open('POST','/api/user.php?action=get_cart',true);
   xhr.setRequestHeader('Content-Type','application/json');
   xhr.onreadystatechange=function(){
     if(xhr.readyState!==4)return;
+    var merged=false;
     try{
       var resp=JSON.parse(xhr.responseText);
       if(resp.success&&Array.isArray(resp.items)){
         // Merge: add server-only items to local cart (items already in local cart are kept as-is)
         resp.items.forEach(function(si){
           var existing=cart.find(function(li){return li.id===si.id;});
-          if(!existing){cart.push(si);}
+          if(!existing){cart.push(si);merged=true;}
         });
-        // Save to localStorage only (avoid re-syncing to server what we just loaded)
+        // Save to localStorage
         try{localStorage.setItem('yopao_cart',JSON.stringify(cart));}catch(e){}
         renderCart();
+        // If local had items that server didn't, sync the merged cart back to server
+        if(localHadItems){syncCartToServer();}
       }
     }catch(e){}
     if(callback)callback();
@@ -54,11 +58,26 @@ function loadCartFromServer(callback){
 var accountBtn=document.getElementById('account-btn');
 var loginOverlay=document.getElementById('login-modal-overlay');
 var loginClose=document.getElementById('login-modal-close');
-function openLoginModal(){loginOverlay.classList.add('active');}
-function closeLoginModal(){loginOverlay.classList.remove('active');}
+function openLoginModal(){if(loginOverlay)loginOverlay.classList.add('active');}
+function closeLoginModal(){if(loginOverlay)loginOverlay.classList.remove('active');}
 
-// Update account button based on login state
-var _accountListenerAttached=false;
+// Single click handler for account button — delegates based on login state
+if(accountBtn){
+  accountBtn.addEventListener('click',function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if(currentUser){
+      // Toggle account dropdown
+      var dd=document.getElementById('account-dropdown');
+      if(dd)dd.style.display=dd.style.display==='none'?'block':'none';
+    }else{
+      openLoginModal();
+    }
+  });
+}
+
+// Close dropdown when clicking outside (single listener)
+var _ddCloseAttached=false;
 function updateAccountUI(){
   if(!accountBtn)return;
   // Remove existing dropdown if any
@@ -67,7 +86,6 @@ function updateAccountUI(){
 
   if(currentUser){
     accountBtn.removeAttribute('href');
-    accountBtn.style.position='relative';
     // Create dropdown for logged-in user
     var dd=document.createElement('div');
     dd.id='account-dropdown';
@@ -90,17 +108,13 @@ function updateAccountUI(){
     accountBtn.parentNode.style.position='relative';
     accountBtn.parentNode.appendChild(dd);
 
-    accountBtn.onclick=function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      dd.style.display=dd.style.display==='none'?'block':'none';
-    };
-    document.addEventListener('click',function(e){
-      if(!accountBtn.parentNode.contains(e.target)){dd.style.display='none';}
-    });
-  }else if(!_accountListenerAttached){
-    _accountListenerAttached=true;
-    accountBtn.addEventListener('click',function(e){e.preventDefault();openLoginModal();});
+    if(!_ddCloseAttached){
+      _ddCloseAttached=true;
+      document.addEventListener('click',function(e){
+        var d=document.getElementById('account-dropdown');
+        if(d&&accountBtn.parentNode&&!accountBtn.parentNode.contains(e.target)){d.style.display='none';}
+      });
+    }
   }
 }
 
@@ -133,6 +147,9 @@ if(loginForm){
         if(xhr.status===200&&resp.success&&resp.user){
           saveUser(resp.user);
           closeLoginModal();
+          // Reset login form fields
+          if(emailField)emailField.value='';
+          if(pwField)pwField.value='';
           syncCartToServer();
           updateAccountUI();
         }else{

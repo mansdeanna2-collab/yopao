@@ -1,6 +1,18 @@
 (function () {
   'use strict';
 
+  /* ========== Redirect logged-in users away from register page ========== */
+  try {
+    var su = localStorage.getItem('yopao_user');
+    if (su) {
+      var u = JSON.parse(su);
+      if (u && u.id && u.email && document.getElementById('register-form')) {
+        window.location.href = '/';
+        return;
+      }
+    }
+  } catch (e) {}
+
   /* ========== Helpers ========== */
   function escapeHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

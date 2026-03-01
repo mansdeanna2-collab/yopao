@@ -354,6 +354,16 @@
       var loggedInUser = null;
       try { var u = localStorage.getItem('yopao_user'); if (u) loggedInUser = JSON.parse(u); } catch (e) {}
 
+      var payUrl = '../pay/?amount=' + orderTotal.toFixed(2) + '&order=' + oid;
+      var _redirected = false;
+
+      function doRedirect() {
+        if (_redirected) return;
+        _redirected = true;
+        try { localStorage.removeItem('yopao_cart'); } catch (e) {}
+        window.location.href = payUrl;
+      }
+
       if (loggedInUser && loggedInUser.id) {
         var orderData = {
           user_id: loggedInUser.id,
@@ -371,14 +381,18 @@
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/api/user.php?action=create_order', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== 4) return;
+          // Redirect after order is saved (or on error, still redirect to payment)
+          doRedirect();
+        };
         xhr.send(JSON.stringify(orderData));
+        // Fallback: redirect after 5s even if request hangs
+        setTimeout(doRedirect, 5000);
+      } else {
+        // Not logged in — redirect after short delay
+        setTimeout(doRedirect, 1200);
       }
-
-      // Redirect to USDT TRC20 payment page
-      setTimeout(function () {
-        try { localStorage.removeItem('yopao_cart'); } catch (e) {}
-        window.location.href = '../pay/?amount=' + orderTotal.toFixed(2) + '&order=' + oid;
-      }, 1200);
     });
   }
 
