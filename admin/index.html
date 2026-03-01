@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 - Stampstores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ========== 左侧导航栏 ========== -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="sidebar-logo-icon">S</span>
+        后台管理
+      </div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="#" data-page="dashboard" class="active"><span class="nav-icon">📊</span> 仪表盘</a></li>
+      <li><a href="#" data-page="products"><span class="nav-icon">📦</span> 商品管理</a></li>
+      <li><a href="#" data-page="orders"><span class="nav-icon">🛒</span> 订单管理</a></li>
+      <li><a href="#" data-page="users"><span class="nav-icon">👥</span> 用户管理</a></li>
+      <li><a href="#" data-page="categories"><span class="nav-icon">📂</span> 分类管理</a></li>
+      <li><a href="#" data-page="login-logs"><span class="nav-icon">🔐</span> 登录日志</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="../">← 返回商城</a>
+    </div>
+  </aside>
+
+  <!-- 移动端侧边栏遮罩 -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ========== 右侧内容区 ========== -->
+  <main class="admin-main">
+
+    <!-- 顶部栏 -->
+    <div class="admin-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="菜单">☰</button>
+        <span class="topbar-title" id="page-title">仪表盘</span>
+      </div>
+      <div class="topbar-right">
+        <a href="../" class="topbar-link">查看商城</a>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="admin-content">
+
+      <!-- ===== 仪表盘 ===== -->
+      <div class="page-section active" id="section-dashboard">
+        <div class="stats-grid" id="dashboard-stats">
+          <div class="loading-spinner">加载中...</div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="admin-panel">
+            <div class="panel-header"><h2>最近订单</h2></div>
+            <div class="panel-body" id="recent-orders-body"></div>
+          </div>
+          <div class="admin-panel">
+            <div class="panel-header"><h2>最近注册用户</h2></div>
+            <div class="panel-body" id="recent-users-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 商品管理 ===== -->
+      <div class="page-section" id="section-products">
+        <div class="admin-panel">
+          <div class="panel-header">
+            <h2>所有商品</h2>
+            <div class="filter-bar">
+              <input type="text" class="filter-input" id="product-search" placeholder="搜索商品名称...">
+              <button class="filter-btn" id="product-search-btn">搜索</button>
+            </div>
+          </div>
+          <div class="panel-body table-responsive" id="products-table-body"></div>
+          <div class="pagination" id="products-pagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== 订单管理 ===== -->
+      <div class="page-section" id="section-orders">
+        <div class="admin-panel">
+          <div class="panel-header">
+            <h2>所有订单</h2>
+            <div class="filter-bar">
+              <select class="filter-select" id="order-status-filter">
+                <option value="">全部状态</option>
+                <option value="pending">待处理</option>
+                <option value="completed">已完成</option>
+                <option value="shipped">已发货</option>
+                <option value="cancelled">已取消</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-body table-responsive" id="orders-table-body"></div>
+          <div class="pagination" id="orders-pagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== 用户管理 ===== -->
+      <div class="page-section" id="section-users">
+        <div class="admin-panel">
+          <div class="panel-header"><h2>所有用户</h2></div>
+          <div class="panel-body table-responsive" id="users-table-body"></div>
+          <div class="pagination" id="users-pagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== 分类管理 ===== -->
+      <div class="page-section" id="section-categories">
+        <div class="admin-panel">
+          <div class="panel-header"><h2>所有分类</h2></div>
+          <div class="panel-body table-responsive" id="categories-table-body"></div>
+        </div>
+      </div>
+
+      <!-- ===== 登录日志 ===== -->
+      <div class="page-section" id="section-login-logs">
+        <div class="admin-panel">
+          <div class="panel-header"><h2>登录日志</h2></div>
+          <div class="panel-body table-responsive" id="login-logs-table-body"></div>
+          <div class="pagination" id="login-logs-pagination"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- 订单详情弹窗 -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>订单详情</h2>
+      <button class="modal-close" id="order-modal-close">×</button>
+    </div>
+    <div class="modal-body" id="order-modal-body"></div>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>
