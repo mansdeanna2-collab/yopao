@@ -73,56 +73,6 @@
 
   renderCartPage();
 
-  // Render order info summary for logged-in users
-  function renderOrderInfo() {
-    var orderInfoBox = document.getElementById('cart-order-info');
-    var orderItemsEl = document.getElementById('cart-order-items');
-    var orderTotalEl = document.getElementById('order-info-total');
-    var savedAddrEl = document.getElementById('cart-saved-address');
-    if (!orderInfoBox || !currentUser) return;
-    if (cart.length === 0) { orderInfoBox.style.display = 'none'; return; }
-
-    orderInfoBox.style.display = 'block';
-    var html = '';
-    var total = 0;
-    cart.forEach(function (item) {
-      var lineTotal = item.price * item.qty;
-      total += lineTotal;
-      html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;">';
-      html += '<span>' + escapeHtml(item.name) + ' &times; ' + item.qty + '</span>';
-      html += '<span style="font-weight:700;">' + fmt(lineTotal) + '</span>';
-      html += '</div>';
-    });
-    if (orderItemsEl) orderItemsEl.innerHTML = html;
-    if (orderTotalEl) orderTotalEl.textContent = fmt(total);
-
-    // Load saved address
-    if (savedAddrEl) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/api/user.php?action=get_address', true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-        try {
-          var resp = JSON.parse(xhr.responseText);
-          if (resp.success && resp.address && resp.address.first_name) {
-            var a = resp.address;
-            var addrParts = [escapeHtml(a.city || '')];
-            if (a.state) addrParts.push(escapeHtml(a.state));
-            addrParts.push(escapeHtml(a.postcode || ''));
-            savedAddrEl.innerHTML = '<div style="margin-top:4px;"><strong>Shipping Address:</strong></div>' +
-              '<div>' + escapeHtml(a.first_name || '') + ' ' + escapeHtml(a.last_name || '') + '</div>' +
-              '<div>' + escapeHtml(a.address || '') + '</div>' +
-              '<div>' + addrParts.join(', ') + '</div>';
-          }
-        } catch (e) {}
-      };
-      xhr.send(JSON.stringify({ user_id: currentUser.id }));
-    }
-  }
-
-  renderOrderInfo();
-
   // Navigate to checkout when clicking Proceed to Checkout
   var btnCheckout = document.querySelector('.btn-checkout');
   if (btnCheckout) {
