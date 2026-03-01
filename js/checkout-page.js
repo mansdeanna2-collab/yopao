@@ -337,9 +337,9 @@
       placeOrderBtn.classList.add('loading');
       placeOrderBtn.textContent = 'Processing…';
 
-      // Calculate order total for payment page
-      var orderTotal = 0;
-      cart.forEach(function (item) { orderTotal += item.price * item.qty; });
+      // Read the already-rendered order total from the DOM
+      var totalText = (document.getElementById('order-total-amount') || {}).textContent || '$0.00';
+      var orderTotal = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
 
       // Generate order ID
       var now = new Date();

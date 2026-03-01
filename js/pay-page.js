@@ -115,21 +115,15 @@
     qrImg.height = 200;
     qrImg.alt = 'USDT TRC20 Address QR Code';
     qrImg.style.display = 'block';
-    // Use Google Charts QR code API as primary
-    qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=' + encodeURIComponent(USDT_ADDRESS) + '&choe=UTF-8';
-    // Fallback: if the image fails to load, draw a placeholder
+    // Use qrserver.com API for QR code generation
+    qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(USDT_ADDRESS);
+    // Fallback: if the image fails to load, show a text placeholder
     qrImg.onerror = function () {
-      qrImg.onerror = null;
-      // Try alternative QR API
-      qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(USDT_ADDRESS);
-      qrImg.onerror = function () {
-        // If both fail, show text fallback
-        var fallback = document.createElement('div');
-        fallback.style.cssText = 'width:200px;height:200px;display:flex;align-items:center;justify-content:center;background:#f5f5f5;border-radius:8px;font-size:12px;color:#999;text-align:center;padding:20px;';
-        fallback.textContent = 'QR Code unavailable. Please copy the address below.';
-        qrContainer.textContent = '';
-        qrContainer.appendChild(fallback);
-      };
+      var fallback = document.createElement('div');
+      fallback.style.cssText = 'width:200px;height:200px;display:flex;align-items:center;justify-content:center;background:#f5f5f5;border-radius:8px;font-size:12px;color:#999;text-align:center;padding:20px;';
+      fallback.textContent = 'QR Code unavailable. Please copy the address below.';
+      qrContainer.textContent = '';
+      qrContainer.appendChild(fallback);
     };
     qrContainer.appendChild(qrImg);
   }
