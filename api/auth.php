@@ -135,20 +135,30 @@ function handleLogin($pdo, $input) {
 
 /**
  * Get the client's real IP address.
+ * Only trusts proxy headers when REMOTE_ADDR is a known private/loopback address,
+ * indicating the request came through a trusted reverse proxy.
  */
 function getClientIp() {
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        $ip = trim($ips[0]);
-        if (filter_var($ip, FILTER_VALIDATE_IP)) {
-            return $ip;
+    $remoteAddr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+
+    // Only trust forwarded headers if the direct connection is from a private/loopback IP (i.e. a reverse proxy)
+    $isTrustedProxy = filter_var($remoteAddr, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) === false;
+
+    if ($isTrustedProxy) {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ip = trim($ips[0]);
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return $ip;
+            }
+        }
+        if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
+            $ip = trim($_SERVER['HTTP_X_REAL_IP']);
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                return $ip;
+            }
         }
     }
-    if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
-        $ip = trim($_SERVER['HTTP_X_REAL_IP']);
-        if (filter_var($ip, FILTER_VALIDATE_IP)) {
-            return $ip;
-        }
-    }
-    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+
+    return $remoteAddr;
 }

@@ -72,5 +72,6 @@ CREATE TABLE IF NOT EXISTS login_logs (
     login_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_user_id (user_id),
-    INDEX idx_ip_address (ip_address)
+    INDEX idx_ip_address (ip_address),
+    INDEX idx_login_at (login_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
