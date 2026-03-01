@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart – Buy Discount Postage Online</title>
+  <title>Contact Us – Buy Discount Postage Online</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/common.css">
-  <link rel="stylesheet" href="../css/cart.css">
+  <link rel="stylesheet" href="../css/policy.css">
+  <link rel="stylesheet" href="../css/contact.css">
 </head>
 <body>
 
-<!-- ========== Top Bar ========== -->
 <div class="top-bar">
   <span class="top-bar-text">Free Shipping On All Orders. 3–8 Business Days Delivery</span>
   <span class="top-bar-search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
 </div>
 
-<!-- ========== Header ========== -->
 <div class="header-wrapper" id="header">
   <header class="site-header">
     <button class="hamburger" id="hamburger-btn" aria-label="Menu">&#9776;</button>
@@ -29,8 +28,8 @@
       <a href="/category/#christmas-holiday">CHRISTMAS &amp; HOLIDAY</a>
       <a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a>
       <a href="/category/#animal-series">ANIMAL SERIES</a>
-      <a href="/category/#other-years">OTHER YEARS &#9662;</a>
-      <a href="/contact-us/">CONTACT US</a>
+      <a href="/category/#other-years">OTHER YEARS ▾</a>
+      <a href="/contact-us/" class="active">CONTACT US</a>
     </nav>
     <div class="header-right">
       <a href="#" id="account-btn" class="header-icon account-icon" aria-label="Account"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></a>
@@ -57,7 +56,6 @@
   </header>
 </div>
 
-<!-- ========== Mobile Nav ========== -->
 <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
 <div class="mobile-nav-panel" id="mobile-nav-panel">
   <div class="close-btn" id="mobile-nav-close">&times;</div>
@@ -68,73 +66,102 @@
     <li><a href="/category/#wedding-flowers">WEDDING &amp; FLOWERS</a></li>
     <li><a href="/category/#animal-series">ANIMAL SERIES</a></li>
     <li><a href="/category/#other-years">OTHER YEARS</a></li>
-    <li><a href="/contact-us/">CONTACT US</a></li>
+    <li><a href="/contact-us/" class="active">CONTACT US</a></li>
   </ul>
 </div>
 
-<!-- ========== Checkout Breadcrumb ========== -->
-<div class="checkout-breadcrumb">
-  <div class="checkout-breadcrumb-inner">
-    <span class="step active">SHOPPING CART</span>
-    <span class="chevron">&#62;</span>
-    <span class="step">CHECKOUT DETAILS</span>
-    <span class="chevron">&#62;</span>
-    <span class="step">ORDER COMPLETE</span>
+<div class="breadcrumb-section">
+  <div class="breadcrumb-inner">
+    <div class="breadcrumb">
+      <a href="../">HOME</a>
+      <span class="divider">/</span>
+      <span class="current">CONTACT US</span>
+    </div>
   </div>
 </div>
 
-<!-- ========== Cart Page Content ========== -->
-<div class="cart-page-section">
+<main class="contact-section">
+  <div class="contact-container">
 
-  <!-- Empty State -->
-  <div id="cart-empty" class="cart-empty-state" style="display:none">
-    <div class="cart-empty-icon">&#128722;</div>
-    <p>Your cart is currently empty!</p>
-    <a href="../index.html" class="btn-continue-shopping">CONTINUE SHOPPING</a>
-  </div>
-
-  <!-- Filled State -->
-  <div id="cart-filled" class="cart-layout" style="display:none">
-
-    <!-- Left: Cart Items -->
-    <div class="cart-items-col">
-      <div class="cart-table-header">
-        <span>PRODUCT</span>
-        <span>TOTAL</span>
-      </div>
-      <div id="cart-body"></div>
+    <!-- 介绍块，使用 policy-intro 样式 -->
+    <div class="policy-intro">
+      If you have any question or concerns, please contact us via email first —
+      we will reply within <strong>24 hours</strong> and resolve your problem.
     </div>
 
-    <!-- Right: Cart Totals -->
-    <div class="cart-totals-col">
-      <div class="cart-totals-box">
-        <div class="cart-totals-title">CART TOTALS</div>
-        <div class="coupon-toggle" id="coupon-toggle">
-          <span>Add coupons</span>
-          <span class="arrow">&#9660;</span>
+    <!-- 重要提示 -->
+    <h2 class="policy-heading">BEFORE YOU CONTACT US</h2>
+    <p>Please include your <strong>order number</strong> and <strong>recipient name</strong>
+    in your message so that we can locate your order quickly. Thank you 🙂</p>
+
+    <!-- 联系信息 -->
+    <h2 class="policy-heading">GET IN TOUCH</h2>
+
+    <div class="contact-info-grid">
+
+      <div class="contact-info-card">
+        <div class="contact-info-card__icon">
+          <!-- email SVG icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
         </div>
-        <div class="coupon-form" id="coupon-form">
-          <input class="coupon-input" type="text" placeholder="Enter code">
-          <button class="coupon-apply-btn">APPLY</button>
+        <div class="contact-info-card__body">
+          <span class="contact-info-card__label">Email</span>
+          <a href="mailto:support@eddm.shop" class="contact-info-card__value">support@eddm.shop</a>
         </div>
-        <div class="totals-divider"></div>
-        <div class="totals-shipping-row">
-          <span class="shipping-label">Free USPS First Class Shipping (3–7 business days)</span>
-          <span class="shipping-free">FREE</span>
-        </div>
-        <div class="totals-divider"></div>
-        <div class="totals-estimated-row">
-          <span class="totals-estimated-label">Estimated total</span>
-          <span class="totals-estimated-amount" id="estimated-amount">$0.00</span>
-        </div>
-        <button class="btn-checkout">Proceed to Checkout</button>
       </div>
-    </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-card__icon">
+          <!-- phone SVG icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07
+              A19.5 19.5 0 013.09 9.91 19.79 19.79 0 01.22 1.27 2 2 0 012.22.09h3
+              a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91
+              a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7
+              A2 2 0 0122 16.92z"/>
+          </svg>
+        </div>
+        <div class="contact-info-card__body">
+          <span class="contact-info-card__label">Phone</span>
+          <a href="tel:+19703299777" class="contact-info-card__value">(970) 329-9777</a>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-card__icon">
+          <!-- map-pin SVG icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="contact-info-card__body">
+          <span class="contact-info-card__label">Address</span>
+          <span class="contact-info-card__value">3605 Avalon St, Philadelphia, PA 19114</span>
+        </div>
+      </div>
+
+    </div><!-- /.contact-info-grid -->
+
+    <!-- 营业时间 -->
+    <h2 class="policy-heading">BUSINESS HOURS</h2>
+    <p>Our support team is available <strong>Monday – Friday</strong>, except public holidays.
+    We aim to respond to all inquiries within 24 hours.</p>
+
+    <!-- 公司名称 -->
+    <p style="margin-top: 30px; color: #888; font-size: 13px;">
+      <strong style="color:#333365;">Stampdeals LLC</strong>
+    </p>
 
   </div>
-</div>
+</main>
 
-<!-- ========== Footer ========== -->
 <footer>
   <div class="footer-content">
     <div class="footer-columns">
@@ -142,7 +169,7 @@
         <h3>INFORMATION</h3>
         <div class="footer-divider"></div>
         <ul>
-          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="../privacy-policy/">Privacy Policy</a></li>
           <li><a href="#">Shipping Policy</a></li>
           <li><a href="#">Refund and Return Policy</a></li>
           <li><a href="#">Terms of Service</a></li>
@@ -186,7 +213,6 @@
   </div>
 </footer>
 
-<!-- ========== Back to Top ========== -->
 <button class="back-to-top" id="back-to-top" aria-label="Go to top">&#9650;</button>
 
 <!-- ========== Login Modal ========== -->
@@ -207,7 +233,5 @@
 </div>
 
 <script src="../js/common.js"></script>
-<script src="../js/cart-page.js"></script>
-
 </body>
 </html>
