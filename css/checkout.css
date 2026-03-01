@@ -445,6 +445,14 @@
   .co-field-group .co-field {
     margin-bottom: 18px;
   }
+  /* Prevent iOS Safari auto-zoom on input focus */
+  .co-field input[type="text"],
+  .co-field input[type="email"],
+  .co-field input[type="tel"],
+  .co-field select,
+  .co-field textarea {
+    font-size: 16px;
+  }
 }
 @media (max-width: 480px) {
   .checkout-layout {
@@ -456,8 +464,19 @@
   .coupon-bar {
     font-size: 13px;
   }
+  .coupon-bar-form {
+    flex-wrap: wrap;
+  }
   .coupon-bar-form input {
     font-size: 16px;
+    min-width: 0;
+  }
+  .coupon-bar-form button {
+    font-size: 12px;
+    padding: 9px 14px;
+  }
+  #shipping-address-block {
+    padding: 16px 12px;
   }
   .btn-place-order {
     padding: 15px;
@@ -490,6 +509,19 @@
   }
   .co-field label {
     font-size: 13px;
+  }
+  .co-field input[type="text"],
+  .co-field input[type="email"],
+  .co-field input[type="tel"],
+  .co-field select,
+  .co-field textarea {
+    padding: 10px;
+  }
+  .coupon-bar-form input {
+    padding: 9px 10px;
+  }
+  #shipping-address-block {
+    padding: 14px 10px;
   }
   .btn-place-order {
     font-size: 13px;
