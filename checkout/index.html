@@ -236,10 +236,12 @@
           <div class="co-field">
             <label for="shipping_first_name">First name <span class="req">*</span></label>
             <input type="text" id="shipping_first_name" name="shipping_first_name" autocomplete="given-name">
+            <span class="field-error" id="err-shipping-first-name"></span>
           </div>
           <div class="co-field">
             <label for="shipping_last_name">Last name <span class="req">*</span></label>
             <input type="text" id="shipping_last_name" name="shipping_last_name" autocomplete="family-name">
+            <span class="field-error" id="err-shipping-last-name"></span>
           </div>
         </div>
         <div class="co-field">
@@ -251,6 +253,7 @@
           <div class="co-field-group" style="margin-bottom:8px;">
             <div class="co-field" style="margin-bottom:0;flex:1;">
               <input type="text" id="shipping_address_1" name="shipping_address_1" placeholder="House number and street name" autocomplete="address-line1">
+              <span class="field-error" id="err-shipping-address1"></span>
             </div>
             <div class="co-field" style="margin-bottom:0;flex:1;">
               <input type="text" id="shipping_address_2" name="shipping_address_2" placeholder="Apartment, suite, unit, etc. (optional)" autocomplete="address-line2">
@@ -260,6 +263,7 @@
         <div class="co-field">
           <label for="shipping_city">Town / City <span class="req">*</span></label>
           <input type="text" id="shipping_city" name="shipping_city" autocomplete="address-level2">
+          <span class="field-error" id="err-shipping-city"></span>
         </div>
         <div class="co-field">
           <label for="shipping_state">State</label>
@@ -321,6 +325,7 @@
         <div class="co-field">
           <label for="shipping_postcode">ZIP Code <span class="req">*</span></label>
           <input type="text" id="shipping_postcode" name="shipping_postcode" autocomplete="postal-code">
+          <span class="field-error" id="err-shipping-postcode"></span>
         </div>
         <div class="co-field">
           <label for="shipping_phone">Phone (optional)</label>
