@@ -3,12 +3,14 @@
  * Admin API
  *
  * Endpoints:
- *   GET /api/admin.php?action=stats           — Dashboard statistics
- *   GET /api/admin.php?action=products        — List products (paginated)
- *   GET /api/admin.php?action=orders          — List orders (paginated)
- *   GET /api/admin.php?action=users           — List users (paginated)
- *   GET /api/admin.php?action=categories      — List categories
- *   GET /api/admin.php?action=order_detail&id=XX — Single order detail
+ *   GET /api/admin.php?action=stats                          — Dashboard statistics
+ *   GET /api/admin.php?action=products                       — List products (paginated)
+ *   GET /api/admin.php?action=orders                         — List orders (paginated)
+ *   GET /api/admin.php?action=users                          — List users (paginated)
+ *   GET /api/admin.php?action=categories                     — List categories
+ *   GET /api/admin.php?action=order_detail&id=XX             — Single order detail
+ *   GET /api/admin.php?action=update_order_status&id=XX&status=YY — Update order status
+ *   GET /api/admin.php?action=login_logs                     — List login logs (paginated)
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -41,6 +43,12 @@ try {
             break;
         case 'order_detail':
             handleOrderDetail($pdo);
+            break;
+        case 'update_order_status':
+            handleUpdateOrderStatus($pdo);
+            break;
+        case 'login_logs':
+            handleLoginLogs($pdo);
             break;
         default:
             http_response_code(400);
@@ -228,4 +236,63 @@ function handleOrderDetail($pdo) {
     $order['items'] = $stmt->fetchAll();
 
     echo json_encode($order, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+}
+
+/**
+ * Update order status.
+ */
+function handleUpdateOrderStatus($pdo) {
+    $orderId = isset($_GET['id']) ? trim($_GET['id']) : '';
+    $newStatus = isset($_GET['status']) ? trim($_GET['status']) : '';
+
+    if ($orderId === '' || $newStatus === '') {
+        http_response_code(400);
+        echo json_encode(['error' => 'Missing id or status parameter']);
+        return;
+    }
+
+    // Only allow valid status values
+    $allowed = ['pending', 'shipped', 'completed', 'cancelled'];
+    if (!in_array($newStatus, $allowed, true)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid status value']);
+        return;
+    }
+
+    $stmt = $pdo->prepare('UPDATE orders SET status = ? WHERE order_id = ?');
+    $stmt->execute([$newStatus, $orderId]);
+
+    if ($stmt->rowCount() === 0) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Order not found']);
+        return;
+    }
+
+    echo json_encode(['success' => true]);
+}
+
+/**
+ * List login logs with pagination.
+ */
+function handleLoginLogs($pdo) {
+    $page = max(1, isset($_GET['page']) ? (int)$_GET['page'] : 1);
+    $limit = 30;
+    $offset = ($page - 1) * $limit;
+
+    $stmt = $pdo->query('SELECT COUNT(*) AS cnt FROM login_logs');
+    $total = (int)$stmt->fetch()['cnt'];
+
+    $stmt = $pdo->prepare('SELECT l.id, l.user_id, u.email, l.ip_address, l.user_agent, l.login_at
+        FROM login_logs l
+        LEFT JOIN users u ON u.id = l.user_id
+        ORDER BY l.login_at DESC LIMIT ? OFFSET ?');
+    $stmt->execute([$limit, $offset]);
+    $logs = $stmt->fetchAll();
+
+    echo json_encode([
+        'items' => $logs,
+        'total' => $total,
+        'page'  => $page,
+        'pages' => max(1, ceil($total / $limit))
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }

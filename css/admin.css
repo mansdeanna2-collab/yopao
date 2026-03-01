@@ -1,7 +1,7 @@
 /* ========== Admin Panel Reset ========== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { font-family: 'Lato', sans-serif; color: #333; background: #f0f2f5; }
+body { font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif; color: #333; background: #f0f2f5; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
@@ -503,6 +503,48 @@ img { max-width: 100%; display: block; }
 .detail-value {
     flex: 1;
     color: #333;
+}
+
+/* ========== Table Responsive ========== */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ========== Low Stock Warning ========== */
+.low-stock {
+    color: #d93025;
+    font-weight: 700;
+}
+
+/* ========== Order Status Update ========== */
+.order-status-update {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+    padding: 12px 0;
+    border-top: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.order-status-update label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #666;
+}
+
+.status-msg {
+    font-size: 13px;
+    color: #888;
+}
+
+.status-msg.success {
+    color: #1e8e3e;
+}
+
+.status-msg.error {
+    color: #d93025;
 }
 
 /* ========== Empty State ========== */
