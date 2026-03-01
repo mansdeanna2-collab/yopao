@@ -1,3 +1,39 @@
+/* ========== Checkout Breadcrumb ========== */
+.checkout-breadcrumb {
+  text-align: center;
+  padding: 28px 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+.checkout-breadcrumb-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.checkout-breadcrumb-inner .step {
+  color: #bbb;
+}
+.checkout-breadcrumb-inner .step a {
+  color: #bbb;
+  text-decoration: none;
+}
+.checkout-breadcrumb-inner .step a:hover {
+  color: #555;
+  text-decoration: underline;
+}
+.checkout-breadcrumb-inner .step.active {
+  color: #222;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.checkout-breadcrumb-inner .chevron {
+  color: #bbb;
+  font-size: 11px;
+}
+
 /* ========== Coupon Bar ========== */
 .coupon-bar {
   border-bottom: 1px solid #eee;
@@ -228,15 +264,11 @@
   margin-top: 2px;
 }
 
-/* ========== Safe checkout badge ========== */
-.co-safe-checkout {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 14px;
-  text-align: center;
-  margin: 20px 0;
+/* ========== Payment Method Selection ========== */
+.co-payment-method-section {
+  margin: 20px 0 16px;
 }
-.co-safe-checkout-title {
+.co-payment-method-title {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -244,21 +276,68 @@
   margin-bottom: 10px;
   color: #333;
 }
-.co-payment-icons {
+.co-payment-methods {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 }
-.co-payment-icon {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
-  padding: 4px 8px;
-  font-size: 10px;
+.co-payment-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: #fafafa;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  position: relative;
+  user-select: none;
+}
+.co-payment-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.co-payment-option:hover {
+  border-color: #333365;
+  background: #f0f0fa;
+}
+.co-payment-option.selected {
+  border-color: #333365;
+  background: #f0f0fa;
+  box-shadow: 0 0 0 1px #333365;
+}
+.co-pay-icon-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.co-pay-icon-wrap svg {
+  display: block;
+  flex-shrink: 0;
+}
+.pay-label {
+  font-size: 14px;
   font-weight: 700;
-  color: #555;
-  text-transform: uppercase;
+  color: #333;
+}
+.co-pay-check {
+  font-size: 16px;
+  color: #333365;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.co-payment-option.selected .co-pay-check {
+  opacity: 1;
+}
+
+/* USDT TRC20 specific */
+.usdt-icon svg {
+  border-radius: 4px;
 }
 
 /* ========== Place Order button ========== */

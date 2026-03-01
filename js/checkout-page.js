@@ -150,6 +150,16 @@
       clearError('billing_city', 'err-city');
     }
 
+    // State
+    var state = (document.getElementById('billing_state') || {}).value || '';
+    if (state.trim() === '') {
+      showError('billing_state', 'err-state', 'State is required.');
+      valid = false;
+      if (!firstInvalid) firstInvalid = document.getElementById('billing_state');
+    } else {
+      clearError('billing_state', 'err-state');
+    }
+
     // ZIP / Postcode – basic US ZIP validation
     var postcode = (document.getElementById('billing_postcode') || {}).value || '';
     if (postcode.trim() === '') {
@@ -279,11 +289,46 @@
     }, 3500);
   }
 
+  // ── Payment Method Selection ─────────────────────────────────────────────────
+  var paymentOptions = document.querySelectorAll('.co-payment-option');
+  function clearPaymentSelection() {
+    paymentOptions.forEach(function(opt) { opt.classList.remove('selected'); });
+  }
+  paymentOptions.forEach(function(option) {
+    option.addEventListener('click', function() {
+      clearPaymentSelection();
+      option.classList.add('selected');
+      var radio = option.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+      var errPayment = document.getElementById('err-payment');
+      if (errPayment) errPayment.style.display = 'none';
+    });
+  });
+
+  // Also handle direct radio change (keyboard accessibility)
+  paymentOptions.forEach(function(option) {
+    var radio = option.querySelector('input[type="radio"]');
+    if (radio) {
+      radio.addEventListener('change', function() {
+        clearPaymentSelection();
+        option.classList.add('selected');
+      });
+    }
+  });
+
   // ── Place Order ──────────────────────────────────────────────────────────────
   var placeOrderBtn = document.getElementById('place-order-btn');
   if (placeOrderBtn) {
     placeOrderBtn.addEventListener('click', function () {
       if (!validateForm()) return;
+
+      // Validate payment method selection
+      var selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+      if (!selectedPayment) {
+        var errPayment = document.getElementById('err-payment');
+        if (errPayment) { errPayment.style.display = 'block'; errPayment.textContent = 'Please select a payment method.'; }
+        return;
+      }
 
       // Disable button to prevent double-click
       placeOrderBtn.classList.add('loading');
