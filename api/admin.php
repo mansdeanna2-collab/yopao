@@ -126,14 +126,17 @@ function handleAdminLogin($pdo) {
     // Use a simple file-based rate limit (works without extra dependencies)
     $rateLimitDir = sys_get_temp_dir() . '/yopao_rate_limit';
     if (!is_dir($rateLimitDir)) {
-        @mkdir($rateLimitDir, 0700, true);
+        if (!mkdir($rateLimitDir, 0700, true) && !is_dir($rateLimitDir)) {
+            error_log('Admin login rate limit: failed to create directory ' . $rateLimitDir);
+        }
     }
     $rateLimitFile = $rateLimitDir . '/' . $rateLimitKey;
 
     $attempts = 0;
     $firstAttemptTime = time();
     if (file_exists($rateLimitFile)) {
-        $data = @json_decode(@file_get_contents($rateLimitFile), true);
+        $raw = file_get_contents($rateLimitFile);
+        $data = $raw !== false ? json_decode($raw, true) : null;
         if ($data && isset($data['attempts']) && isset($data['first_at'])) {
             if (time() - $data['first_at'] < $windowSeconds) {
                 $attempts = (int)$data['attempts'];
@@ -157,10 +160,13 @@ function handleAdminLogin($pdo) {
     if (!$admin || !password_verify($password, $admin['password_hash'])) {
         // Record failed attempt
         $attempts++;
-        @file_put_contents($rateLimitFile, json_encode([
+        $written = file_put_contents($rateLimitFile, json_encode([
             'attempts' => $attempts,
             'first_at' => $firstAttemptTime
         ]));
+        if ($written === false) {
+            error_log('Admin login rate limit: failed to write ' . $rateLimitFile);
+        }
 
         http_response_code(401);
         echo json_encode(['error' => 'Invalid username or password.']);
@@ -169,7 +175,7 @@ function handleAdminLogin($pdo) {
 
     // Successful login — clear rate limit
     if (file_exists($rateLimitFile)) {
-        @unlink($rateLimitFile);
+        unlink($rateLimitFile);
     }
 
     // Generate a secure random token

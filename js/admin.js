@@ -87,10 +87,10 @@
         adminToken = getStoredToken();
         if (adminToken) {
             // Verify token is still valid before showing panel
-            showAdminPanel();
-            initPanelOnce();
             verifyTokenWithServer().then(function (valid) {
                 if (valid) {
+                    showAdminPanel();
+                    initPanelOnce();
                     loadPage('dashboard');
                 } else {
                     adminToken = null;
